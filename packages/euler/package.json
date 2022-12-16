@@ -1,0 +1,13 @@
+{
+  "name": "euler",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "shared": "workspace:^"
+  },
+  "devDependencies": {}
+}
