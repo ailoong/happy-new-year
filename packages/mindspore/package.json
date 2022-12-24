@@ -1,0 +1,14 @@
+{
+  "name": "mindspore",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "@better-scroll/core": "^2.5.0",
+    "@better-scroll/slide": "^2.5.0",
+    "shared": "workspace:^"
+  }
+}

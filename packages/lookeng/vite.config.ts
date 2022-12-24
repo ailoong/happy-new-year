@@ -7,7 +7,7 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 export default defineConfig({
   base: process.env.NODE_ENV === 'development' ? './' : '/',
   build: {
-    outDir: '../../dist/euler',
+    outDir: '../../dist/lookeng',
   },
   resolve: {
     alias: {

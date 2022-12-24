@@ -6,6 +6,9 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
   base: process.env.NODE_ENV === 'development' ? './' : '/',
+  build: {
+    outDir: '../../dist/gauss',
+  },
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, './src')}/`,
