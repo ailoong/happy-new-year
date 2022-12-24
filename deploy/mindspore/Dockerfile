@@ -6,7 +6,7 @@ COPY . /home/happy-new-year/web
 
 RUN pnpm install
 
-RUN pnpm build:minspore
+RUN pnpm build:mindspore
 
 FROM nginx:1.20.0
 
