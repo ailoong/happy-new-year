@@ -10,7 +10,7 @@ RUN pnpm build:mindspore
 
 FROM nginx:1.20.0
 
-COPY --from=Builder /home/happy-new-year/web/dist/minspore /usr/share/nginx/html/
+COPY --from=Builder /home/happy-new-year/web/dist/mindspore /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/mindspore/nginx.conf /etc/nginx/nginx.conf
 
