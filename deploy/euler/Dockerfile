@@ -2,7 +2,7 @@ FROM gplane/pnpm as Builder
 
 RUN mkdir -p /home/happy-new-year/web
 WORKDIR /home/happy-new-year/web
-COPY ../../ /home/happy-new-year/web
+COPY . /home/happy-new-year/web
 
 RUN pnpm install
 
@@ -12,7 +12,7 @@ FROM nginx:1.20.0
 
 COPY --from=Builder /home/happy-new-year/web/dist/euler /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/euler/nginx.conf /etc/nginx/nginx.conf
 
 
 ENV RUN_USER nginx
