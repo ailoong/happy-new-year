@@ -12,7 +12,7 @@ FROM nginx:1.20.0
 
 COPY --from=Builder /home/happy-new-year/web/dist/minspore /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
 
 ENV RUN_USER nginx
