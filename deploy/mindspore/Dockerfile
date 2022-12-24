@@ -2,11 +2,11 @@ FROM gplane/pnpm as Builder
 
 RUN mkdir -p /home/happy-new-year/web
 WORKDIR /home/happy-new-year/web
-COPY . /home/happy-new-year/web
+COPY ../../ /home/happy-new-year/web
 
 RUN pnpm install
 
-RUN pnpm build:euler
+RUN pnpm build:minspore
 
 FROM nginx:1.20.0
 
