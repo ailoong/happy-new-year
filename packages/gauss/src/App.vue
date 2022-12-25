@@ -7,6 +7,7 @@ import Slide from '@better-scroll/slide';
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
+const isContributor = ref(false);
 
 // const pageContent = ref([]);
 
@@ -46,7 +47,123 @@ onUnmounted(() => {
   <div class="pc-post"></div>
 
   <div ref="wrapper" class="slide-wrapper">
-    <div class="slide-content">
+    <div v-if="isContributor" class="slide-content contribution">
+      <div
+        class="slide-page wrapper-l pg-1"
+        :class="currentPage === 0 ? 'current' : ''"
+      >
+        <div class="pg1-top">
+          <p class="title">2022年度贡献报告</p>
+          <p>你的点滴 【openGauss】全都记得......</p>
+        </div>
+        <div class="pg1-buttom">
+          <p class="fade-time-1">又是一年</p>
+          <p class="fade-time-2">我们穿过时间的缝隙</p>
+          <p class="fade-time-3">定格最特别的你</p>
+          <div class="go-start" @click.stop="goStart">
+            <span>生成</span> <span>报告</span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="slide-page wrapper-l pg-2"
+        :class="currentPage === 1 ? 'current' : ''"
+      >
+        <div class="pg-2-top">
+          <p class="fade-time-1">HI~很高兴遇见你！</p>
+          <p class="fade-time-2">你的故事要从这个数字说起……</p>
+          <p class="fade-time-3">XXXXX（提取多少个日夜的数据）</p>
+        </div>
+        <div class="pg-2-main">
+          <p class="fade-time-4">那是XX年XX月XX日</p>
+          <p class="fade-time-5">我第一次遇见你</p>
+          <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
+          <p class="fade-time-7">感谢相遇，XXX(Gitee Name)这个名字我已经铭记</p>
+          <p class="fade-time-8">在openGauss的开源世界</p>
+          <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
+        </div>
+      </div>
+      <div
+        class="slide-page wrapper-m pg-4"
+        :class="currentPage === 2 ? 'current' : ''"
+      >
+        <div class="mask">
+          <p>这一年，你与XXX人建立了联系</p>
+          <p>XXX，一定很特别，你们沟通最多，相信一定是志同道合的伙伴</p>
+          <p>这一年，你参与了XXX次会议</p>
+          <p>XXXX因你的每一次参与而变得不一样</p>
+          <p>XX月XX日，你睡得很晚</p>
+          <p>整个世界都休息了，你和openGauss还在继续</p>
+          <p>黑夜给了你黑色的眼睛，感谢你用它分享智慧的光明</p>
+          <p class="bold margin-top-h4">这些值得铭记的瞬间</p>
+          <p class="bold">你一次次完成自我的深度探索</p>
+          <p class="bold">找到了更加契合的伙伴</p>
+        </div>
+      </div>
+      <div class="slide-page wrapper-m pg-5">
+        <div class="mask">
+          <p class="bold">你在2022这一年的时光里</p>
+          <p class="margin-top-h4">贡献了XX行代码，</p>
+          <p>提交了XX个PR，</p>
+          <p>提出了XX个Issue，</p>
+          <p>Star了XX个代码仓库，</p>
+          <p>Fork了XX个代码仓库，</p>
+          <p>Watch了XX个代码仓库，</p>
+          <p>你对某行代码的好奇与关注，</p>
+          <p>对某个问题的存疑亦或是认可，</p>
+          <p>都代表了「你」看待这个数字世界的独特视角。</p>
+        </div>
+      </div>
+      <div class="slide-page wrapper-m pg-6">
+        <p class="bold">其实关于你的点滴</p>
+        <p class="bold">「openGauss」 全都记得</p>
+        <p class="font-size-tip margin-top-h4">你的2022年标签</p>
+        <p class="active bold margin-top-h7">Level4</p>
+        <p class="rank">前25%</p>
+        <p>
+          「浑然天成的当代缪斯」你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！
+        </p>
+        <p class="margin-top-h4">
+          感谢2022年的相遇、陪伴、沟通、成长
+          2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
+          愿你元旦快乐。
+        </p>
+        <div class="logo-box margin-top-h4">
+          <img
+            src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="slide-page wrapper-m pg-3 contribution-last">
+        <div class="mask">
+          <p>
+            因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
+          </p>
+          <p>openGauss如期在2022年发布<span class="active">3个</span>版本</p>
+          <p>
+            你们的成果被<span class="active">96个</span>国家、<span
+              class="active"
+              >765个</span
+            >城市下载应用
+          </p>
+          <p>吸引了超过<span class="active">200家</span>企业加入社区</p>
+          <p>openGauss在国内<span class="active">14个</span>城市建立了用户组</p>
+          <p>走进<span class="active">72所</span>高校</p>
+          <p>并且举办了openGauss<span class="active">第1次</span>开发者大会</p>
+        </div>
+        <div class="mask margin-top-h4">
+          <p>这是我们一起度过的春夏秋冬</p>
+          <p>春季 你最专注于XXX</p>
+          <p>夏季 你最专注于XXX</p>
+          <p>秋季 你最专注于XXX</p>
+          <p>冬季 你最专注于XXX</p>
+          <p>感谢你在四季的时光里</p>
+          <p>与openGauss保持同频 分享热爱 留下宝藏</p>
+        </div>
+      </div>
+    </div>
+    <div v-else class="slide-content no-contribution">
       <div
         class="slide-page wrapper-l pg-1"
         :class="currentPage === 0 ? 'current' : ''"
@@ -141,7 +258,7 @@ onUnmounted(() => {
               <p class="fade-time-20">元旦快乐。</p>
             </div>
           </div>
-          <div class="pg-3-bottom">
+          <div class="pg-3-bottom fade fade-time-21">
             <div class="pg-3-bottom-left">openGauss 星球</div>
             <div class="pg-3-bottom-right">
               <img
@@ -152,85 +269,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <div
-        class="slide-page wrapper-m pg-4"
-        :class="currentPage === 2 ? 'current' : ''"
-      >
-        <div class="mask">
-          <p>这一年，你与XXX人建立了联系</p>
-          <p>XXX，一定很特别，你们沟通最多，相信一定是志同道合的伙伴</p>
-          <p>这一年，你参与了XXX次会议</p>
-          <p>XXXX因你的每一次参与而变得不一样</p>
-          <p>XX月XX日，你睡得很晚</p>
-          <p>整个世界都休息了，你和openGauss还在继续</p>
-          <p>黑夜给了你黑色的眼睛，感谢你用它分享智慧的光明</p>
-          <p class="bold margin-top-h4">这些值得铭记的瞬间</p>
-          <p class="bold">你一次次完成自我的深度探索</p>
-          <p class="bold">找到了更加契合的伙伴</p>
-        </div>
-      </div>
-      <div class="slide-page wrapper-m pg-5">
-        <div class="mask">
-          <p class="bold">你在2022这一年的时光里</p>
-          <p class="margin-top-h4">贡献了XX行代码，</p>
-          <p>提交了XX个PR，</p>
-          <p>提出了XX个Issue，</p>
-          <p>Star了XX个代码仓库，</p>
-          <p>Fork了XX个代码仓库，</p>
-          <p>Watch了XX个代码仓库，</p>
-          <p>你对某行代码的好奇与关注，</p>
-          <p>对某个问题的存疑亦或是认可，</p>
-          <p>都代表了「你」看待这个数字世界的独特视角。</p>
-        </div>
-      </div>
-      <div class="slide-page wrapper-m pg-6">
-        <p class="bold">其实关于你的点滴</p>
-        <p class="bold">「openGauss」 全都记得</p>
-        <p class="font-size-tip margin-top-h4">你的2022年标签</p>
-        <p class="active bold margin-top-h7">Level4</p>
-        <p class="rank">前25%</p>
-        <p>
-          「浑然天成的当代缪斯」你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！
-        </p>
-        <p class="margin-top-h4">
-          感谢2022年的相遇、陪伴、沟通、成长
-          2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
-          愿你元旦快乐。
-        </p>
-        <div class="logo-box margin-top-h4">
-          <img
-            src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-            alt=""
-          />
-        </div>
-      </div>
-      <div class="slide-page wrapper-m pg-3 contribution-last">
-        <div class="mask">
-          <p>
-            因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
-          </p>
-          <p>openGauss如期在2022年发布<span class="active">3个</span>版本</p>
-          <p>
-            你们的成果被<span class="active">96个</span>国家、<span
-              class="active"
-              >765个</span
-            >城市下载应用
-          </p>
-          <p>吸引了超过<span class="active">200家</span>企业加入社区</p>
-          <p>openGauss在国内<span class="active">14个</span>城市建立了用户组</p>
-          <p>走进<span class="active">72所</span>高校</p>
-          <p>并且举办了openGauss<span class="active">第1次</span>开发者大会</p>
-        </div>
-        <div class="mask margin-top-h4">
-          <p>这是我们一起度过的春夏秋冬</p>
-          <p>春季 你最专注于XXX</p>
-          <p>夏季 你最专注于XXX</p>
-          <p>秋季 你最专注于XXX</p>
-          <p>冬季 你最专注于XXX</p>
-          <p>感谢你在四季的时光里</p>
-          <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -239,11 +277,8 @@ onUnmounted(() => {
 $active: #fdfd19;
 $spacings: 62 40 32 24 16 12 10 8 6 4;
 .active {
-  // opacity: 0;
+  opacity: 0;
   color: $active;
-  &:hover {
-    transform: translateY(20px);
-  }
 }
 .bold {
   font-weight: 700;
@@ -274,9 +309,11 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   overflow: hidden;
   color: #fff;
   background-color: #471d9b;
+  overflow: hidden;
 
   .slide-content {
     width: 100vw;
+    overflow: hidden;
     .slide-page {
       width: 100vw;
       height: 100vh;
@@ -385,6 +422,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           line-height: 24px;
           font-size: 13px;
           .active {
+            display: inline-block;
             font-size: 15px;
           }
         }
@@ -393,6 +431,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           justify-content: space-between;
           align-items: center;
           font-size: 19px;
+          opacity: 0;
+          animation-name: fade;
+          animation-fill-mode: forwards;
+          // animation: fade ease-in-out forwards;
           &-right {
             width: 100px;
             img {
@@ -491,14 +533,14 @@ p {
   p {
     animation: fade 0.8s ease-in-out forwards;
     .active {
-      animation: slide-top 0.8s ease-in-out infinite forwards;
+      animation: slide-top 0.8s ease-in-out forwards;
     }
   }
-  @for $i from 0 through 20 {
+  @for $i from 0 through 22 {
     .fade-time-#{ $i} {
-      animation-delay: #{$i * 0.7}s;
+      animation-delay: #{$i * 0.5}s;
       .active {
-        animation-delay: #{$i * 0.7 + 0.5}s;
+        animation-delay: #{$i * 0.5 + 0.5}s;
       }
     }
   }
@@ -520,12 +562,12 @@ p {
 }
 @keyframes slide-top {
   0% {
-    // opacity: 0;
+    opacity: 0;
     transform: translateY(24px);
   }
   100% {
-    // opacity: 1;
-    transform: translateY(24px);
+    opacity: 1;
+    transform: translateY(0px);
   }
 }
 </style>
