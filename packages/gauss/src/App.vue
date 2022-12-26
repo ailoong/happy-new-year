@@ -84,7 +84,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div
-        class="slide-page wrapper-m pg-4"
+        class="slide-page wrapper-m pg-3"
         :class="currentPage === 2 ? 'current' : ''"
       >
         <div class="mask">
@@ -100,7 +100,10 @@ onUnmounted(() => {
           <p class="bold">找到了更加契合的伙伴</p>
         </div>
       </div>
-      <div class="slide-page wrapper-m pg-5">
+      <div
+        class="slide-page wrapper-m pg-4"
+        :class="currentPage === 3 ? 'current' : ''"
+      >
         <div class="mask">
           <p class="bold">你在2022这一年的时光里</p>
           <p class="margin-top-h4">贡献了XX行代码，</p>
@@ -114,7 +117,10 @@ onUnmounted(() => {
           <p>都代表了「你」看待这个数字世界的独特视角。</p>
         </div>
       </div>
-      <div class="slide-page wrapper-m pg-6">
+      <div
+        class="slide-page wrapper-m pg-5"
+        :class="currentPage === 4 ? 'current' : ''"
+      >
         <p class="bold">其实关于你的点滴</p>
         <p class="bold">「openGauss」 全都记得</p>
         <p class="font-size-tip margin-top-h4">你的2022年标签</p>
@@ -135,7 +141,10 @@ onUnmounted(() => {
           />
         </div>
       </div>
-      <div class="slide-page wrapper-m pg-3 contribution-last">
+      <div
+        class="slide-page wrapper-m pg-6 contribution-last"
+        :class="currentPage === 5 ? 'current' : ''"
+      >
         <div class="mask">
           <p>
             因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
@@ -258,7 +267,7 @@ onUnmounted(() => {
               <p class="fade-time-20">元旦快乐。</p>
             </div>
           </div>
-          <div class="pg-3-bottom fade fade-time-21">
+          <div class="pg-3-bottom fade-time-21">
             <div class="pg-3-bottom-left">openGauss 星球</div>
             <div class="pg-3-bottom-right">
               <img
@@ -411,52 +420,8 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         }
       }
     }
+
     .pg-3 {
-      height: 100%;
-      .pg-3-mask {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        .pg-3-main {
-          line-height: 24px;
-          font-size: 13px;
-          .active {
-            display: inline-block;
-            font-size: 15px;
-          }
-        }
-        .pg-3-bottom {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 19px;
-          opacity: 0;
-          animation-name: fade;
-          animation-fill-mode: forwards;
-          // animation: fade ease-in-out forwards;
-          &-right {
-            width: 100px;
-            img {
-              width: 100%;
-            }
-          }
-        }
-      }
-      @media screen and (max-height: 820px) {
-        .pg-3-mask {
-          .pg-3-main {
-            line-height: 22px;
-            font-size: 12px;
-            justify-content: space-between;
-            .margin-top-h4 {
-              margin-top: 0;
-            }
-          }
-        }
-      }
-    }
-    .pg-4 {
       .mask {
         margin-top: 76px;
         font-size: 13px;
@@ -467,7 +432,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         }
       }
     }
-    .pg-5 {
+    .pg-4 {
       .mask {
         margin-top: 76px;
         font-size: 13px;
@@ -478,7 +443,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         }
       }
     }
-    .pg-6 {
+    .pg-5 {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -501,7 +466,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         margin-bottom: 40px;
       }
     }
-    .contribution-last {
+    .pg-6 {
       font-size: 13px;
       line-height: 26px;
       .mask.margin-top-h4 {
@@ -516,6 +481,55 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       }
       .mask:first-child {
         margin-top: 76px;
+      }
+    }
+  }
+}
+.slide-wrapper {
+  .no-contribution {
+    .pg-3 {
+      height: 100%;
+      background-image: url('@/assets/bg6.png');
+      .pg-3-mask {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 0;
+        height: 100%;
+        .pg-3-main {
+          line-height: 24px;
+          font-size: 13px;
+          .active {
+            display: inline-block;
+            font-size: 15px;
+          }
+        }
+        .pg-3-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 19px;
+          opacity: 0;
+
+          &-right {
+            width: 82px;
+            img {
+              width: 100%;
+            }
+          }
+        }
+      }
+      @media screen and (max-height: 820px) {
+        .pg-3-mask {
+          .pg-3-main {
+            line-height: 22px;
+            font-size: 12px;
+            justify-content: space-between;
+            .margin-top-h4 {
+              margin-top: 0;
+            }
+          }
+        }
       }
     }
   }
@@ -536,6 +550,7 @@ p {
       animation: slide-top 0.8s ease-in-out forwards;
     }
   }
+
   @for $i from 0 through 22 {
     .fade-time-#{ $i} {
       animation-delay: #{$i * 0.5}s;
@@ -543,6 +558,12 @@ p {
         animation-delay: #{$i * 0.5 + 0.5}s;
       }
     }
+  }
+  ///
+  .pg-3-bottom {
+    animation-duration: 0.8s;
+    animation-name: fade;
+    animation-fill-mode: forwards;
   }
 }
 // 动效
@@ -563,7 +584,7 @@ p {
 @keyframes slide-top {
   0% {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(100%);
   }
   100% {
     opacity: 1;
