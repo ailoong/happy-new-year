@@ -105,7 +105,8 @@ const requestInterceptorId = request.interceptors.request.use(
  * 响应拦截
  */
 const responseInterceptorId = request.interceptors.response.use(
-  (response: any) => {
+  // @ts-ignore
+  (response: AxiosResponse) => {
     const { config } = response;
     // 请求完成，移除请求池
     if (config.url) {
@@ -188,6 +189,6 @@ export {
   request,
   // interface
   AxiosResponse,
-  RequestConfig,
-  RequestInstance,
+  type RequestConfig,
+  type RequestInstance,
 };
