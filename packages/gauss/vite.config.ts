@@ -24,6 +24,11 @@ export default defineConfig({
     }),
   ],
   server: {
-    proxy: {},
+    proxy: {
+      '/query/': {
+        target: 'https://omapi.test.osinfra.cn/',
+        changeOrigin: true,
+      },
+    },
   },
 });
