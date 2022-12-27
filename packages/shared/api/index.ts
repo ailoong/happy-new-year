@@ -6,7 +6,7 @@ import type { AxiosResponse } from '../axios';
  * @name getMeetingData
  * @return {Array}
  */
-export function getPosterData(params) {
+export function getPosterData(params: any) {
   const url = '/query/newYear/report';
   return request
     .get(url, {
