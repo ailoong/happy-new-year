@@ -6,7 +6,7 @@ import Slide from '@better-scroll/slide';
 
 import { getPosterData } from 'shared/api';
 
-const parames = ref({
+const params = ref({
   community: 'opengauss',
   user: 'zhongjun2' || 'liyang0608',
   year: '2022',
@@ -19,7 +19,7 @@ const isContributor = ref(false);
 const posterData: any = ref({});
 
 async function getPosterDataFun() {
-  await getPosterData(parames.value).then((res) => {
+  await getPosterData(params.value).then((res) => {
     if (res.code === 200 && res.data.length) {
       isContributor.value = true;
       posterData.value = res.data[0];
@@ -103,7 +103,7 @@ onUnmounted(() => {
           <p class="fade-time-5">我第一次遇见你</p>
           <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
           <p class="fade-time-7">
-            感谢相遇，{{ parames.user }}这个名字我已经铭记
+            感谢相遇，{{ params.user }}这个名字我已经铭记
           </p>
           <p class="fade-time-8">在openGauss的开源世界</p>
           <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
