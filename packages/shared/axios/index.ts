@@ -10,8 +10,6 @@ import type {
 import handleResponse from './handleResponse';
 import handleError from './handleError';
 import setConfig from './setConfig';
-import { ElLoading, ElMessage } from 'element-plus';
-import { LoadingInstance } from 'element-plus/lib/components/loading/src/loading';
 
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
@@ -20,8 +18,6 @@ interface RequestConfig<D = any> extends AxiosRequestConfig {
 }
 
 // 全局loading
-let loadingInstance: LoadingInstance | null = null;
-let loadingCount = 0;
 
 interface RequestInstance extends AxiosInstance {
   removeRequestInterceptor(): void;
@@ -80,15 +76,6 @@ const pendingPool: Map<string, any> = new Map();
  */
 const requestInterceptorId = request.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    if (loadingCount === 0) {
-      loadingInstance = ElLoading.service({
-        fullscreen: true,
-        target: 'body',
-        text: 'Loading',
-        background: 'transparent',
-      });
-    }
-    loadingCount++;
     // 存储请求信息
     // request.config = Object.assign({}, config);
     // 定义取消请求
@@ -118,12 +105,7 @@ const requestInterceptorId = request.interceptors.request.use(
  * 响应拦截
  */
 const responseInterceptorId = request.interceptors.response.use(
-  (response: AxiosResponse) => {
-    loadingCount--;
-    if (loadingCount === 0 && loadingInstance) {
-      loadingInstance.close();
-      loadingInstance = null;
-    }
+  (response: any) => {
     const { config } = response;
     // 请求完成，移除请求池
     if (config.url) {
@@ -132,19 +114,11 @@ const responseInterceptorId = request.interceptors.response.use(
 
     return Promise.resolve(handleResponse(response));
   },
-  (err: AxiosError) => {
-    if (loadingInstance) {
-      loadingInstance.close();
-    }
+  (err: any) => {
     const { config } = err;
-    if (!(config as RequestConfig).$doException) {
-      ElMessage({
-        type: 'error',
-        message: err.toString(),
-      });
-    }
+
     // 非取消请求发生异常，同样将请求移除请求池
-    if (!axios.isCancel(err) && config.url) {
+    if (!axios.isCancel(err) && config?.url) {
       pendingPool.delete(config.url);
     }
 
@@ -156,7 +130,7 @@ const responseInterceptorId = request.interceptors.response.use(
     else {
       // 被取消的请求
       if (axios.isCancel(err)) {
-        throw new axios.Cancel(err.message || `请求'${config.url}'被取消`);
+        throw new axios.Cancel(err.message || `请求'${config?.url}'被取消`);
       } else if (err.stack && err.stack.includes('timeout')) {
         err.message = '请求超时!';
       } else {
