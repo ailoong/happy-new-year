@@ -4,17 +4,38 @@ import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
+import { getPosterData } from 'shared/api';
+
+const parames = ref({
+  community: 'opengauss',
+  user: 'zhongjun2' || 'liyang0608',
+  year: '2022',
+});
+
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(false);
+const posterData: any = ref({});
 
-// const pageContent = ref([]);
+async function getPosterDataFun() {
+  await getPosterData(parames.value).then((res) => {
+    if (res.code === 200 && res.data.length) {
+      isContributor.value = true;
+      posterData.value = res.data[0];
+    } else {
+      isContributor.value = false;
+    }
+  });
+}
 
 let slide: BScrollInstance;
 const currentPage = ref(0);
 
-onMounted(() => {
+onMounted(async () => {
+  // 必须先确定是否为贡献者
+  await getPosterDataFun();
+
   slide = new BScroll(wrapper.value as HTMLElement, {
     scrollX: false,
     scrollY: true,
@@ -34,6 +55,7 @@ onMounted(() => {
     currentPage.value = slide.getCurrentPage().pageY;
   });
 });
+
 function goStart() {
   slide.scrollToElement('.pg-2', 500, 0, 0);
 }
@@ -72,13 +94,17 @@ onUnmounted(() => {
         <div class="pg-2-top">
           <p class="fade-time-1">HI~很高兴遇见你！</p>
           <p class="fade-time-2">你的故事要从这个数字说起……</p>
-          <p class="fade-time-3">XXXXX（提取多少个日夜的数据）</p>
+          <p class="fade-time-3">
+            {{ posterData?.first_time_of_enter?.split(' ')[0] }}
+          </p>
         </div>
         <div class="pg-2-main">
           <p class="fade-time-4">那是XX年XX月XX日</p>
           <p class="fade-time-5">我第一次遇见你</p>
           <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
-          <p class="fade-time-7">感谢相遇，XXX(Gitee Name)这个名字我已经铭记</p>
+          <p class="fade-time-7">
+            感谢相遇，{{ parames.user }}这个名字我已经铭记
+          </p>
           <p class="fade-time-8">在openGauss的开源世界</p>
           <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
         </div>
