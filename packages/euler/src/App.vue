@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted, computed } from 'vue';
+import { onMounted, ref, onUnmounted, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
@@ -15,13 +17,22 @@ import handAi from '@/assets/hand-ai.png';
 import handMan from '@/assets/hand-man.png';
 import hexagon from '@/assets/hexagon.png';
 
+const lang = ref('zh');
+
+watch(
+  () => window.location.href,
+  (val) => {
+    lang.value = val.includes('/zh/') ? 'zh' : 'en';
+  },
+  { immediate: true }
+);
 const params = ref({
   community: 'opengauss',
   user: 'zhongjun2' || 'liyang0608',
   year: '2022',
 });
 
-const pageCentent = computed(() => {
+const pageCentent: any = computed(() => {
   return {
     zh: {
       page2: {
@@ -147,7 +158,7 @@ const pageCentent = computed(() => {
       page6: {
         text: [
           '在这一年里',
-          `你的贡献度击败了社区 <span class="active">${25}%</span>`,
+          `你的贡献度击败了社区 <span class="active">${posterData.value.count_rank}</span>`,
           `<span class="active bold">恭喜你获得</span>`,
         ],
       },
@@ -295,7 +306,7 @@ const pageCentent = computed(() => {
       },
       page6: {
         text: [
-          `Your contributions place you ahead of <span class="active">${25}%</span>`,
+          `Your contributions place you ahead of <span class="active">${posterData.value.count_rank}</span>`,
           `<span class="active bold">Congratulations</span>`,
         ],
       },
@@ -344,8 +355,8 @@ function changeTime(time: string) {
   }
 }
 function getRank(per: any) {
+  const percentage = Number(per?.replace('%', ''));
   let rank = 0;
-  const percentage = parseFloat(per) * 100;
   if (percentage <= 20) {
     rank = 0;
   } else if (20 < percentage && percentage <= 40) {
@@ -410,6 +421,10 @@ onUnmounted(() => {
           <img :src="mobile" class="mobile" alt="" />
           <img :src="notebook" class="notebook" alt="" />
           <img :src="desktop" class="desktop" alt="" />
+          <img src="@/assets/pg-1-mo.png" class="pg-1-mo" alt="" />
+          <img src="@/assets/fire-1.png" class="fire-1" alt="" />
+          <img src="@/assets/fire-2.png" class="fire-2" alt="" />
+          <img src="@/assets/fire-3.png" class="fire-3" alt="" />
         </div>
       </div>
       <div class="slide-page pg-2" :class="currentPage === 1 ? 'current' : ''">
@@ -422,7 +437,7 @@ onUnmounted(() => {
           </div>
           <div class="main-text margin-top-h4">
             <p
-              v-for="(item, index) in pageCentent.zh.page2.text"
+              v-for="(item, index) in pageCentent[lang].page2.text"
               :key="item"
               :class="`fade-time-${index + 1}`"
               v-html="item"
@@ -434,35 +449,47 @@ onUnmounted(() => {
           <img :src="mobile" class="mobile" alt="" />
           <img :src="notebook" class="notebook" alt="" />
           <img :src="desktop" class="desktop" alt="" />
+          <img src="@/assets/feather-1.png" class="feather-1" alt="" />
+          <img src="@/assets/feather-2.png" class="feather-2" alt="" />
+          <img src="@/assets/feather-3.png" class="feather-3" alt="" />
+          <img src="@/assets/feather-4.png" class="feather-4" alt="" />
+          <img src="@/assets/feather-5.png" class="feather-5" alt="" />
+          <img src="@/assets/feather-6.png" class="feather-6" alt="" />
+          <img src="@/assets/feather-7.png" class="feather-7" alt="" />
         </div>
       </div>
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
         <div class="pg-3-main">
           <div class="main-text">
-            <p v-for="item in pageCentent.zh.page3.text" :key="item">
+            <p v-for="item in pageCentent[lang].page3.text" :key="item">
               {{ item }}
             </p>
           </div>
           <div class="bottom-scan margin-top-h4 bold">
-            <p v-for="item in pageCentent.zh.page3.bottomText" :key="item">
+            <p v-for="item in pageCentent[lang].page3.bottomText" :key="item">
               {{ item }}
             </p>
             <div class="qr-box margin-top-h5">
-              <img :src="pageCentent.zh.page3.img" alt="" />
+              <img :src="pageCentent[lang].page3.img" alt="" />
             </div>
           </div>
         </div>
         <div class="img-box">
-          <img :src="hexagon" class="hexagon" alt="" />
           <img :src="handAi" class="hand-ai" alt="" />
           <img :src="handMan" class="hand-man" alt="" />
+          <img :src="hexagon" class="hexagon" alt="" />
+          <div class="hexagon-box">
+            <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+            <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+            <img src="@/assets/glow.png" class="glow" alt="" />
+          </div>
         </div>
       </div>
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
         <div class="pg-4-main">
           <div class="main-text">
             <p
-              v-for="(item, index) in pageCentent.zh.page4.text"
+              v-for="(item, index) in pageCentent[lang].page4.text"
               :key="item.value"
               :class="`fade-time-${index + 1}`"
             >
@@ -476,7 +503,7 @@ onUnmounted(() => {
         <div class="pg-5-main">
           <div class="main-text">
             <p
-              v-for="(item, index) in pageCentent.zh.page5.text"
+              v-for="(item, index) in pageCentent[lang].page5.text"
               :key="item.value"
               :class="`fade-time-${index}`"
             >
@@ -492,18 +519,29 @@ onUnmounted(() => {
       <div class="slide-page pg-6" :class="currentPage === 5 ? 'current' : ''">
         <div class="pg-6-top">
           <p
-            v-for="item in pageCentent.zh.page6.text"
+            v-for="item in pageCentent[lang].page6.text"
             :key="item"
             v-html="item"
           ></p>
-          <p>{{ rankMap.zh[getRank(0.2)] }}</p>
+          <p
+            :class="[
+              `color-${getRank(posterData.count_rank) + 1}`,
+              lang !== 'zh' ? 'rank' : '',
+            ]"
+          >
+            {{ rankMap[lang][getRank(posterData.count_rank)] }}
+          </p>
         </div>
-        <div class="pg-6-main"></div>
+        <div class="pg-6-main">
+          <img class="round" src="@/assets/bg-6.png" alt="" />
+          <img class="light" src="@/assets/pg-6-light.png" alt="" />
+          <div class="circle"></div>
+        </div>
         <div class="pg-6-bottom"></div>
       </div>
       <div class="slide-page pg-7" :class="currentPage === 6 ? 'current' : ''">
         <div class="pg-7-top">
-          <p v-for="item in pageCentent.zh.page7.text" :key="item">
+          <p v-for="item in pageCentent[lang].page7.text" :key="item">
             {{ item }}
           </p>
         </div>
@@ -534,6 +572,7 @@ onUnmounted(() => {
 <style lang="scss">
 $active: #002fa7;
 $spacings: 62 40 32 24 16 12 10 8 6 4;
+$rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
 .active {
   display: inline-block;
   opacity: 0;
@@ -547,6 +586,12 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   $i: index($spacings, $spacing);
   .margin-top-h#{$i} {
     margin-top: #{$spacing}px;
+  }
+}
+@each $color in $rankColors {
+  $i: index($rankColors, $color);
+  .color-#{$i} {
+    color: #{$color};
   }
 }
 @for $i from 2 through 7 {
@@ -568,6 +613,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
     width: 100vw;
     background-color: $active;
     color: #fff;
+    font-family: FZLTHJW--GB1-0;
     .slide-page {
       display: flex;
       padding: 0 12px;
@@ -595,6 +641,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       .pg1-bottom {
         position: relative;
         width: 100%;
+        height: 100%;
         > img {
           position: absolute;
         }
@@ -603,24 +650,58 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           top: 20px;
           width: 48px;
           animation: desktop 10s infinite linear alternate;
+          z-index: 10;
         }
         .mobile {
           top: 85px;
           right: 12px;
           width: 82px;
           animation: desktop 15s infinite linear alternate;
+          z-index: 10;
         }
         .notebook {
           top: 144px;
           left: 38px;
           width: 86px;
           animation: desktop 20s infinite linear alternate;
+          z-index: 10;
         }
         .database {
           top: 212px;
           right: 20px;
           width: 90px;
           animation: desktop 20s infinite linear alternate;
+          z-index: 10;
+        }
+        .pg-1-mo {
+          left: calc(50% + 30px);
+          transform: translateX(-50%);
+          bottom: 24px;
+          width: 254px;
+        }
+        .fire-1 {
+          opacity: 0;
+          left: calc(50%);
+          transform: translateX(-50%);
+          width: 266px;
+          bottom: 60px;
+          z-index: 3;
+        }
+        .fire-2 {
+          opacity: 0;
+          left: calc(50%);
+          transform: translateX(-50%);
+          width: 266px;
+          bottom: 60px;
+          z-index: 2;
+        }
+        .fire-3 {
+          opacity: 0;
+          left: calc(50%);
+          transform: translateX(-50%);
+          width: 266px;
+          bottom: 60px;
+          z-index: 1;
         }
       }
     }
@@ -639,6 +720,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         text-align: center;
         padding: 0 12px;
         color: #000;
+        z-index: 10;
         .active {
           padding: 0 2px;
           font-size: 16px;
@@ -649,6 +731,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           color: #002fa7;
           font-size: 20px;
           line-height: 24px;
+          font-family: PangMenZhengDao;
         }
         .main-text {
           line-height: 32px;
@@ -662,25 +745,74 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         left: 80px;
         bottom: 100px;
         width: 74px;
-        animation: desktop 10s infinite linear alternate;
+        z-index: 1;
+        animation: slide-top1 2s infinite linear alternate;
       }
       .mobile {
         bottom: 240px;
         right: 12px;
         width: 82px;
-        animation: desktop 15s infinite linear alternate;
+        z-index: 1;
+        animation: slide-top1 3s infinite linear alternate;
       }
       .notebook {
         top: 144px;
-        left: 38px;
-        width: 90px;
-        animation: desktop 20s infinite linear alternate;
+        left: 12px;
+        width: 80px;
+        z-index: 1;
+        animation: slide-top1 5s infinite linear alternate;
       }
       .database {
         top: 100px;
-        right: 20px;
+        right: 15px;
         width: 90px;
-        animation: desktop 20s infinite linear alternate;
+        z-index: 1;
+        animation: slide-top1 4s infinite linear alternate;
+      }
+      .feather-1,
+      .feather-2,
+      .feather-3,
+      .feather-4,
+      .feather-5,
+      .feather-6,
+      .feather-7 {
+        opacity: 0;
+        z-index: 0;
+      }
+      .feather-1 {
+        left: 0;
+        top: 0;
+        width: 120px;
+      }
+      .feather-2 {
+        right: 0;
+        top: 0;
+        width: 126px;
+      }
+      .feather-3 {
+        right: 0;
+        top: 140px;
+        width: 103px;
+      }
+      .feather-4 {
+        right: 0;
+        bottom: 133px;
+        width: 103px;
+      }
+      .feather-5 {
+        right: 0;
+        bottom: 60px;
+        width: 145px;
+      }
+      .feather-6 {
+        left: 0;
+        bottom: 45px;
+        width: 193px;
+      }
+      .feather-7 {
+        left: 0;
+        bottom: 55px;
+        width: 138px;
       }
     }
     .pg-3 {
@@ -695,6 +827,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       .bottom-scan {
         line-height: 24px;
         font-size: 14px;
+        font-family: 'PangMenZhengDao';
         .qr-box {
           display: inline-block;
           padding: 8px;
@@ -711,12 +844,33 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           position: absolute;
         }
         .hand-ai {
+          opacity: 0;
           right: 0;
           width: calc(50% - 3px);
+          z-index: -1;
         }
         .hand-man {
+          opacity: 0;
+          display: inline-block;
           left: 0;
           width: calc(50% - 3px);
+        }
+        .hexagon-box {
+          position: absolute;
+          height: 188px;
+          left: 50%;
+          bottom: 50px;
+          transform: translateX(-50%);
+          width: 163px;
+          z-index: -1;
+          > img {
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+          }
+          .glow {
+            transform: translate(-50%, -50%) scale(0);
+          }
         }
         .hexagon {
           left: 50%;
@@ -725,19 +879,31 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           width: 163px;
           z-index: -1;
         }
+        .hexagon-2 {
+          width: 80px;
+        }
+        .hexagon-3 {
+          width: 33px;
+        }
       }
     }
     .pg-4 {
       padding: 60px 44px;
+      background-position: bottom;
+      background-size: cover;
       .pg-4-main {
         font-size: 12px;
         line-height: 24px;
         .active {
+          font-weight: 700;
+          font-size: 14px;
           color: #feb32a;
         }
       }
     }
     .pg-5 {
+      background-position: top;
+      background-size: cover;
       justify-content: center;
       .pg-5-main {
         padding: 24px 75px;
@@ -747,38 +913,98 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         .active {
           padding: 0 2px;
           font-size: 14px;
+          font-weight: 700;
           color: #feb32a;
         }
       }
     }
     .pg-6 {
       position: relative;
+      background-image: none;
+      background-size: 200px;
+      background-position: center 245px;
+      background-color: rgb(0, 62, 214);
       .pg-6-top {
+        position: relative;
         padding: 50px 0 0;
         line-height: 24px;
         font-weight: 700;
         color: #000;
         font-size: 14px;
         width: 100%;
-        height: 440px;
-        background-size: 100%;
+        max-width: 360px;
+        height: 100%;
+        max-height: 444px;
+        background-size: 100% auto;
         background-repeat: no-repeat;
         background-image: url('@/assets/bg-6-light.png');
+        z-index: 9;
         .active {
           color: #406ef7;
         }
         p:last-child {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 150px;
           margin-top: 24px;
           font-family: PangMenZhengDao;
-          font-size: 24px;
+          font-size: 40px;
+          line-height: 46px;
+        }
+        .rank {
+          bottom: 120px !important;
+        }
+      }
+      .pg-6-main {
+        position: relative;
+        margin-top: -170px;
+        width: 360px;
+        .round {
+          position: relative;
+          width: 100%;
+          z-index: 0;
+        }
+        .light {
+          width: 30px;
+          left: 50%;
+          top: calc(50% + 5px);
+          transform: translate(-50%, -50%);
+          bottom: 0;
+          position: absolute;
+          z-index: 10;
+        }
+        .circle {
+          position: absolute;
+          left: 50%;
+          top: calc(50% + 30px);
+          transform: translate(-50%, -50%);
+          width: 102px;
+          height: 102px;
+          border-radius: 50%;
+          background-color: rgba($color: #a6cbfe, $alpha: 0.6);
+          animation: halo2 1.5s 0.5s ease-in-out infinite alternate;
+          &::before {
+            position: absolute;
+            content: '';
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 50%;
+            border-radius: 50%;
+            animation: halo3 1.5s 0.5s ease-in-out infinite alternate;
+            background-color: #a6cbfe;
+          }
         }
       }
       .pg-6-bottom {
-        bottom: 0;
+        top: 500px;
         height: 120px;
         position: absolute;
         width: 100%;
-        background-size: 100% 100%;
+        background-position: center;
+        background-size: 360px 100%;
         background-repeat: no-repeat;
         background-image: url('@/assets/bg-6-bottom.png');
       }
@@ -817,6 +1043,33 @@ p {
       }
     }
   }
+  .feather-1,
+  .feather-2,
+  .feather-3,
+  .feather-4,
+  .feather-5,
+  .feather-6,
+  .feather-7 {
+    animation: fade 0.8s 0.5s ease-in-out forwards;
+  }
+  .fire-1 {
+    animation: fade 0.8s 1.5s ease-in-out forwards;
+  }
+  .fire-2 {
+    animation: fade 0.8s 1s ease-in-out forwards;
+  }
+  .fire-3 {
+    animation: fade 0.8s 0.5s ease-in-out forwards;
+  }
+  .hand-ai {
+    animation: left-hand 1.2s 0.5s ease-in-out forwards;
+  }
+  .hand-man {
+    animation: right-hand 1.2s 0.5s ease-in-out forwards;
+  }
+  .glow {
+    animation: halo1 2s 1.7s ease-in-out infinite alternate;
+  }
 }
 // ipad 适配
 @media screen and (min-width: 768px) {
@@ -854,6 +1107,35 @@ p {
     transform: scale(0.81);
   }
 }
+@keyframes halo1 {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes halo2 {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+@keyframes halo3 {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
 @keyframes slide-top {
   0% {
     opacity: 0;
@@ -862,6 +1144,34 @@ p {
   100% {
     opacity: 1;
     transform: translateY(0px);
+  }
+}
+@keyframes slide-top1 {
+  0% {
+    transform: translateY(12px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes left-hand {
+  0% {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+@keyframes right-hand {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
   }
 }
 </style>
