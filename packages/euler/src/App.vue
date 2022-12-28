@@ -370,7 +370,7 @@ function getRank(per: any) {
   }
   return rank;
 }
-const rankMap = ref({
+const rankMap: any = ref({
   zh: ['初出茅庐', '牛刀小试', '崭露头角', '达人现身', '百炼成师'],
   en: [
     'Emerging Talent',
