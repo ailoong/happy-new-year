@@ -5,7 +5,7 @@ import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'development' ? './' : '/',
+  base: process.env.NODE_ENV === 'development' ? './' : '/zh/',
   build: {
     outDir: '../../dist/euler',
   },
