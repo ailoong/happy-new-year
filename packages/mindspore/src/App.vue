@@ -1129,7 +1129,6 @@ p {
 
 // 滑到页面才触发动画
 .current {
-  // pg-2
   .ship {
     // :TODO:调整速度
     animation: to-right 1s 0.4s 1 linear,
