@@ -5,7 +5,7 @@ import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import useWindowResize from 'shared/hooks/useWindowResize';
-import { getPosterData, getMonthcount } from 'shared/api';
+import { getPosterData, getMonthcount, getUserData } from 'shared/api';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -430,16 +430,18 @@ const mindsporeData: any = computed(() => {
   };
 });
 
-// const params = ref({
-//   community: 'opengauss',
-//   user: 'zhongjun2' || 'liyang0608',
-//   year: '2022',
-// });
 const params = ref({
-  community: 'opengauss',
-  user: 'liyang0608',
+  community: 'mindspore',
+  user: '',
   year: '2022',
 });
+function getUserDataFun() {
+  getUserData().then((res) => {
+    if (res.data && res.data?.length) {
+      params.value.user = res.data.user;
+    }
+  });
+}
 
 const wrapper = ref<HTMLElement | null>(null);
 
@@ -494,7 +496,8 @@ function splitTime(data: any) {
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getPosterDataFun();
-  getMonthountFun();
+  await getUserDataFun();
+  await getMonthountFun();
 
   pcClick();
   if (wrapper.value) {
@@ -1126,7 +1129,6 @@ p {
 
 // 滑到页面才触发动画
 .current {
-  // pg-2
   .ship {
     // :TODO:调整速度
     animation: to-right 1s 0.4s 1 linear,
