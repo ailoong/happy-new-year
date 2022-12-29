@@ -437,8 +437,8 @@ const params = ref({
 });
 function getUserDataFun() {
   getUserData().then((res) => {
-    if (res.data && res.data?.length) {
-      params.value.user = res.data.user;
+    if (res.user) {
+      params.value.user = res.user;
     }
   });
 }
