@@ -5,7 +5,6 @@ import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData } from 'shared/api';
-import { get } from 'http';
 
 const params = ref({
   community: 'opengauss',

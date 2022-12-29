@@ -19,7 +19,6 @@ import hexagon from '@/assets/hexagon.png';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
-getUserData();
 watch(
   () => window.location.href,
   (val) => {
@@ -28,10 +27,17 @@ watch(
   { immediate: true }
 );
 const params = ref({
-  community: 'opengauss',
-  user: 'haml' || 'liyang0608',
+  community: 'openeuler',
+  user: '',
   year: '2022',
 });
+function getUserDataFun() {
+  getUserData().then((res) => {
+    if (res.data && res.data?.length) {
+      params.value.user = res.data.user;
+    }
+  });
+}
 
 const pageCentent: any = computed(() => {
   return {
@@ -42,11 +48,11 @@ const pageCentent: any = computed(() => {
           `感谢你的一路相陪`,
           `在这三年的时光里，`,
           `openEuler在茁壮地成长：`,
-          `社区用户<span class="active">${posterData.value.comment_num}+；</span>`,
-          `社区PR数<span class="active">${posterData.value.comment_num}k；</span>`,
-          `社区贡献者<span class="active">${posterData.value.comment_num}+；</span>`,
-          `商用OSV<span class="active">${posterData.value.comment_num}家；</span>`,
-          `企业成员<span class="active">${posterData.value.comment_num}家；</span>`,
+          `社区用户<span class="active">1003267+；</span>`,
+          `社区PR数<span class="active">88.2k；</span>`,
+          `社区贡献者<span class="active">12700+；</span>`,
+          `商用OSV<span class="active">18家；</span>`,
+          `企业成员<span class="active">710家+；</span>`,
           '......',
         ],
       },
@@ -65,7 +71,9 @@ const pageCentent: any = computed(() => {
       page4: {
         text: [
           {
-            value: `Hi ${params.value.user}，我们在一起2年啦！ `,
+            value: `Hi ${params.value.user}，我们在一起${
+              getYear(posterData.value?.first_time_of_enter) || 1
+            }年啦！ `,
             key: posterData.value.first_time_of_enter,
           },
           {
@@ -76,31 +84,15 @@ const pageCentent: any = computed(() => {
           },
           {
             value: `<span class="active">${changeTime(
-              posterData.value.first_time_of_enter
-            )}，</span> <br> 你与社区中的${
-              posterData.value.user_login_with_most_contact
-            }第一次建立连接；`,
-            key: posterData.value.user_login_with_most_contact,
-          },
-          {
-            value: `<span class="active">${changeTime(
-              posterData.value.first_time_of_enter
+              posterData.value.first_time_of_comment
             )}，</span> <br>你第一次在社区中评论了${
-              posterData.value.user_login_with_most_contact
+              posterData.value.first_user_of_comment
             }；  `,
-            key: posterData.value.user_login_with_most_contact,
+            key: posterData.value.first_time_of_comment,
           },
           {
-            value: `<span class="active">${changeTime(
-              posterData.value.first_time_of_enter
-            )}，</span> <br> ${
-              posterData.value.user_login_with_most_contact
-            }第一个给了你温暖的评论；`,
-            key: posterData.value.user_login_with_most_contact,
-          },
-          {
-            value: `初来乍到，${posterData.value.user_login_with_most_contact}第一个解决了你的问题；`,
-            key: posterData.value.user_login_with_most_contact,
+            value: `初来乍到，${posterData.value.first_user_of_be_comment}第一个解决了你的问题；`,
+            key: posterData.value.first_user_of_be_comment,
           },
           {
             value: `回忆满满，你与${posterData.value.user_login_with_most_contact}联系最多`,
@@ -159,7 +151,9 @@ const pageCentent: any = computed(() => {
       page6: {
         text: [
           '在这一年里',
-          `你的贡献度击败了社区 <span class="active">${posterData.value.count_rank}</span>的开发者`,
+          `你的贡献度击败了社区 <span class="active">${getPercentage(
+            posterData.value?.count_rank
+          )}%</span>的开发者`,
           `<span class="active pg-6-text">恭喜你获得</span>`,
         ],
       },
@@ -181,11 +175,11 @@ const pageCentent: any = computed(() => {
           `Today marks my 3rd anniversary!`,
           `I'm so grateful that you've joined me on this journey`,
           `Over the past three years, we've accomplished so much:`,
-          `<span class="active">${posterData.value.comment_num}+ users</span>`,
-          `<span class="active">${posterData.value.comment_num}+ PRs</span>`,
-          `<span class="active">${posterData.value.comment_num}+ contributors</span>`,
-          `<span class="active">${posterData.value.comment_num} commercial OSVs</span>`,
-          `<span class="active">${posterData.value.comment_num}+ enterprise members</span>`,
+          `<span class="active">1003270+ users</span>`,
+          `<span class="active">88.2k PRs</span>`,
+          `<span class="active">12700+ contributors</span>`,
+          `<span class="active">18 commercial OSVs</span>`,
+          `<span class="active">710+ enterprise members</span>`,
           'And more...',
         ],
       },
@@ -209,7 +203,11 @@ const pageCentent: any = computed(() => {
             key: posterData.value.user_login,
           },
           {
-            value: `Can you believe it's been ${1} year since we first met?`,
+            value: `Can you believe it's been ${getYear(
+              posterData.value?.first_time_of_enter
+            )} year${
+              getYear(posterData.value?.first_time_of_enter) || 1 > 1 ? 's' : ''
+            } since we first met?`,
             key: posterData.value.first_time_of_enter,
           },
           {
@@ -218,33 +216,33 @@ const pageCentent: any = computed(() => {
             )},</span> <br> you took your first steps by visiting my homepage.`,
             key: posterData.value.first_time_of_enter,
           },
+          // {
+          //   value: `<span class="active">On ${changeTime(
+          //     posterData.value.first_time_of_enter
+          //   )},</span> <br> you made your first connection with ${
+          //     posterData.value.user_login_with_most_contact
+          //   } in the community.`,
+          //   key: posterData.value.first_time_of_enter,
+          // },
           {
             value: `<span class="active">On ${changeTime(
-              posterData.value.first_time_of_enter
-            )},</span> <br> you made your first connection with ${
-              posterData.value.user_login_with_most_contact
-            } in the community.`,
-            key: posterData.value.first_time_of_enter,
-          },
-          {
-            value: `<span class="active">On ${changeTime(
-              posterData.value.first_time_of_enter
+              posterData.value.first_time_of_comment
             )},</span> <br> you first commented on ${
-              posterData.value.first_time_of_enter
+              posterData.value.first_user_of_comment
             }'s post.`,
-            key: posterData.value.first_commented_of_enter,
+            key: posterData.value.first_time_of_comment,
           },
+          // {
+          //   value: `<span class="active">On ${changeTime(
+          //     posterData.value.first_time_of_enter
+          //   )},</span> <br> you received the first comment from ${
+          //     posterData.value.user_login_with_most_contact
+          //   }`,
+          //   key: posterData.value.first_commented_of_enter,
+          // },
           {
-            value: `<span class="active">On ${changeTime(
-              posterData.value.first_time_of_enter
-            )},</span> <br> you received the first comment from ${
-              posterData.value.user_login_with_most_contact
-            }`,
-            key: posterData.value.first_commented_of_enter,
-          },
-          {
-            value: `As a newcomer, you got your first issue reply from ${posterData.value.user_login_with_most_contact}`,
-            key: posterData.value.user_login_with_most_contact,
+            value: `As a newcomer, you got your first issue reply from ${posterData.value.first_user_of_be_comment}`,
+            key: posterData.value.first_user_of_be_comment,
           },
           {
             value:
@@ -307,7 +305,9 @@ const pageCentent: any = computed(() => {
       },
       page6: {
         text: [
-          `Your contributions place you ahead of <span class="active">${posterData.value.count_rank}</span>`,
+          `Your contributions place you ahead of <span class="active">${getPercentage(
+            posterData.value.count_rank
+          )}%</span>`,
           `<span class="active bold">Congratulations</span>`,
         ],
       },
@@ -345,31 +345,53 @@ async function getPosterDataFun() {
 
 let slide: BScrollInstance;
 const currentPage = ref(0);
+function getZero(time: number) {
+  return time < 9 ? '0' + time : time;
+}
 function changeTime(time: string) {
   if (time) {
     const EndTime = new Date(time);
     const y = EndTime.getFullYear();
     const m = EndTime.getMonth() + 1;
     const d = EndTime.getDate();
-    const all = `${y}年${m}月${d}日`;
+    let all = '';
+    if (lang.value === 'zh') {
+      all = `${y}年${getZero(m)}月${getZero(d)}日`;
+    } else {
+      all = `${getZero(d)}/${getZero(m)}/${y}`;
+    }
     return all;
   }
 }
 function getRank(per: any) {
-  const percentage = Number(per?.replace('%', ''));
-  let rank = 0;
-  if (percentage <= 20) {
-    rank = 0;
-  } else if (20 < percentage && percentage <= 40) {
-    rank = 1;
-  } else if (40 < percentage && percentage <= 60) {
-    rank = 2;
-  } else if (60 < percentage && percentage <= 70) {
-    rank = 3;
-  } else if (70 < percentage) {
-    rank = 4;
+  if (per) {
+    const percentage = per;
+    let rank = 0;
+    if (percentage <= 20) {
+      rank = 0;
+    } else if (20 < percentage && percentage <= 40) {
+      rank = 1;
+    } else if (40 < percentage && percentage <= 60) {
+      rank = 2;
+    } else if (60 < percentage && percentage <= 70) {
+      rank = 3;
+    } else if (70 < percentage) {
+      rank = 4;
+    }
+    return rank;
   }
-  return rank;
+}
+function getYear(time: any) {
+  if (time) {
+    const today = new Date().getTime();
+    const endTime = new Date(time).getTime();
+    return Math.ceil((today - endTime) / 1000 / 24 / 60 / 60 / 365);
+  }
+}
+function getPercentage(per: any) {
+  if (per) {
+    return (100 - Number(per?.replace('%', ''))).toFixed(2);
+  }
 }
 const rankMap: any = ref({
   zh: ['初出茅庐', '牛刀小试', '崭露头角', '达人现身', '百炼成师'],
@@ -383,6 +405,7 @@ const rankMap: any = ref({
 });
 onMounted(async () => {
   // 必须先确定是否为贡献者
+  await getUserDataFun();
   await getPosterDataFun();
   pcClick();
   if (wrapper.value) {
@@ -621,11 +644,19 @@ onUnmounted(() => {
                   ></p>
                   <p
                     :class="[
-                      `color-${getRank(posterData.count_rank) + 1}`,
+                      `color-${
+                        // @ts-ignore
+                        getRank(getPercentage(posterData?.count_rank)) + 1
+                      }`,
                       lang !== 'zh' ? 'rank' : '',
                     ]"
                   >
-                    {{ rankMap[lang][getRank(posterData.count_rank)] }}
+                    {{
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(getPercentage(posterData?.count_rank))
+                      ]
+                    }}
                   </p>
                 </div>
                 <div class="pg-6-main-text">
@@ -715,7 +746,18 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div class="back"></div>
+        <div class="back">
+          <div class="contents pg-7 current">
+            <div class="pg-7-top">
+              <p v-for="item in pageCentent[lang].page7.text" :key="item">
+                {{ item }}
+              </p>
+            </div>
+            <div class="pg-7-logo">
+              <img src="@/assets/logo.png" alt="" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -833,13 +875,22 @@ onUnmounted(() => {
             :key="item"
             v-html="item"
           ></p>
+
           <p
             :class="[
-              `color-${getRank(posterData.count_rank) + 1}`,
+              `color-${
+                // @ts-ignore
+                getRank(getPercentage(posterData?.count_rank)) + 1
+              }`,
               lang !== 'zh' ? 'rank' : '',
             ]"
           >
-            {{ rankMap[lang][getRank(posterData.count_rank)] }}
+            {{
+              rankMap[lang][
+                // @ts-ignore
+                getRank(getPercentage(posterData?.count_rank))
+              ]
+            }}
           </p>
         </div>
         <div class="pg-6-main">
@@ -874,6 +925,54 @@ onUnmounted(() => {
           <img src="@/assets/fire-1.png" class="fire-1" alt="" />
           <img src="@/assets/fire-2.png" class="fire-2" alt="" />
           <img src="@/assets/fire-3.png" class="fire-3" alt="" />
+        </div>
+      </div>
+      <div class="slide-page pg-2" :class="currentPage === 1 ? 'current' : ''">
+        <div class="pg-2-main">
+          <div class="user">
+            <p class="blod active user">
+              Dear <br />
+              {{ params.user }}
+            </p>
+          </div>
+          <div class="main-text margin-top-h4">
+            <p
+              v-for="(item, index) in pageCentent[lang].page2.text"
+              :key="item"
+              :class="`fade-time-${index + 1}`"
+              v-html="item"
+            ></p>
+          </div>
+        </div>
+        <div class="img-box">
+          <img :src="database" class="database" alt="" />
+          <img :src="mobile" class="mobile" alt="" />
+          <img :src="notebook" class="notebook" alt="" />
+          <img :src="desktop" class="desktop" alt="" />
+          <img src="@/assets/feather-1.png" class="feather-1" alt="" />
+          <img src="@/assets/feather-2.png" class="feather-2" alt="" />
+          <img src="@/assets/feather-3.png" class="feather-3" alt="" />
+          <img src="@/assets/feather-4.png" class="feather-4" alt="" />
+          <img src="@/assets/feather-5.png" class="feather-5" alt="" />
+          <img src="@/assets/feather-6.png" class="feather-6" alt="" />
+          <img src="@/assets/feather-7.png" class="feather-7" alt="" />
+        </div>
+      </div>
+      <div class="slide-page pg-7" :class="currentPage === 2 ? 'current' : ''">
+        <div class="pg-7-top">
+          <p
+            v-for="(item, index) in pageCentent[lang].page7.text"
+            :class="`fade-time-${index}`"
+            :key="item"
+          >
+            {{ item }}
+          </p>
+        </div>
+        <div
+          class="pg-7-logo"
+          :class="`fade-time-${pageCentent[lang].page7.text.length + 1}`"
+        >
+          <img src="@/assets/logo.png" alt="" />
         </div>
       </div>
     </div>
@@ -1328,14 +1427,20 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
       line-height: 24px;
       color: #000;
       .pg-7-logo {
+        opacity: 0;
         margin-top: 40px;
         width: 82px;
+        animation-duration: 0.8s;
+        animation-name: fade;
+        animation-fill-mode: forwards;
         img {
           width: 100%;
         }
       }
     }
   }
+}
+.pg-7-logo {
 }
 p {
   opacity: 0;
@@ -1516,14 +1621,14 @@ p {
 }
 .pc-en.pc-post {
   p {
-    line-height: 16px;
+    line-height: 24px;
   }
   @for $i from 1 through 4 {
     .box-#{ $i} {
       .pc-top {
         .text {
-          width: 180px;
-          background-size: 180px auto;
+          width: 74px;
+          background-size: 74px auto;
           background-repeat: no-repeat;
           background-image: url('@/assets/pc-bg-#{$i}-en.png');
         }
@@ -1535,8 +1640,8 @@ p {
       .box-#{ $i} {
         .pc-top {
           .text {
-            width: 133px;
-            background-size: 133px auto;
+            width: 180px;
+            background-size: 180px auto;
             background-repeat: no-repeat;
             background-image: url('@/assets/pc-bg-no-#{$i}-en.png');
           }
@@ -1826,11 +1931,11 @@ p {
           color: #feb32a;
         }
         p:last-child {
-          margin-top: 56px;
+          margin: 40px 0;
           font-size: 40px;
         }
         .rank {
-          margin-top: 24px !important;
+          margin: 24px 0 0 0 !important;
           line-height: 46px;
         }
       }
@@ -1844,6 +1949,24 @@ p {
     }
   }
   .no-contribution {
+    .pg-7 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 52px;
+      font-size: 12px;
+      line-height: 24px;
+      color: #000;
+      text-align: center;
+      border: 1px solid rgba($color: #fff, $alpha: 0.7);
+      .pg-7-logo {
+        margin-top: 40px;
+        width: 82px;
+        img {
+          width: 100%;
+        }
+      }
+    }
   }
   .container {
     position: relative;
