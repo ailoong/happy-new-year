@@ -437,24 +437,6 @@ onUnmounted(() => {
       <div class="container box-1">
         <div class="front">
           <div class="slide-page pg-3 current">
-            <div class="pg-3-main">
-              <div class="main-text">
-                <p v-for="item in pageCentent[lang].page3.text" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-              <div class="bottom-scan margin-top-h4 bold">
-                <p
-                  v-for="item in pageCentent[lang].page3.bottomText"
-                  :key="item"
-                >
-                  {{ item }}
-                </p>
-                <div class="qr-box margin-top-h5">
-                  <img :src="pageCentent[lang].page3.img" alt="" />
-                </div>
-              </div>
-            </div>
             <div class="img-box">
               <img :src="handAi" class="hand-ai" alt="" />
               <img :src="handMan" class="hand-man" alt="" />
@@ -1287,8 +1269,8 @@ p {
     justify-content: space-between;
   }
   .pg-3 {
-    position: relative;
-    padding: 40px 12px 0;
+    width: 100%;
+    height: 100%;
     background-size: 100% auto;
     .main-text {
       font-size: 12px;
@@ -1370,8 +1352,10 @@ p {
 
   .container {
     position: relative;
-    width: 330px;
-    height: 750px;
+    max-width: 360px;
+    width: 100%;
+    max-height: 640px;
+    height: 100%;
     overflow: hidden;
   }
   .no-contribution {
