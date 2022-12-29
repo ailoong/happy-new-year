@@ -1,13 +1,8 @@
 import { request } from '../axios';
 import type { AxiosResponse } from '../axios';
 
-/**
- * 获取会议数据
- * @name getMeetingData
- * @return {Array}
- */
 export function getPosterData(params: any) {
-  const url = '/zh/query/newYear/report';
+  const url = '/query/newYear/report';
   return request
     .get(url, {
       params,
@@ -18,7 +13,7 @@ export function getPosterData(params: any) {
     });
 }
 export function getUserData() {
-  const url = '/zh/oauth2/userinfo';
+  const url = '/oauth2/userinfo';
   return request
     .get(url)
     .then((res: AxiosResponse) => res.data)

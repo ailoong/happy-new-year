@@ -432,11 +432,71 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="screenWidth > 1200" class="pc-post" @click="pcClick">
+  <div
+    v-if="screenWidth > 1200"
+    class="pc-post"
+    :class="lang === 'zh' ? 'pc-zh' : 'pc-en'"
+    @click="pcClick"
+  >
     <div v-if="isContributor" class="contribution none">
       <div class="container box-1">
         <div class="front">
           <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="back">
+          <div class="pg-2 contents current">
+            <div class="pg-2-main">
+              <div class="user">
+                <p class="blod active user">
+                  Dear <br />
+                  {{ params.user }}
+                </p>
+                <div class="main-text margin-top-h4">
+                  <p
+                    v-for="(item, index) in pageCentent[lang].page2.text"
+                    :key="item"
+                    :class="`fade-time-${index + 1}`"
+                    v-html="item"
+                  ></p>
+                </div>
+              </div>
+              <div class="img-box">
+                <img :src="database" class="database" alt="" />
+                <img :src="mobile" class="mobile" alt="" />
+                <img :src="notebook" class="notebook" alt="" />
+                <img :src="desktop" class="desktop" alt="" />
+                <img src="@/assets/feather-1.png" class="feather-1" alt="" />
+                <img src="@/assets/feather-2.png" class="feather-2" alt="" />
+                <img src="@/assets/feather-3.png" class="feather-3" alt="" />
+                <img src="@/assets/feather-4.png" class="feather-4" alt="" />
+                <img src="@/assets/feather-5.png" class="feather-5" alt="" />
+                <img src="@/assets/feather-6.png" class="feather-6" alt="" />
+                <img src="@/assets/feather-7.png" class="feather-7" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container box-2">
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
             <div class="img-box">
               <img :src="handAi" class="hand-ai" alt="" />
               <img :src="handMan" class="hand-man" alt="" />
@@ -453,31 +513,57 @@ onUnmounted(() => {
           <div class="contents"></div>
         </div>
       </div>
-      <div class="container box-2">
-        <div class="front"></div>
-        <div class="back">
-          <div class="contents"></div>
-        </div>
-      </div>
       <div class="container box-3">
-        <div class="front"></div>
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="back">
           <div class="contents"></div>
         </div>
       </div>
       <div class="container box-4">
-        <div class="front"></div>
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="back">
           <div class="contents"></div>
         </div>
       </div>
     </div>
     <div v-else class="no-contribution">
-      <div class="container box-one">
+      <div class="container box-1">
         <div class="front"></div>
         <div class="back"></div>
       </div>
-      <div class="container box-four">
+      <div class="container box-2">
         <div class="front"></div>
         <div class="back"></div>
       </div>
@@ -645,6 +731,7 @@ onUnmounted(() => {
 
 <style lang="scss">
 $active: #002fa7;
+$lang: v-bind('lang');
 $spacings: 62 40 32 24 16 12 10 8 6 4;
 $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
 .active {
@@ -1250,13 +1337,37 @@ p {
 }
 
 /* 开始编写CSS */
+.pc-zh {
+  @for $i from 1 through 4 {
+    .box-#{ $i} {
+      .pc-top {
+        .text {
+          background-image: url('@/assets/pc-bg-#{$i}.png');
+        }
+      }
+    }
+  }
+}
+.pc-en {
+  @for $i from 1 through 4 {
+    .box-#{ $i} {
+      .pc-top {
+        .text {
+          background-image: url('@/assets/pc-bg-#{$i}-en.png');
+        }
+      }
+    }
+  }
+}
 
 .pc-post {
   display: flex;
+  margin: 0 auto;
   justify-content: center;
   overflow: hidden;
   height: 100vh;
   padding: 50px;
+  max-width: 1920px;
   @media screen and (max-width: 1460px) {
     padding: 24px;
   }
@@ -1272,24 +1383,13 @@ p {
     width: 100%;
     height: 100%;
     background-size: 100% auto;
-    .main-text {
-      font-size: 12px;
-      line-height: 24px;
-      text-align: center;
-    }
-    .bottom-scan {
-      line-height: 24px;
-      font-size: 14px;
-      font-family: 'PangMenZhengDao';
-      .qr-box {
-        display: inline-block;
-        padding: 8px;
-        border: 1px solid rgba($color: #fff, $alpha: 0.7);
-        background-color: rgba(0, 47, 167, 0.7);
-        img {
-          width: 95px;
-        }
-      }
+    .pc-top {
+      max-height: 320px;
+      height: 100%;
+      background-position: 0 -50px;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-image: url('@/assets/pc-bg.png');
     }
     .img-box {
       img {
@@ -1338,6 +1438,116 @@ p {
       .hexagon-3 {
         width: 33px;
       }
+    }
+  }
+  .pg-2 {
+    position: relative;
+    display: flex;
+    padding: 90px 80px;
+    align-items: center;
+    flex-direction: column;
+    .pg-2-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 210px;
+      width: 100%;
+      text-align: center;
+      padding: 0 12px;
+      color: #000;
+      z-index: 10;
+      .active {
+        padding: 0 2px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #406ef7;
+      }
+      .user {
+        color: #002fa7;
+        font-size: 20px;
+        line-height: 24px;
+        font-family: PangMenZhengDao;
+      }
+      .main-text {
+        line-height: 32px;
+        font-size: 12px;
+      }
+    }
+    .img-box > img {
+      position: absolute;
+    }
+    .desktop {
+      left: 80px;
+      bottom: 100px;
+      width: 74px;
+      z-index: 1;
+      animation: slide-top1 2s infinite linear alternate;
+    }
+    .mobile {
+      bottom: 240px;
+      right: 12px;
+      width: 82px;
+      z-index: 1;
+      animation: slide-top1 3s infinite linear alternate;
+    }
+    .notebook {
+      top: 144px;
+      left: 12px;
+      width: 80px;
+      z-index: 1;
+      animation: slide-top1 5s infinite linear alternate;
+    }
+    .database {
+      top: 100px;
+      right: 15px;
+      width: 90px;
+      z-index: 1;
+      animation: slide-top1 4s infinite linear alternate;
+    }
+    .feather-1,
+    .feather-2,
+    .feather-3,
+    .feather-4,
+    .feather-5,
+    .feather-6,
+    .feather-7 {
+      opacity: 0;
+      z-index: 0;
+    }
+    .feather-1 {
+      left: 0;
+      top: 0;
+      width: 120px;
+    }
+    .feather-2 {
+      right: 0;
+      top: 0;
+      width: 126px;
+    }
+    .feather-3 {
+      right: 0;
+      top: 140px;
+      width: 103px;
+    }
+    .feather-4 {
+      right: 0;
+      bottom: 133px;
+      width: 103px;
+    }
+    .feather-5 {
+      right: 0;
+      bottom: 60px;
+      width: 145px;
+    }
+    .feather-6 {
+      left: 0;
+      bottom: 45px;
+      width: 193px;
+    }
+    .feather-7 {
+      left: 0;
+      bottom: 55px;
+      width: 138px;
     }
   }
   body {
@@ -1398,13 +1608,17 @@ p {
     transform: rotateY(180deg);
   }
 
-  // @for $i from 1 through 4 {
-  //   .box-#{ $i} {
-  //     .front {
-  //       background-image: url('@/assets/bg-#{$i}.png');
-  //     }
-  //   }
-  // }
+  .pc-top {
+    display: flex;
+    justify-content: center;
+    .text {
+      margin-top: 62px;
+      width: 106px;
+      height: 87px;
+      background-position: center center;
+      background-size: 106px 87px;
+    }
+  }
 
   .pc-post .euler-title2 {
     padding: 10px 0;
