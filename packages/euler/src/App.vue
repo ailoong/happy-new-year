@@ -31,9 +31,9 @@ const params = ref({
   user: '',
   year: '2022',
 });
-function getUserDataFun() {
-  getUserData().then((res) => {
-    if (res.data && res.data?.length) {
+async function getUserDataFun() {
+  await getUserData().then((res) => {
+    if (res.data) {
       params.value.user = res.data.user;
     }
   });
