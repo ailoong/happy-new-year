@@ -9,10 +9,10 @@ import Slide from '@better-scroll/slide';
 import { getPosterData, getUserData } from 'shared/api';
 
 import bannerBg from '@/assets/bg1.jpg';
+import QRcode_zh from '@/assets/QRcode.png';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
-getUserData();
 
 watch(
   () => window.location.href,
@@ -24,9 +24,17 @@ watch(
 
 const params = ref({
   community: 'openlookeng',
-  user: 'ailoooong',
+  user: '',
   year: '2022',
 });
+
+async function getUserDataFun() {
+  await getUserData().then((res) => {
+    if (res) {
+      params.value.user = res.user;
+    }
+  });
+}
 
 const wrapper = ref<HTMLElement | null>(null);
 
@@ -55,6 +63,7 @@ let slide: BScrollInstance;
 const currentPage = ref(0);
 
 onMounted(async () => {
+  await getUserDataFun();
   // 必须先确定是否为贡献者
   await getPosterDataFun();
   pcClick();
@@ -95,10 +104,17 @@ const communityData = {
   repos: 15,
   users: 151905,
   version: 4,
+  country: 49,
+  city: 279,
+  path: 'https://openlookeng.io',
+  gitee: 'https://gitee.com/openlookeng',
 };
 // 视频背景地址
 const videoPath =
   'https://obs-transfer.obs.cn-north-4.myhuaweicloud.com/openlookeng/obsi-openlookeng-summary/openlookeng-summary.mp4';
+
+//复数
+const pluralComputed = (num: number | string) => (Number(num) > 1 ? 's' : '');
 
 const initDom: any = computed(() => {
   return {
@@ -127,22 +143,32 @@ const initDom: any = computed(() => {
           }`,
           `${
             posterData.value.issue_num > 0
-              ? `<span class='active'>${posterData.value.issue_num}</span> 个 Issues`
+              ? `<span class='active'>${
+                  posterData.value.issue_num
+                }</span> 个 Issue${pluralComputed(posterData.value.issue_num)}`
               : ' '
           }`,
           `${
             posterData.value.pr_num > 0
-              ? `<span class='active'>${posterData.value.pr_num}</span> 个 PRs`
+              ? `<span class='active'>${
+                  posterData.value.pr_num
+                }</span> 个 PR${pluralComputed(posterData.value.pr_num)}`
               : ' '
           }`,
           `${
             posterData.value.comment_num > 0
-              ? `<span class='active'>${posterData.value.comment_num}</span> 条 Comments`
+              ? `<span class='active'>${
+                  posterData.value.comment_num
+                }</span> 条 Comment${pluralComputed(
+                  posterData.value.comment_num
+                )}`
               : ' '
           }`,
           `${
             posterData.value.sig_num > 0
-              ? `<span class='active'>${posterData.value.sig_num}</span> 个SIGs`
+              ? `<span class='active'>${
+                  posterData.value.sig_num
+                }</span> 个SIG${pluralComputed(posterData.value.sig_num)}`
               : ' '
           }`,
           `${
@@ -158,12 +184,18 @@ const initDom: any = computed(() => {
       page4: {
         text: [
           `今年，<br/>您评论了 ${
-            posterData.value.issue_num > 0
-              ? `<span class="active">${posterData.value.issue_num}</span> 个Issues和`
+            posterData.value.comment_issue_num > 0
+              ? `<span class="active">${
+                  posterData.value.comment_issue_num
+                }</span> 个Issue${pluralComputed(
+                  posterData.value.comment_issue_num
+                )}和`
               : ''
           } <br /> ${
-            posterData.value.pr_num > 0
-              ? `<span class="active">${posterData.value.pr_num}</span> 个PRs`
+            posterData.value.comment_pr_num > 0
+              ? `<span class="active">${
+                  posterData.value.comment_pr_num
+                }</span> 个PR${pluralComputed(posterData.value.comment_pr_num)}`
               : ''
           }`,
           '万丈高楼平地起，社区活跃达人就是你',
@@ -180,6 +212,36 @@ const initDom: any = computed(() => {
           `这一年，您在社区的贡献度超过了 <span class="active">${posterData.value.count_rank}</span> 的开发者`,
           `愿新的一年，我们并肩前行，`,
           `既能遇见新的热爱，也能初心重逢`,
+        ],
+      },
+      noContribution1: {
+        text: [
+          '感谢您关注openLooKeng，',
+          '2022的每个脚印，都是开启新岁征途的序章，',
+          '期待您加入我们，开启社区贡献新旅程。',
+          '在openLooKeng开源2年多的今天，',
+          '我们整理了一些数据，以便您更好地认识openLooKeng：',
+          `2022年，openLooKeng按照既定的节奏，迭代更新了 <span class="active">${communityData.version}</span> 个版本`,
+          '社区贡献者 <span class="active">3000+</span>，交流群活跃用户 <span class="active">1000+</span> ',
+          `累计收到 <span class="active">${communityData.prs}</span> PRs， <span class="active">${communityData.issues}</span> Issues， <span class="active">${communityData.comments}</span> Comments`,
+          `2022年，openLooKeng下载量突破 <span class="active">${
+            communityData.users
+          }</span> ，遍及全球 <span class="active">${
+            communityData.country + communityData.city
+          }</span> 个国家和地区。`,
+          '当前，社区汇集了 <span class="active">35+ </span> 家来自金融、政府、互联网、教育等不同行业的合作伙伴。',
+        ],
+      },
+      noContribution2: {
+        text: [
+          '新的一年，新的openLooKeng',
+          '我们期待您的加入',
+          '点Star、提Issue、交PR、发博客',
+          '一起携手前行，共话大数据引擎技术',
+          '共建开源大数据的繁荣生态',
+          '2023，元旦快乐',
+
+          'openLooKeng开源社区呈上',
         ],
       },
     },
@@ -212,31 +274,37 @@ const initDom: any = computed(() => {
           }`,
           `${
             posterData.value.issue_num > 0
-              ? `<span class='active'>${posterData.value.issue_num}</span> Issues`
+              ? `<span class='active'>${
+                  posterData.value.issue_num
+                }</span> Issue${pluralComputed(posterData.value.issue_num)}`
               : ' '
           }`,
           `${
             posterData.value.pr_num > 0
-              ? `<span class='active'>${posterData.value.pr_num}</span> PRs`
+              ? `<span class='active'>${
+                  posterData.value.pr_num
+                }</span> PR${pluralComputed(posterData.value.pr_num)}`
               : ' '
           }`,
           `${
             posterData.value.comment_num > 0
-              ? `<span class='active'>${posterData.value.comment_num}</span> Comments`
+              ? `<span class='active'>${
+                  posterData.value.comment_num
+                }</span> Comment${pluralComputed(posterData.value.comment_num)}`
               : ' '
           }`,
           `${
             posterData.value.sig_num > 0
-              ? `<span class='active'>${posterData.value.sig_num}</span> SIG${
-                  posterData.value?.sig_num !== '1' ? 's' : ''
-                }`
+              ? `<span class='active'>${
+                  posterData.value.sig_num
+                }</span> SIG${pluralComputed(posterData.value.sig_num)}`
               : ' '
           }`,
           `${
             posterData.value.star_num > 0
-              ? `<span class='active'>${posterData.value.star_num}</span> repo${
-                  posterData.value?.fork_num !== '1' ? 's' : ''
-                }`
+              ? `<span class='active'>${
+                  posterData.value.star_num
+                }</span> repo${pluralComputed(posterData.value.star_num)}`
               : ' '
           }`,
           `You have also worked alongside  <span class='active'>${communityData.contributors}</span> fellow community developers to build, govern, and share in the growth of openLooKeng,`,
@@ -247,12 +315,18 @@ const initDom: any = computed(() => {
       page4: {
         text: [
           `This year, <br/>you've commented on ${
-            posterData.value.issue_num > 0
-              ? `<span class="active">${posterData.value.issue_num}</span> Issues and `
+            posterData.value.comment_issue_num > 0
+              ? `<span class="active">${
+                  posterData.value.comment_issue_num
+                }</span> Issue${pluralComputed(
+                  posterData.value.comment_issue_num
+                )} and `
               : ''
           } <br /> ${
-            posterData.value.pr_num > 0
-              ? `<span class="active">${posterData.value.pr_num}</span> PRs`
+            posterData.value.comment_pr_num > 0
+              ? `<span class="active">${
+                  posterData.value.comment_pr_num
+                }</span> PR${pluralComputed(posterData.value.comment_pr_num)}`
               : ''
           }`,
           "From humble beginnings, you've become a top contributor in our active community",
@@ -267,6 +341,30 @@ const initDom: any = computed(() => {
           'Jan 1 to Dec 30',
           `This year, your contributions in the community surpassed <span class="active">${posterData.value.count_rank}</span> of developers`,
           `Here's hoping that you reach the pinnacle of your passion in 2023 Happy creative New Year!`,
+        ],
+      },
+      noContribution1: {
+        text: [
+          'Thanks to your support!',
+          'Time to embark on a journey to the year 2022 with openLooKeng!',
+          "As we look back on more than two years of open source development, we're excited to share some of our milestones with you. ",
+          `In 2022, openLooKeng released <span class="active">${communityData.version}</span> new versions, `,
+          'and our community of contributors has grown to over <span class="active">3000</span> with a lively group of <span class="active">1000</span> active users.',
+          `We've received a total of <span class="active">${communityData.prs}</span> PRs， <span class="active">${communityData.issues}</span> Issues, and <span class="active">${communityData.comments}</span> Comments`,
+          `Downloads of openLooKeng have surpassed <span class="active">${
+            communityData.users
+          }</span> and it is now used in <span class="active">${
+            communityData.country + communityData.city
+          }</span>  countries and regions around the world.`,
+          'Our community has also partnered with over <span class="active">35</span> organizations from various industries including finance, government, and education.',
+        ],
+      },
+      noContribution2: {
+        text: [
+          'As we look ahead to the new year, we invite you to join us on our journey to advance the technology of big data engines and build a thriving ecosystem together. ',
+          'Star our repository, submit issues and PRs, and share your insights through blogs. ',
+          "Let's make 2023 a year of collaboration and progress in the world of big data. ",
+          'Happy New Year from the openLooKeng open source community!',
         ],
       },
     },
@@ -380,9 +478,9 @@ function pcClick() {
     @click="pcClick"
   >
     <div v-if="isContributor" class="contribution none">
-      <div class="container box-1">
+      <div class="slide-page container box-1">
         <div class="front">
-          <div class="slide-page page3 current">
+          <div class="page3 current">
             <div class="pc-top">
               <div class="text"></div>
             </div>
@@ -397,7 +495,9 @@ function pcClick() {
           <div class="page2 contents current">
             <div class="card">
               <div class="card-content">
-                <h3 class="active">Dear {{ posterData.user_login }}</h3>
+                <h3 v-if="posterData.user_login" class="active">
+                  Dear {{ posterData.user_login }}
+                </h3>
                 <p
                   v-for="(sub, index) in initDom[lang].page2.text"
                   :key="index"
@@ -546,23 +646,81 @@ function pcClick() {
     <div v-else class="no-contribution">
       <div class="container box-1">
         <div class="front">
+          <div class="page3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+              <div class="text"></div>
+            </div>
+          </div>
           <div class="video-bg">
             <video muted autoplay loop playsinline="true" :poster="bannerBg">
               <source :src="videoPath" type="video/mp4" />
             </video>
           </div>
         </div>
-        <div class="back"></div>
+        <div class="back">
+          <div class="contents current page2">
+            <div class="page-cover">
+              <h3 v-if="posterData.user_login" class="active">
+                Dear {{ posterData.user_login }}
+              </h3>
+              <p
+                v-for="(sub, index) in initDom[lang].noContribution1.text"
+                :key="index"
+                class="txt"
+                v-html="sub"
+              ></p>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
       </div>
-      <div class="container box-2">
+      <div class="container box-3">
         <div class="front">
+          <div class="page3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+              <div class="text"></div>
+            </div>
+          </div>
           <div class="video-bg">
             <video muted autoplay loop playsinline="true" :poster="bannerBg">
               <source :src="videoPath" type="video/mp4" />
             </video>
           </div>
         </div>
-        <div class="back"></div>
+        <div class="back">
+          <div class="contents current page2">
+            <div class="page-cover">
+              <p
+                v-for="(sub, index) in initDom[lang].noContribution2.text"
+                :key="index"
+                class="txt"
+                v-html="sub"
+              ></p>
+              <img class="code-img" :src="QRcode_zh" />
+              <p class="txt">
+                <a :href="communityData.path" target="_blank">{{
+                  communityData.path
+                }}</a>
+              </p>
+              <p class="txt">
+                <a :href="communityData.gitee" target="_blank">{{
+                  communityData.gitee
+                }}</a>
+              </p>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -589,7 +747,9 @@ function pcClick() {
           <div class="page-flex page2">
             <div class="page2-content card">
               <div class="card-content">
-                <h3>Dear {{ posterData.user_login }}</h3>
+                <h3 v-if="posterData.user_login">
+                  Dear {{ posterData.user_login }}
+                </h3>
                 <p
                   v-for="(sub, index) in initDom[lang].page2.text"
                   :key="index"
@@ -665,15 +825,79 @@ function pcClick() {
 
             <div class="big fade-time-5">
               <p class="">{{ initDom[lang].page5.text[0] }}</p>
-              <img
-                class="code-img"
-                src="https://opengauss-website.test.osinfra.cn/assets/wechat.1a8221eb.png"
-              />
+              <img class="code-img" :src="QRcode_zh" />
               <p>{{ initDom[lang].page5.text[1] }}</p>
               <p style="font-size: 16px">{{ initDom[lang].page5.text[2] }}</p>
             </div>
 
             <img class="logo" src="@/assets/logo.svg" />
+          </div>
+        </div>
+      </div>
+      <div v-else class="slide-content no-contribution">
+        <div
+          class="slide-page page1"
+          :class="currentPage === 0 ? 'current' : ''"
+        >
+          <div class="page-flex page1">
+            <div class="page-cover">
+              <h3>{{ initDom[lang].page1.text[0] }}</h3>
+              <div class="go-start card" @click.stop="goStart">
+                <span class="card-content"
+                  ><span>{{ initDom[lang].page1.text[1] }}</span
+                  ><em class="arrow"></em
+                ></span>
+              </div>
+              <p class="page-text fade-time-1">
+                {{ initDom[lang].page1.text[2] }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="slide-page page2"
+          :class="currentPage === 1 ? 'current' : ''"
+        >
+          <div class="page-flex page2">
+            <div class="page-cover">
+              <p v-if="posterData.user_login" class="active">
+                Dear {{ posterData.user_login }}
+              </p>
+              <p
+                v-for="(sub, index) in initDom[lang].noContribution1.text"
+                :key="index"
+                :class="`txt fade-time-${index}`"
+                v-html="sub"
+              ></p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="slide-page page3"
+          :class="currentPage === 2 ? 'current' : ''"
+        >
+          <div class="page-flex page3">
+            <div class="page-cover">
+              <p
+                v-for="(sub, index) in initDom[lang].noContribution2.text"
+                :key="index"
+                :class="`txt fade-time-${index}`"
+                v-html="sub"
+              ></p>
+              <div class="hide fade-time-7" style="margin-top: 24px">
+                <img class="code-img" :src="QRcode_zh" />
+                <p class="txt">
+                  <a :href="communityData.path" target="_blank">{{
+                    communityData.path
+                  }}</a>
+                </p>
+                <p class="txt">
+                  <a :href="communityData.gitee" target="_blank">{{
+                    communityData.gitee
+                  }}</a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -746,6 +970,7 @@ function pcClick() {
   right: 0;
   bottom: 0;
   z-index: 1;
+  user-select: none;
   video {
     height: 100%;
     width: 100%;
@@ -758,8 +983,15 @@ function pcClick() {
     height: 100vh;
   }
 }
+a {
+  color: #fff;
+}
+.hide {
+  opacity: 0;
+}
 .code-img {
   margin: 12px 0;
+  height: 64px;
 }
 .en {
   .page1 .page-cover {
@@ -783,7 +1015,8 @@ function pcClick() {
   font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
   font-weight: normal;
   color: #ffffff;
-  line-height: 30px;
+  line-height: 20px;
+  margin-top: 12px;
 }
 .active {
   color: #feb32a;
@@ -818,59 +1051,8 @@ function pcClick() {
         }
       }
       .page1 {
-        height: 100%;
-        position: relative;
-
-        .page-cover {
-          h3 {
-            font-size: 32px;
-            font-family: 'Milky-Han-Term-CN-Heavy-Italic';
-            font-weight: 600;
-            color: #fff;
-            line-height: 40px;
-            padding: 0 60px;
-            font-style: italic;
-          }
-          .go-start {
-            margin: 32px 0;
-            font-size: 16px;
-            color: #feb32a;
-            display: inline-flex;
-            align-items: center;
-            width: auto;
-            opacity: 0;
-            font-family: 'PangMenZhengDao';
-            letter-spacing: 2px;
-            .card-content {
-              padding: 8px 12px;
-            }
-            .arrow {
-              width: 12px;
-              height: 14px;
-              display: inline-block;
-              background: url(@/assets/arrow.png) no-repeat center/cover;
-              margin-left: 6px;
-              animation: headShake 2s 1.7s ease-in-out infinite alternate;
-            }
-          }
-          .page-text {
-            font-size: 16px;
-            font-family: 'PangMenZhengDao';
-            color: #ffffff;
-            line-height: 22px;
-            letter-spacing: 2px;
-          }
-        }
-        .agreement {
-          font-size: 12px;
-          position: absolute;
-          bottom: 55px;
-          width: 100%;
-          text-align: center;
-          a {
-            color: #feb32a;
-            display: inline-block;
-          }
+        .go-start {
+          opacity: 0;
         }
       }
       .page4 {
@@ -888,6 +1070,61 @@ function pcClick() {
           opacity: 0;
         }
       }
+    }
+  }
+}
+.page1 {
+  height: 100%;
+  position: relative;
+  .page-cover {
+    h3 {
+      font-size: 32px;
+      font-family: 'Milky-Han-Term-CN-Heavy-Italic';
+      font-weight: 600;
+      color: #fff;
+      line-height: 40px;
+      padding: 0 60px;
+      font-style: italic;
+    }
+    .go-start {
+      margin: 32px 0;
+      font-size: 16px;
+      color: #feb32a;
+      display: inline-flex;
+      align-items: center;
+      width: auto;
+
+      font-family: 'PangMenZhengDao';
+      letter-spacing: 2px;
+      .card-content {
+        padding: 8px 12px;
+      }
+      .arrow {
+        width: 12px;
+        height: 14px;
+        display: inline-block;
+        background: url(@/assets/arrow.png) no-repeat center/cover;
+        margin-left: 6px;
+        animation: headShake 2s 1.7s ease-in-out infinite alternate;
+      }
+    }
+    .page-text {
+      font-size: 16px;
+      font-family: 'PangMenZhengDao';
+      color: #ffffff;
+      line-height: 22px;
+      letter-spacing: 2px;
+    }
+  }
+  .agreement {
+    font-size: 12px;
+    position: absolute;
+    bottom: 55px;
+    width: 100%;
+    text-align: center;
+    a {
+      color: #feb32a;
+      display: inline-block;
     }
   }
 }
@@ -973,6 +1210,9 @@ function pcClick() {
     .active {
       animation: slide-top 0.8s ease-in-out forwards;
     }
+  }
+  .hide {
+    animation: fade 0.8s ease-in-out forwards;
   }
   .page1 {
     .go-start {
@@ -1118,6 +1358,10 @@ function pcClick() {
       .pc-top {
         .text {
           background-image: url('@/assets/pc-bg-#{$i}.png');
+          & ~ .text {
+            background-image: url('@/assets/pc-bg-#{$i+1}.png');
+            margin-top: 48px;
+          }
         }
       }
     }
@@ -1129,21 +1373,30 @@ function pcClick() {
       .pc-top {
         .text {
           background-image: url('@/assets/pc-bg-#{$i}-en.png');
-          width: 122px;
-          height: 156px;
+          width: 61px;
+          height: 78px;
+          & ~ .text {
+            background-image: url('@/assets/pc-bg-#{$i+1}-en.png');
+            margin-top: 48px;
+            width: 61px;
+            height: 78px;
+          }
         }
       }
     }
   }
-  .box-2 .pc-top .text {
-    width: 130px;
-    height: 160px;
+  .box-2 .pc-top .text,
+  .no-contribution .box-1 .pc-top .text:last-child {
+    width: 65px;
+    height: 80px;
   }
   .txt {
-    line-height: 24px !important;
+    line-height: 20px !important;
+    margin-top: 8px;
   }
   .big {
     font-size: 16px !important;
+    line-height: 24px !important;
   }
   .title {
     font-size: 24px !important;
@@ -1180,6 +1433,7 @@ function pcClick() {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       background: url(@/assets/bg2.png) no-repeat center/cover;
     }
   }
