@@ -25,9 +25,10 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/query/': {
+      '/zh/query': {
         target: 'https://omapi.test.osinfra.cn/',
         changeOrigin: true,
+        rewrite: (path) => path.replace('/zh/query', '/query'),
       },
     },
   },

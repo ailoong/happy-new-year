@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted, computed } from 'vue';
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData } from 'shared/api';
+import { get } from 'http';
 
 const params = ref({
   community: 'opengauss',
@@ -17,7 +18,104 @@ const wrapper = ref<HTMLElement | null>(null);
 BScroll.use(Slide);
 const isContributor = ref(false);
 const posterData: any = ref({});
-
+function changeTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const y = EndTime.getFullYear();
+    const m = EndTime.getMonth() + 1;
+    const d = EndTime.getDate();
+    const all = `${y}年${m}月${d}日`;
+    return all;
+  }
+}
+function dayTime(time: string) {
+  if (time) {
+    const today = new Date().getTime();
+    const endTime = new Date(time).getTime();
+    return Math.floor((today - endTime) / 1000 / 24 / 60 / 60);
+  }
+}
+const posterContent = computed(() => {
+  return {
+    page3: {
+      text: [
+        {
+          value: `这一年，你与${posterData.value.user_login_with_most_contact}人建立了联系`,
+          key: posterData.value.user_login_with_most_contact,
+        },
+        {
+          value: `${posterData.value.user_login_with_most_contact}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
+          key: posterData.value.user_login_with_most_contact,
+        },
+      ],
+    },
+    page4: {
+      text: [
+        {
+          value: `贡献了${posterData.value.code_lines_add}行代码，`,
+          key: posterData.value.code_lines_add,
+        },
+        {
+          value: `提交了${posterData.value.pr_num}个PR，`,
+          key: posterData.value.pr_num,
+        },
+        {
+          value: `提出了${posterData.value.issue_num}个Issue，`,
+          key: posterData.value.issue_num,
+        },
+        {
+          value: `Star了${posterData.value.star_num}个代码仓库，`,
+          key: posterData.value.star_num,
+        },
+        {
+          value: `Fork${posterData.value.fork_num}个代码仓库，`,
+          key: posterData.value.fork_num,
+        },
+        {
+          value: `Watch了${posterData.value.watch_num}个代码仓库，`,
+          key: posterData.value.watch_num,
+        },
+        {
+          value: `你对某行代码的好奇与关注，`,
+          key: true,
+        },
+        {
+          value: `对某个问题的存疑亦或是认可，`,
+          key: true,
+        },
+        {
+          value: `都代表了「你」看待这个数字世界的独特视角。`,
+          key: true,
+        },
+      ],
+    },
+  };
+});
+function getPercentage(per: any) {
+  if (per) {
+    return 100 - Number(per?.replace('%', ''));
+  }
+}
+function getRank(per: any) {
+  const percentage = per;
+  let rank = 0;
+  if (percentage <= 25) {
+    rank = 0;
+  } else if (25 < percentage && percentage <= 50) {
+    rank = 1;
+  } else if (50 < percentage && percentage <= 75) {
+    rank = 2;
+  } else if (75 < percentage) {
+    rank = 3;
+  }
+  return rank;
+}
+const rankMap: any = ref([
+  '<span>「浑然天成的当代缪斯」</span>你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ ',
+  '<span>「浑然天成的当代缪斯」</span>你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ ',
+  '<span>「浑然天成的当代缪斯」</span>你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ ',
+  '<span>「萌新」</span>你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ ',
+]);
 async function getPosterDataFun() {
   await getPosterData(params.value).then((res) => {
     if (res.code === 200 && res.data.length) {
@@ -95,13 +193,19 @@ onUnmounted(() => {
           <p class="fade-time-1">HI~很高兴遇见你！</p>
           <p class="fade-time-2">你的故事要从这个数字说起……</p>
           <p class="fade-time-3">
-            {{ posterData?.first_time_of_enter?.split(' ')[0] }}
+            {{ dayTime(posterData?.first_time_of_enter) }}
           </p>
         </div>
         <div class="pg-2-main">
-          <p class="fade-time-4">那是XX年XX月XX日</p>
+          <p class="fade-time-4">
+            那是{{ changeTime(posterData?.first_time_of_enter) }}
+          </p>
           <p class="fade-time-5">我第一次遇见你</p>
-          <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
+          <p class="fade-time-6">
+            至今，我们已经走过了{{
+              dayTime(posterData?.first_time_of_enter)
+            }}个日夜
+          </p>
           <p class="fade-time-7">
             感谢相遇，{{ params.user }}这个名字我已经铭记
           </p>
@@ -110,66 +214,8 @@ onUnmounted(() => {
         </div>
       </div>
       <div
-        class="slide-page wrapper-m pg-3"
-        :class="currentPage === 2 ? 'current' : ''"
-      >
-        <div class="mask">
-          <p>这一年，你与XXX人建立了联系</p>
-          <p>XXX，一定很特别，你们沟通最多，相信一定是志同道合的伙伴</p>
-          <p>这一年，你参与了XXX次会议</p>
-          <p>XXXX因你的每一次参与而变得不一样</p>
-          <p>XX月XX日，你睡得很晚</p>
-          <p>整个世界都休息了，你和openGauss还在继续</p>
-          <p>黑夜给了你黑色的眼睛，感谢你用它分享智慧的光明</p>
-          <p class="bold margin-top-h4">这些值得铭记的瞬间</p>
-          <p class="bold">你一次次完成自我的深度探索</p>
-          <p class="bold">找到了更加契合的伙伴</p>
-        </div>
-      </div>
-      <div
-        class="slide-page wrapper-m pg-4"
-        :class="currentPage === 3 ? 'current' : ''"
-      >
-        <div class="mask">
-          <p class="bold">你在2022这一年的时光里</p>
-          <p class="margin-top-h4">贡献了XX行代码，</p>
-          <p>提交了XX个PR，</p>
-          <p>提出了XX个Issue，</p>
-          <p>Star了XX个代码仓库，</p>
-          <p>Fork了XX个代码仓库，</p>
-          <p>Watch了XX个代码仓库，</p>
-          <p>你对某行代码的好奇与关注，</p>
-          <p>对某个问题的存疑亦或是认可，</p>
-          <p>都代表了「你」看待这个数字世界的独特视角。</p>
-        </div>
-      </div>
-      <div
-        class="slide-page wrapper-m pg-5"
-        :class="currentPage === 4 ? 'current' : ''"
-      >
-        <p class="bold">其实关于你的点滴</p>
-        <p class="bold">「openGauss」 全都记得</p>
-        <p class="font-size-tip margin-top-h4">你的2022年标签</p>
-        <p class="active bold margin-top-h7">Level4</p>
-        <p class="rank">前25%</p>
-        <p>
-          「浑然天成的当代缪斯」你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！
-        </p>
-        <p class="margin-top-h4">
-          感谢2022年的相遇、陪伴、沟通、成长
-          2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
-          愿你元旦快乐。
-        </p>
-        <div class="logo-box margin-top-h4">
-          <img
-            src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-            alt=""
-          />
-        </div>
-      </div>
-      <div
         class="slide-page wrapper-m pg-6 contribution-last"
-        :class="currentPage === 5 ? 'current' : ''"
+        :class="currentPage === 2 ? 'current' : ''"
       >
         <div class="mask">
           <p>
@@ -186,15 +232,51 @@ onUnmounted(() => {
           <p>openGauss在国内<span class="active">14个</span>城市建立了用户组</p>
           <p>走进<span class="active">72所</span>高校</p>
           <p>并且举办了openGauss<span class="active">第1次</span>开发者大会</p>
-        </div>
-        <div class="mask margin-top-h4">
-          <p>这是我们一起度过的春夏秋冬</p>
-          <p>春季 你最专注于XXX</p>
-          <p>夏季 你最专注于XXX</p>
-          <p>秋季 你最专注于XXX</p>
-          <p>冬季 你最专注于XXX</p>
-          <p>感谢你在四季的时光里</p>
+          <p class="margin-top-h5">2022年</p>
+          <p>已经有越来越多的人走进 openGauss 的开源世界。</p>
           <p>与openGauss保持同频 分享热爱 留下宝藏</p>
+          <p v-for="item in posterContent.page3.text" :key="item.value">
+            <span v-if="item.key">{{ item.value }}</span>
+          </p>
+          <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
+        </div>
+        <!-- <div class="mask margin-top-h4"></div> -->
+      </div>
+      <div
+        class="slide-page wrapper-m pg-4"
+        :class="currentPage === 3 ? 'current' : ''"
+      >
+        <div class="mask">
+          <p class="bold">你在2022这一年的时光里</p>
+          <p
+            v-for="(item, index) in posterContent.page4.text"
+            :key="item.value"
+            :class="[index === 0 ? 'margin-top-h4' : '', `fade-time-${index}`]"
+          >
+            <span v-if="item.key && item.key !== '0'">{{ item.value }}</span>
+          </p>
+        </div>
+      </div>
+      <div
+        class="slide-page wrapper-m pg-5"
+        :class="currentPage === 4 ? 'current' : ''"
+      >
+        <p class="bold title">其实关于你的点滴</p>
+        <p class="bold title">「openGauss」 全都记得</p>
+        <p class="font-size-tip margin-top-h4">你的2022年标签</p>
+        <!-- <p class="active bold margin-top-h7">Level4</p> -->
+        <p class="rank">前{{ getPercentage(posterData.count_rank) }}%</p>
+        <p v-html="rankMap[getRank(getPercentage(posterData.count_rank))]"></p>
+        <p class="margin-top-h4">
+          感谢2022年的相遇、陪伴、沟通、成长
+          2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
+          愿你元旦快乐。
+        </p>
+        <div class="logo-box margin-top-h4">
+          <img
+            src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
+            alt=""
+          />
         </div>
       </div>
     </div>
@@ -473,6 +555,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      .title {
+        margin-top: 12px;
+      }
       p {
         line-height: 20px;
         font-size: 13px;

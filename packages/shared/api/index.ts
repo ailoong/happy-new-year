@@ -7,11 +7,20 @@ import type { AxiosResponse } from '../axios';
  * @return {Array}
  */
 export function getPosterData(params: any) {
-  const url = '/query/newYear/report';
+  const url = '/zh/query/newYear/report';
   return request
     .get(url, {
       params,
     })
+    .then((res: AxiosResponse) => res.data)
+    .catch((e: any) => {
+      throw new Error(e);
+    });
+}
+export function getUserData() {
+  const url = '/zh/oauth2/userinfo';
+  return request
+    .get(url)
     .then((res: AxiosResponse) => res.data)
     .catch((e: any) => {
       throw new Error(e);
