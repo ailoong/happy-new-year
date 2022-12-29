@@ -21,3 +21,15 @@ export function getUserData() {
       throw new Error(e);
     });
 }
+
+export function getMonthcount(params: any) {
+  const url = '/zh/query/newYear/monthcount';
+  return request
+    .get(url, {
+      params,
+    })
+    .then((res: AxiosResponse) => res.data)
+    .catch((e: any) => {
+      throw new Error(e);
+    });
+}
