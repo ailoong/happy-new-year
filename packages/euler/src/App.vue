@@ -33,8 +33,6 @@ const params = ref({
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
-    console.log(res);
-
     if (res) {
       params.value.user = res.user;
     }
@@ -1442,8 +1440,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
     }
   }
 }
-.pg-7-logo {
-}
+
 p {
   opacity: 0;
 }
