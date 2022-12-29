@@ -465,14 +465,14 @@ onUnmounted(() => {
                   Dear <br />
                   {{ params.user }}
                 </p>
-                <div class="main-text margin-top-h4">
-                  <p
-                    v-for="(item, index) in pageCentent[lang].page2.text"
-                    :key="item"
-                    :class="`fade-time-${index + 1}`"
-                    v-html="item"
-                  ></p>
-                </div>
+              </div>
+              <div class="main-text margin-top-h4">
+                <p
+                  v-for="(item, index) in pageCentent[lang].page2.text"
+                  :key="item"
+                  :class="`fade-time-${index + 1}`"
+                  v-html="item"
+                ></p>
               </div>
               <div class="img-box">
                 <img :src="database" class="database" alt="" />
@@ -1446,6 +1446,7 @@ p {
     padding: 90px 80px;
     align-items: center;
     flex-direction: column;
+    z-index: 5;
     .pg-2-main {
       display: flex;
       flex-direction: column;
@@ -1455,7 +1456,10 @@ p {
       text-align: center;
       padding: 0 12px;
       color: #000;
-      z-index: 10;
+      p {
+        position: relative;
+        z-index: 10;
+      }
       .active {
         padding: 0 2px;
         font-size: 16px;
@@ -1629,8 +1633,9 @@ p {
   .contents {
     width: 100%;
     height: 100%;
-    background: rgb(0, 47, 156);
+    background-color: rgb(0, 47, 156);
     transform: translateZ(60px);
+    background-size: 100% 100%;
   }
   .contents .page {
     position: relative;
