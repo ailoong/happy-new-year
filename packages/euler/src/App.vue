@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import useWindowResize from 'shared/hooks/useWindowResize';
 
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
-import { getPosterData } from 'shared/api';
+import { getPosterData, getUserData } from 'shared/api';
 
 import database from '@/assets/database.png';
 import mobile from '@/assets/mobile .png';
@@ -18,7 +18,8 @@ import handMan from '@/assets/hand-man.png';
 import hexagon from '@/assets/hexagon.png';
 
 const lang = ref('zh');
-
+const screenWidth = useWindowResize();
+getUserData();
 watch(
   () => window.location.href,
   (val) => {
@@ -383,34 +384,125 @@ const rankMap: any = ref({
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getPosterDataFun();
+  pcClick();
+  if (wrapper.value) {
+    slide = new BScroll(wrapper.value as HTMLElement, {
+      scrollX: false,
+      scrollY: true,
+      momentum: false,
+      bounce: false,
+      click: true,
+      pullUpLoad: true,
 
-  slide = new BScroll(wrapper.value as HTMLElement, {
-    scrollX: false,
-    scrollY: true,
-    momentum: false,
-    bounce: false,
-    click: true,
-    pullUpLoad: true,
-
-    slide: {
-      autoplay: false,
-      loop: false,
-      threshold: 100,
-    },
-    stopPropagation: true,
-  });
-  slide.on('slidePageChanged', () => {
-    currentPage.value = slide.getCurrentPage().pageY;
-  });
+      slide: {
+        autoplay: false,
+        loop: false,
+        threshold: 100,
+      },
+      stopPropagation: true,
+    });
+    slide.on('slidePageChanged', () => {
+      currentPage.value = slide.getCurrentPage().pageY;
+    });
+  }
 });
-
+function pcClick() {
+  const front: any = document.querySelectorAll('.front');
+  const back: any = document.querySelectorAll('.back');
+  for (let i = 0; i < front.length; i++) {
+    front[i].addEventListener('click', function () {
+      for (let j = 0; j < front.length; j++) {
+        front[j].style = 'transform:rotateY(-180deg)';
+        back[j].style = 'transform:rotateY(0deg)';
+      }
+    });
+    back[i].addEventListener('click', function () {
+      for (let z = 0; z < back.length; z++) {
+        back[z].style = 'transform:rotateY(180deg)';
+        front[z].style = 'transform:rotateY(0deg)';
+      }
+    });
+  }
+}
 onUnmounted(() => {
-  slide.destroy();
+  if (slide) {
+    slide.destroy();
+  }
 });
 </script>
 
 <template>
-  <div ref="wrapper" class="slide-wrapper">
+  <div v-if="screenWidth > 1200" class="pc-post" @click="pcClick">
+    <div v-if="isContributor" class="contribution none">
+      <div class="container box-1">
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pg-3-main">
+              <div class="main-text">
+                <p v-for="item in pageCentent[lang].page3.text" :key="item">
+                  {{ item }}
+                </p>
+              </div>
+              <div class="bottom-scan margin-top-h4 bold">
+                <p
+                  v-for="item in pageCentent[lang].page3.bottomText"
+                  :key="item"
+                >
+                  {{ item }}
+                </p>
+                <div class="qr-box margin-top-h5">
+                  <img :src="pageCentent[lang].page3.img" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="back">
+          <div class="contents"></div>
+        </div>
+      </div>
+      <div class="container box-2">
+        <div class="front"></div>
+        <div class="back">
+          <div class="contents"></div>
+        </div>
+      </div>
+      <div class="container box-3">
+        <div class="front"></div>
+        <div class="back">
+          <div class="contents"></div>
+        </div>
+      </div>
+      <div class="container box-4">
+        <div class="front"></div>
+        <div class="back">
+          <div class="contents"></div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="no-contribution">
+      <div class="container box-one">
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+      <div class="container box-four">
+        <div class="front"></div>
+        <div class="back"></div>
+      </div>
+    </div>
+  </div>
+
+  <div v-else ref="wrapper" class="slide-wrapper">
     <div v-if="isContributor" class="slide-content contribution">
       <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
         <div class="pg1-top margin-top-h1">
@@ -1172,6 +1264,181 @@ p {
   100% {
     opacity: 1;
     transform: translateX(0px);
+  }
+}
+
+/* 开始编写CSS */
+
+.pc-post {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  height: 100vh;
+  padding: 50px;
+  @media screen and (max-width: 1460px) {
+    padding: 24px;
+  }
+  .contribution,
+  .no-contribution {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pg-3 {
+    position: relative;
+    padding: 40px 12px 0;
+    background-size: 100% auto;
+    .main-text {
+      font-size: 12px;
+      line-height: 24px;
+      text-align: center;
+    }
+    .bottom-scan {
+      line-height: 24px;
+      font-size: 14px;
+      font-family: 'PangMenZhengDao';
+      .qr-box {
+        display: inline-block;
+        padding: 8px;
+        border: 1px solid rgba($color: #fff, $alpha: 0.7);
+        background-color: rgba(0, 47, 167, 0.7);
+        img {
+          width: 95px;
+        }
+      }
+    }
+    .img-box {
+      img {
+        bottom: 0;
+        position: absolute;
+      }
+      .hand-ai {
+        opacity: 0;
+        right: 0;
+        width: calc(50% - 3px);
+        z-index: -1;
+      }
+      .hand-man {
+        opacity: 0;
+        display: inline-block;
+        left: 0;
+        width: calc(50% - 3px);
+      }
+      .hexagon-box {
+        position: absolute;
+        height: 188px;
+        left: 50%;
+        bottom: 50px;
+        transform: translateX(-50%);
+        width: 163px;
+        z-index: -1;
+        > img {
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+        .glow {
+          transform: translate(-50%, -50%) scale(0);
+        }
+      }
+      .hexagon {
+        left: 50%;
+        bottom: 50px;
+        transform: translateX(-50%);
+        width: 163px;
+        z-index: -1;
+      }
+      .hexagon-2 {
+        width: 80px;
+      }
+      .hexagon-3 {
+        width: 33px;
+      }
+    }
+  }
+  body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background-color: white;
+  }
+
+  .container {
+    position: relative;
+    width: 330px;
+    height: 750px;
+    overflow: hidden;
+  }
+  .no-contribution {
+    justify-content: space-around;
+  }
+  .front,
+  .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition: transform 0.7s ease-in-out;
+  }
+  .front {
+    background-color: rgb(0, 47, 156);
+    z-index: 10;
+    background-position: -6px -2px;
+    background-repeat: no-repeat;
+  }
+
+  .no-contribution .qr-code {
+    padding-top: 50px;
+  }
+  .noContribution .qr-code img {
+    border: 1px solid black;
+  }
+  .no-contribution .qr-code img {
+    border: 1px solid black;
+  }
+  .no-contribution .qr-code p {
+    padding-top: 20px;
+  }
+  .back {
+    transform: rotateY(180deg);
+  }
+
+  // @for $i from 1 through 4 {
+  //   .box-#{ $i} {
+  //     .front {
+  //       background-image: url('@/assets/bg-#{$i}.png');
+  //     }
+  //   }
+  // }
+
+  .pc-post .euler-title2 {
+    padding: 10px 0;
+  }
+  .pc-post .euler-title3 {
+    padding: 0 0 10px;
+  }
+  .contents {
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 47, 156);
+    transform: translateZ(60px);
+  }
+  .contents .page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 }
 </style>
