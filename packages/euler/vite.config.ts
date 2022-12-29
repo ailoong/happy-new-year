@@ -5,7 +5,7 @@ import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'development' ? './' : '/zh/',
+  base: process.env.NODE_ENV === 'development' ? './' : '/',
   build: {
     outDir: '../../dist/euler',
   },
@@ -25,10 +25,9 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/zh/query': {
+      '/query': {
         target: 'https://omapi.test.osinfra.cn/',
         changeOrigin: true,
-        rewrite: (path) => path.replace('/zh/query', '/query'),
       },
     },
   },
