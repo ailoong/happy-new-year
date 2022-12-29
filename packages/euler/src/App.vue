@@ -460,13 +460,17 @@ onUnmounted(() => {
         <div class="back">
           <div class="pg-2 contents current">
             <div class="pg-2-main">
-              <div class="user">
+              <p class="blod active celebrat">
+                Celebrating 3 years of openEuler
+              </p>
+
+              <div class="user margin-top-h6">
                 <p class="blod active user">
                   Dear <br />
                   {{ params.user }}
                 </p>
               </div>
-              <div class="main-text margin-top-h4">
+              <div class="main-text margin-top-h7">
                 <p
                   v-for="(item, index) in pageCentent[lang].page2.text"
                   :key="item"
@@ -510,7 +514,36 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="back">
-          <div class="contents"></div>
+          <div class="contents pg-3 current">
+            <div class="pg-3-main">
+              <div class="main-text">
+                <p v-for="item in pageCentent[lang].page3.text" :key="item">
+                  {{ item }}
+                </p>
+              </div>
+              <div class="bottom-scan margin-top-h4">
+                <p
+                  v-for="item in pageCentent[lang].page3.bottomText"
+                  :key="item"
+                >
+                  {{ item }}
+                </p>
+                <div class="qr-box margin-top-h5">
+                  <img :src="pageCentent[lang].page3.img" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="container box-3">
@@ -1382,7 +1415,7 @@ p {
   .pg-3 {
     width: 100%;
     height: 100%;
-    background-size: 100% auto;
+    background-size: 100% 460px !important;
     .pc-top {
       max-height: 320px;
       height: 100%;
@@ -1390,6 +1423,34 @@ p {
       background-repeat: no-repeat;
       background-size: 100% 100%;
       background-image: url('@/assets/pc-bg.png');
+    }
+    .pg-3-main {
+      padding: 40px 54px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .main-text {
+      font-size: 12px;
+      line-height: 24px;
+      text-align: center;
+    }
+    .bottom-scan {
+      line-height: 24px;
+      font-size: 14px;
+      font-family: 'PangMenZhengDao';
+      .qr-box {
+        display: inline-block;
+        padding: 8px;
+        border: 1px solid rgba($color: #fff, $alpha: 0.7);
+        background-color: rgba(0, 47, 167, 0.7);
+        img {
+          width: 95px;
+        }
+      }
     }
     .img-box {
       img {
@@ -1443,7 +1504,7 @@ p {
   .pg-2 {
     position: relative;
     display: flex;
-    padding: 90px 80px;
+    padding: 80px 80px;
     align-items: center;
     flex-direction: column;
     z-index: 5;
@@ -1472,6 +1533,11 @@ p {
         line-height: 24px;
         font-family: PangMenZhengDao;
       }
+      .celebrat {
+        color: #000;
+        font-size: 20px;
+        font-family: Milky-Han-Term-CN-Heavy-Italic, Milky-Han-Term-CN-Heavy;
+      }
       .main-text {
         line-height: 32px;
         font-size: 12px;
@@ -1481,7 +1547,7 @@ p {
       position: absolute;
     }
     .desktop {
-      left: 80px;
+      left: 40px;
       bottom: 100px;
       width: 74px;
       z-index: 1;
