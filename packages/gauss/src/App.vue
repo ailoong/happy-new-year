@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'liyang0608',
+  user: 'haml',
   year: '2022',
 });
 
@@ -41,10 +41,10 @@ const posterContent = computed(() => {
   return {
     page3: {
       text: [
-        {
-          value: `这一年，你与${posterData.value.user_login_with_most_contact}人建立了联系`,
-          key: posterData.value.user_login_with_most_contact,
-        },
+        // {
+        //   value: `这一年，你与${posterData.value.user_login_with_most_contact}人建立了联系`,
+        //   key: posterData.value.user_login_with_most_contact,
+        // },
         {
           value: `${posterData.value.user_login_with_most_contact}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
           key: posterData.value.user_login_with_most_contact,
@@ -95,7 +95,7 @@ const posterContent = computed(() => {
 });
 function getPercentage(per: any) {
   if (per) {
-    return 100 - Number(per?.replace('%', ''));
+    return Number(per?.replace('%', ''));
   }
 }
 function getRank(per: any) {
@@ -119,14 +119,21 @@ const rankMap: any = ref([
   '<span>「openGauss的萌新好友」</span>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇，请日后多多关照openGauss啦。 ',
 ]);
 async function getPosterDataFun() {
-  await getPosterData(params.value).then((res) => {
-    if (res.code === 200 && res.data.length) {
-      isContributor.value = true;
-      posterData.value = res.data[0];
-    } else {
+  await getPosterData(params.value)
+    .then((res) => {
+      if (res?.code === 200 && res.data.length) {
+        isContributor.value = true;
+        posterData.value = res.data[0];
+        posterData.value.code_lines_add =
+          Number(posterData.value.code_lines_add) +
+          Number(posterData.value.code_lines_delete);
+      } else {
+        isContributor.value = false;
+      }
+    })
+    .catch(() => {
       isContributor.value = false;
-    }
-  });
+    });
 }
 
 let slide: BScrollInstance;
@@ -166,7 +173,9 @@ onMounted(async () => {
 });
 
 function goStart() {
-  slide.scrollToElement('.pg-2', 500, 0, 0);
+  const nextPage = isContributor.value ? '.pg-2' : '.pg-3';
+
+  slide.scrollToElement(nextPage, 500, 0, 0);
 }
 
 onMounted(async () => {
@@ -225,7 +234,7 @@ onUnmounted(() => {
     <div v-if="isContributor" class="contribution none">
       <div class="container box-1">
         <div class="front"></div>
-        <div class="back pg-2 current">
+        <div class="back pg-2 wrapper-l current">
           <div class="pg-2-top">
             <p class="fade-time-1">HI~很高兴遇见你！</p>
             <p class="fade-time-2">你的故事要从这个数字说起……</p>
@@ -255,7 +264,7 @@ onUnmounted(() => {
       </div>
       <div class="container box-2">
         <div class="front"></div>
-        <div class="back current pg-6">
+        <div class="back current wrapper-m pg-6">
           <div class="mask">
             <p>
               因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
@@ -278,7 +287,11 @@ onUnmounted(() => {
             <p class="margin-top-h5">2022年</p>
             <p>已经有越来越多的人走进 openGauss 的开源世界。</p>
             <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-            <p v-for="item in posterContent.page3.text" :key="item.value">
+            <p
+              v-for="item in posterContent.page3.text"
+              :class="`fade-time-`"
+              :key="item.value"
+            >
               <span v-if="item.key">{{ item.value }}</span>
             </p>
             <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
@@ -287,7 +300,7 @@ onUnmounted(() => {
       </div>
       <div class="container box-3">
         <div class="front"></div>
-        <div class="back pg-4 current">
+        <div class="back pg-4 wrapper-m current">
           <div class="mask">
             <p class="bold">你在2022这一年的时光里</p>
             <p
@@ -305,7 +318,7 @@ onUnmounted(() => {
       </div>
       <div class="container box-4">
         <div class="front"></div>
-        <div class="back current pg-5">
+        <div class="back current wrapper-m pg-5">
           <p class="bold title">其实关于你的点滴</p>
           <p class="bold title">「openGauss」 全都记得</p>
           <p class="font-size-tip margin-top-h4">你的2022年标签</p>
@@ -330,11 +343,91 @@ onUnmounted(() => {
     <div v-else class="no-contribution">
       <div class="container box-1">
         <div class="front"></div>
-        <div class="back pg-2"></div>
+        <div class="back wrapper-l current pg-1">
+          <div class="pg1-top">
+            <p class="title">2022年度贡献报告</p>
+            <p>你的点滴 【openGauss】全都记得......</p>
+          </div>
+          <div class="pg1-buttom">
+            <p class="fade-time-1">又是一年</p>
+            <p class="fade-time-2">我们穿过时间的缝隙</p>
+            <p class="fade-time-3">定格最特别的你</p>
+            <div class="go-start" @click.stop="goStart">
+              <span>生成</span> <span>报告</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="container box-2">
         <div class="front"></div>
-        <div class="back"></div>
+        <div class="back pg-3 wrapper-m current">
+          <div class="mask pg-3-mask">
+            <div class="pg-3-main">
+              <div class="paragraph-1">
+                <p class="fade-time-1">Hi，很高兴认识你</p>
+                <p class="fade-time-2">欢迎来到openGauss 星球</p>
+                <p class="fade-time-3">有些遗憾，在这之前我们错过了彼此，</p>
+                <p class="fade-time-4">希望我们的故事可以从此刻开始……</p>
+                <p class="fade-time-5">首先请让我为你介绍一下我自己</p>
+              </div>
+              <div class="paragraph-2 margin-top-h5">
+                <p class="fade-time-6">自2020年6月30日开源以来</p>
+                <p class="fade-time-7">
+                  这里已经有超过<span class="active">10万+</span> 用户
+                </p>
+                <p class="fade-time-8">
+                  超过<span class="active">4000+</span>开发者并肩同行
+                </p>
+                <p class="fade-time-9">
+                  下载量遍及全球<span class="active">96个</span>国家、<span
+                    class="active"
+                    >765个</span
+                  >城市
+                </p>
+                <p class="fade-time-10">
+                  openGauss星球收到了<span class="active">8K+</span>个PR，
+                </p>
+                <p class="fade-time-11">
+                  <span class="active">8K+</span>个Issue，建立了<span
+                    class="active"
+                    >24个SIG</span
+                  >
+                </p>
+                <p class="fade-time-12">
+                  2022年，openGauss如期发布<span class="active">3个</span>版本
+                </p>
+                <p class="fade-time-13">
+                  吸引了超过<span class="active">200家</span>企业加入社区
+                </p>
+                <p class="fade-time-14">
+                  至今在国内<span class="active">14个</span>城市建立了用户组
+                </p>
+                <p class="fade-time-15">
+                  走进<span class="active">72所</span>高校
+                </p>
+                <p class="fade-time-16">
+                  并且举办了 openGauss
+                  <span class="active">第1次</span>开发者大会
+                </p>
+              </div>
+              <div class="paragraph-3 margin-top-h5">
+                <p class="fade-time-17">我们坚信我们在做有趣且正确的事</p>
+                <p class="fade-time-18">雾霾散去，奔赴光明</p>
+                <p class="fade-time-19">希望未来能够有你一起同行</p>
+                <p class="fade-time-20">元旦快乐。</p>
+              </div>
+            </div>
+            <div class="pg-3-bottom fade-time-21">
+              <div class="pg-3-bottom-left">openGauss 星球</div>
+              <div class="pg-3-bottom-right">
+                <img
+                  src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -387,31 +480,50 @@ onUnmounted(() => {
         </div>
       </div>
       <div
-        class="slide-page wrapper-m pg-6 contribution-last"
+        class="slide-page wrapper-m pg-6"
         :class="currentPage === 2 ? 'current' : ''"
       >
         <div class="mask">
-          <p>
+          <p class="fade-time-1">
             因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
           </p>
-          <p>openGauss如期在2022年发布<span class="active">3个</span>版本</p>
-          <p>
+          <p class="fade-time-2">
+            openGauss如期在2022年发布<span class="active">3个</span>版本
+          </p>
+          <p class="fade-time-3">
             你们的成果被<span class="active">96个</span>国家、<span
               class="active"
               >765个</span
             >城市下载应用
           </p>
-          <p>吸引了超过<span class="active">200家</span>企业加入社区</p>
-          <p>openGauss在国内<span class="active">14个</span>城市建立了用户组</p>
-          <p>走进<span class="active">72所</span>高校</p>
-          <p>并且举办了openGauss<span class="active">第1次</span>开发者大会</p>
-          <p class="margin-top-h5">2022年</p>
-          <p>已经有越来越多的人走进 openGauss 的开源世界。</p>
-          <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-          <p v-for="item in posterContent.page3.text" :key="item.value">
+          <p class="fade-time-4">
+            吸引了超过<span class="active">200家</span>企业加入社区
+          </p>
+          <p class="fade-time-5">
+            openGauss在国内<span class="active">14个</span>城市建立了用户组
+          </p>
+          <p class="fade-time-6">走进<span class="active">72所</span>高校</p>
+          <p class="fade-time-7">
+            并且举办了openGauss<span class="active">第1次</span>开发者大会
+          </p>
+          <p class="margin-top-h5 fade-time-8">2022年</p>
+          <p class="fade-time-9">
+            已经有越来越多的人走进 openGauss 的开源世界。
+          </p>
+          <p class="fade-time-10">与openGauss保持同频 分享热爱 留下宝藏</p>
+          <p
+            v-for="(item, index) in posterContent.page3.text"
+            :class="`fade-time-${index + 1 + 10}`"
+            :key="item.value"
+          >
             <span v-if="item.key">{{ item.value }}</span>
           </p>
-          <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
+          <p
+            class="bold fade-time-10"
+            :class="`fade-time-${posterContent.page3.text.length + 11}`"
+          >
+            你一次次完成自我的深度探索，也找到了契合的同行者
+          </p>
         </div>
       </div>
       <div
@@ -567,6 +679,7 @@ onUnmounted(() => {
 $active: #fdfd19;
 $spacings: 62 40 32 24 16 12 10 8 6 4;
 .active {
+  display: inline-block;
   opacity: 0;
   color: $active;
 }
@@ -597,6 +710,12 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   background: rgba(108, 11, 190, 0.6);
   border: 1px solid #471d9b;
 }
+.wrapper-l {
+  padding: 40px;
+}
+.wrapper-m {
+  padding: 32px 24px;
+}
 .slide-wrapper {
   width: 100vw;
   height: 100vh;
@@ -615,12 +734,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       overflow: hidden;
       background-size: cover;
     }
-    .wrapper-l {
-      padding: 40px;
-    }
-    .wrapper-m {
-      padding: 32px 24px;
-    }
+
     @for $i from 1 through 6 {
       .pg-#{ $i} {
         background-image: url('@/assets/bg#{$i}.png');
@@ -867,7 +981,7 @@ p {
 @keyframes slide-top {
   0% {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(10px);
   }
   100% {
     opacity: 1;
@@ -885,16 +999,18 @@ p {
   .no-contribution {
     @for $i from 1 through 2 {
       .box-#{ $i} {
-        .pc-top {
-          .text {
-            width: 180px;
-            background-size: 180px auto;
-            background-repeat: no-repeat;
-            background-image: url('@/assets/pc-bg-no-#{$i}.jpg');
-          }
+        .front {
+          background-image: url('@/assets/pc-bg-no-#{$i}.jpg');
         }
       }
     }
+  }
+}
+.logo-box {
+  padding: 5px;
+  width: 105px;
+  img {
+    width: 100%;
   }
 }
 .pc-post {
@@ -905,11 +1021,62 @@ p {
   height: 100vh;
   padding: 50px;
   max-width: 1920px;
+
   @media screen and (max-width: 1460px) {
     padding: 24px;
   }
   .box-1 {
-    background-image: url('@/assets/bg2.png');
+    .back {
+      background-image: url('@/assets/bg2.png');
+    }
+  }
+  .box-2 {
+    .back {
+      background-image: url('@/assets/bg6.png');
+    }
+  }
+  .box-3 {
+    .back {
+      background-image: url('@/assets/bg4.png');
+    }
+  }
+  .box-4 {
+    .back {
+      background-image: url('@/assets/bg5.png');
+    }
+  }
+  .no-contribution {
+    .box-1 {
+      .back {
+        justify-content: space-between;
+        background-image: url('@/assets/bg1.png');
+        .go-start {
+          opacity: 0;
+        }
+      }
+    }
+    .box-2 {
+      .pg-3-mask {
+        margin-top: 0;
+        .pg-3-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 19px;
+          opacity: 0;
+          p {
+            opacity: 1;
+          }
+
+          &-right {
+            width: 82px;
+            img {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
   }
   .contribution,
   .no-contribution {
@@ -1019,7 +1186,8 @@ p {
   .pg-5 {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: center !important;
     .title {
       margin-top: 12px;
     }
@@ -1056,7 +1224,7 @@ p {
       font-size: 15px;
     }
     .mask:first-child {
-      margin-top: 76px;
+      // margin-top: 76px;
     }
   }
 
@@ -1084,7 +1252,7 @@ p {
     position: relative;
     max-width: 360px;
     width: 100%;
-    max-height: 640px;
+    max-height: 780px;
     height: 100%;
     overflow: hidden;
   }
@@ -1100,7 +1268,6 @@ p {
     background-position: center;
     display: flex;
     justify-content: center;
-    align-items: center;
     transform-style: preserve-3d;
     backface-visibility: hidden;
     transition: transform 0.7s ease-in-out;
@@ -1123,10 +1290,13 @@ p {
     padding-top: 20px;
   }
   .back {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #fff;
     background-image: url('@/assets/bg1.png');
     transform: rotateY(180deg);
   }
-
   .pc-top {
     display: flex;
     justify-content: center;

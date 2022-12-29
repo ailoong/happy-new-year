@@ -46,17 +46,21 @@ const posterData: any = ref({
 const codeLine = ref(0);
 
 async function getPosterDataFun() {
-  await getPosterData(params.value).then((res) => {
-    if (res.code === 200 && res.data.length) {
-      isContributor.value = true;
-      posterData.value = res.data[0];
-      codeLine.value =
-        Number(posterData.value.code_lines_add) +
-        Number(posterData.value.code_lines_delete);
-    } else {
+  await getPosterData(params.value)
+    .then((res) => {
+      if (res.code === 200 && res.data.length) {
+        isContributor.value = true;
+        posterData.value = res.data[0];
+        codeLine.value =
+          Number(posterData.value.code_lines_add) +
+          Number(posterData.value.code_lines_delete);
+      } else {
+        isContributor.value = false;
+      }
+    })
+    .catch(() => {
       isContributor.value = false;
-    }
-  });
+    });
 }
 
 let slide: BScrollInstance;

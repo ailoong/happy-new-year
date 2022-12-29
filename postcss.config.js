@@ -3,7 +3,7 @@ module.exports = {
     'postcss-pxtorem': {
       rootValue: 36, // 设计稿宽度的1/10
       propList: ['*'],
-      selectorBlackList: ['pc-post'],
+      selectorBlackList: ['pc-post', 'logo-box'],
     },
   },
 };
