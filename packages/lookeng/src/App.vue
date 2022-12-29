@@ -1,41 +1,687 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted, computed, watch } from 'vue';
+import useWindowResize from 'shared/hooks/useWindowResize';
+
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
+import { getPosterData, getUserData } from 'shared/api';
+
+import bannerBg from '@/assets/bg1.jpg';
+
+const lang = ref('zh');
+const screenWidth = useWindowResize();
+getUserData();
+
+watch(
+  () => window.location.href,
+  (val) => {
+    lang.value = val.includes('/zh') ? 'zh' : 'en';
+  },
+  { immediate: true }
+);
+
+const params = ref({
+  community: 'openlookeng',
+  user: 'ailoooong',
+  year: '2022',
+});
+
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
+const isContributor = ref(false);
+const posterData: any = ref({
+  test: 1,
+});
+const codeLine = ref(0);
+
+async function getPosterDataFun() {
+  await getPosterData(params.value).then((res) => {
+    if (res.code === 200 && res.data.length) {
+      isContributor.value = true;
+      posterData.value = res.data[0];
+      codeLine.value =
+        Number(posterData.value.code_lines_add) +
+        Number(posterData.value.code_lines_delete);
+    } else {
+      isContributor.value = false;
+    }
+  });
+}
 
 let slide: BScrollInstance;
+const currentPage = ref(0);
 
-onMounted(() => {
-  slide = new BScroll(wrapper.value as HTMLElement, {
-    scrollX: false,
-    scrollY: true,
-    momentum: false,
-    bounce: false,
+onMounted(async () => {
+  // 必须先确定是否为贡献者
+  await getPosterDataFun();
+  pcClick();
+  if (wrapper.value) {
+    slide = new BScroll(wrapper.value as HTMLElement, {
+      scrollX: false,
+      scrollY: true,
+      momentum: false,
+      bounce: false,
+      click: true,
+      pullUpLoad: true,
 
-    slide: {
-      threshold: 100,
+      slide: {
+        autoplay: false,
+        loop: false,
+        threshold: 100,
+      },
+      stopPropagation: true,
+    });
+    slide.on('slidePageChanged', () => {
+      currentPage.value = slide.getCurrentPage().pageY;
+    });
+  }
+});
+
+function goStart() {
+  slide.scrollToElement('.page2', 500, 0, 0);
+}
+
+const communityData = {
+  businessosv: 2,
+  comments: 35905,
+  communitymembers: 692,
+  contributors: 3001,
+  issues: 1750,
+  partners: 27,
+  prs: 2157,
+  repos: 15,
+  users: 151905,
+  version: 4,
+};
+// 视频背景地址
+const videoPath =
+  'https://obs-transfer.obs.cn-north-4.myhuaweicloud.com/openlookeng/obsi-openlookeng-summary/openlookeng-summary.mp4';
+
+const initDom: any = computed(() => {
+  return {
+    zh: {
+      page1: {
+        text: ['openLooKeng 时光机', '出发吧', '去看看属于您的2022'],
+      },
+      page2: {
+        text: [
+          '这一年，在您的见证下',
+          `openLooKeng迭代更新了 <span class="active">${communityData.version}</span> 个版本，`,
+          `<span class="active">${communityData.users}</span> 社区用户开启了openLooKeng探索之旅`,
+          `至今，<br/>openLooKeng收到了 <span class="active">${communityData.issues}</span> 个Issues和 <span class="active">${communityData.prs}</span> 个PRs`,
+        ],
+      },
+      page3: {
+        text: [
+          `<span class="active">${changeTime(
+            posterData.value.first_time_of_enter
+          )}，</span> <br>你第一次来到openLooKeng社区，`,
+          '创造许多了不起的成果，带来了',
+          `${
+            posterData.value.code_lines_add > 0
+              ? `<span class='active'>${codeLine.value}</span> 行代码`
+              : ' '
+          }`,
+          `${
+            posterData.value.issue_num > 0
+              ? `<span class='active'>${posterData.value.issue_num}</span> 个 Issues`
+              : ' '
+          }`,
+          `${
+            posterData.value.pr_num > 0
+              ? `<span class='active'>${posterData.value.pr_num}</span> 个 PRs`
+              : ' '
+          }`,
+          `${
+            posterData.value.comment_num > 0
+              ? `<span class='active'>${posterData.value.comment_num}</span> 条 Comments`
+              : ' '
+          }`,
+          `${
+            posterData.value.sig_num > 0
+              ? `<span class='active'>${posterData.value.sig_num}</span> 个SIGs`
+              : ' '
+          }`,
+          `${
+            posterData.value.star_num > 0
+              ? `<span class='active'>${posterData.value.star_num}</span> 个仓库`
+              : ' '
+          }`,
+          `与 <span class='active'>${communityData.contributors}</span> 位社区开发者同行，共建共治共享，`,
+
+          `让openLooKeng更强大。`,
+        ],
+      },
+      page4: {
+        text: [
+          `今年，<br/>您评论了 ${
+            posterData.value.issue_num > 0
+              ? `<span class="active">${posterData.value.issue_num}</span> 个Issues和`
+              : ''
+          } <br /> ${
+            posterData.value.pr_num > 0
+              ? `<span class="active">${posterData.value.pr_num}</span> 个PRs`
+              : ''
+          }`,
+          '万丈高楼平地起，社区活跃达人就是你',
+          `您最常和TA互动`,
+          `${posterData.value.user_login_with_most_contact}`,
+          '给TA比个心',
+        ],
+      },
+      page5: {
+        text: [
+          '截图分享您的成就',
+          '扫码看2022开发者贡献报告',
+          '01/01 - 12/30',
+          `这一年，您在社区的贡献度超过了 <span class="active">${posterData.value.count_rank}</span> 的开发者`,
+          `愿新的一年，我们并肩前行，`,
+          `既能遇见新的热爱，也能初心重逢`,
+        ],
+      },
     },
-    stopPropagation: true,
-  });
+    en: {
+      page1: {
+        text: [
+          'Time to embark on a journey with openLooKeng ',
+          "Let's Go",
+          'To the year 2022',
+        ],
+      },
+      page2: {
+        text: [
+          'Thanks to your support',
+          `This year,  <br/>openLooKeng has been iterated for <span class="active">${communityData.version}</span> versions`,
+          `<span class="active">${communityData.users}</span> community users started their journey on openLooKeng`,
+          `So far, <br/>openLooKeng has received  <span class="active">${communityData.issues}</span> Issues and  <span class="active">${communityData.prs}</span> PRs`,
+        ],
+      },
+      page3: {
+        text: [
+          `<span class="active">On ${changeTime(
+            posterData.value.first_time_of_enter
+          )}，</span> <br/>you took your first steps by visiting my homepage.`,
+          'your dedication and hard work have helped to create: ',
+          `${
+            posterData.value.code_lines_add > 0
+              ? `<span class='active'>${codeLine.value}</span> Lines of code`
+              : ' '
+          }`,
+          `${
+            posterData.value.issue_num > 0
+              ? `<span class='active'>${posterData.value.issue_num}</span> Issues`
+              : ' '
+          }`,
+          `${
+            posterData.value.pr_num > 0
+              ? `<span class='active'>${posterData.value.pr_num}</span> PRs`
+              : ' '
+          }`,
+          `${
+            posterData.value.comment_num > 0
+              ? `<span class='active'>${posterData.value.comment_num}</span> Comments`
+              : ' '
+          }`,
+          `${
+            posterData.value.sig_num > 0
+              ? `<span class='active'>${posterData.value.sig_num}</span> SIG${
+                  posterData.value?.sig_num !== '1' ? 's' : ''
+                }`
+              : ' '
+          }`,
+          `${
+            posterData.value.star_num > 0
+              ? `<span class='active'>${posterData.value.star_num}</span> repo${
+                  posterData.value?.fork_num !== '1' ? 's' : ''
+                }`
+              : ' '
+          }`,
+          `You have also worked alongside  <span class='active'>${communityData.contributors}</span> fellow community developers to build, govern, and share in the growth of openLooKeng,`,
+
+          `making it an even stronger platform Keep up the great work!`,
+        ],
+      },
+      page4: {
+        text: [
+          `This year, <br/>you've commented on ${
+            posterData.value.issue_num > 0
+              ? `<span class="active">${posterData.value.issue_num}</span> Issues and `
+              : ''
+          } <br /> ${
+            posterData.value.pr_num > 0
+              ? `<span class="active">${posterData.value.pr_num}</span> PRs`
+              : ''
+          }`,
+          "From humble beginnings, you've become a top contributor in our active community",
+          `You've interacted the most with `,
+          `${posterData.value.user_login_with_most_contact}`,
+        ],
+      },
+      page5: {
+        text: [
+          'SCAN for your exclusive wrap-up!',
+          '2022 Developer Contribution Report',
+          'Jan 1 to Dec 30',
+          `This year, your contributions in the community surpassed <span class="active">${posterData.value.count_rank}</span> of developers`,
+          `Here's hoping that you reach the pinnacle of your passion in 2023 Happy creative New Year!`,
+        ],
+      },
+    },
+  };
 });
 
-onMounted(() => {
-  // slide.destroy();
+onUnmounted(() => {
+  if (slide) {
+    slide.destroy();
+  }
 });
+function getZero(time: number) {
+  return time < 9 ? '0' + time : time;
+}
+function changeTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const y = EndTime.getFullYear();
+    const m = EndTime.getMonth() + 1;
+    const d = EndTime.getDate();
+    let all = '';
+    if (lang.value === 'zh') {
+      all = `${y}年${getZero(m)}月${getZero(d)}日`;
+    } else {
+      all = `${getZero(d)}/${getZero(m)}/${y}`;
+    }
+    return all;
+  }
+}
+
+function getRank(per: any) {
+  const percentage = Number(per?.replace('%', ''));
+  let rank = 0;
+  if (percentage <= 20) {
+    rank = 0;
+  } else if (20 < percentage && percentage <= 40) {
+    rank = 1;
+  } else if (40 < percentage && percentage <= 60) {
+    rank = 2;
+  } else if (60 < percentage && percentage <= 70) {
+    rank = 3;
+  } else if (70 < percentage) {
+    rank = 4;
+  }
+  return rank;
+}
+const rankMap: any = ref({
+  zh: [
+    {
+      title: '奋发兔强',
+      text: '沉默的王者',
+    },
+    {
+      title: '动若脱兔',
+      text: '进击的开源人',
+    },
+    {
+      title: '兔飞猛进',
+      text: '开源贡献达人',
+    },
+    {
+      title: '鸿兔大展',
+      text: '硬核大佬',
+    },
+  ],
+  en: [
+    {
+      title: 'Emerging Talent',
+      text: '',
+    },
+    {
+      title: 'Rising Star',
+      text: '',
+    },
+    {
+      title: 'Expert Developer',
+      text: '',
+    },
+    {
+      title: 'openLooKeng Guru',
+      text: '',
+    },
+  ],
+});
+
+function pcClick() {
+  const front: any = document.querySelectorAll('.front');
+  const back: any = document.querySelectorAll('.back');
+  for (let i = 0; i < front.length; i++) {
+    front[i].addEventListener('click', function () {
+      for (let j = 0; j < front.length; j++) {
+        front[j].style = 'transform:rotateY(-180deg)';
+        back[j].style = 'transform:rotateY(0deg)';
+      }
+    });
+    back[i].addEventListener('click', function () {
+      for (let z = 0; z < back.length; z++) {
+        back[z].style = 'transform:rotateY(180deg)';
+        front[z].style = 'transform:rotateY(0deg)';
+      }
+    });
+  }
+}
 </script>
 
 <template>
-  <div ref="wrapper" class="slide-wrapper">
-    <div class="slide-content">
-      <div class="slide-page">1</div>
-      <div class="slide-page">2</div>
-      <div class="slide-page">3</div>
-      <div class="slide-page">4</div>
+  <div
+    v-if="screenWidth > 1200"
+    class="pc-post"
+    :class="lang === 'zh' ? 'pc-zh' : 'pc-en'"
+    @click="pcClick"
+  >
+    <div v-if="isContributor" class="contribution none">
+      <div class="container box-1">
+        <div class="front">
+          <div class="slide-page page3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back">
+          <div class="page2 contents current">
+            <div class="card">
+              <div class="card-content">
+                <h3 class="active">Dear {{ posterData.user_login }}</h3>
+                <p
+                  v-for="(sub, index) in initDom[lang].page2.text"
+                  :key="index"
+                  class="txt"
+                  v-html="sub"
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+      <div class="container box-2">
+        <div class="front">
+          <div class="slide-page page3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back">
+          <div class="page2 contents current">
+            <div class="card">
+              <div class="card-content">
+                <p
+                  v-for="(sub, index) in initDom[lang].page3.text"
+                  :key="index"
+                  class="txt"
+                  v-html="sub"
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+      <div class="container box-3">
+        <div class="front">
+          <div class="slide-page page3">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back">
+          <div class="page4 contents current">
+            <p class="big" v-html="initDom[lang].page4.text[0]"></p>
+            <p
+              style="margin-top: 0; letter-spacing: 2px"
+              class="big"
+              v-html="initDom[lang].page4.text[2]"
+            ></p>
+            <div class="card">
+              <div class="card-content">
+                <p class="name">@{{ initDom[lang].page4.text[3] }}</p>
+              </div>
+            </div>
+            <p
+              style="margin-top: 10px"
+              class="txt"
+              v-html="initDom[lang].page4.text[1]"
+            ></p>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+      <div class="container box-4">
+        <div class="front">
+          <div class="slide-page page3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back">
+          <div class="page5 contents current">
+            <div class="tile">
+              <p class="txt" v-html="initDom[lang].page5.text[3]"></p>
+              <div class="card" style="margin-top: 12px">
+                <div class="card-content">
+                  <p class="title">
+                    {{ rankMap[lang][getRank(initDom.count_rank)].title }}
+                  </p>
+                  <p
+                    v-if="
+                      rankMap[lang][getRank(initDom.count_rank)].text !== ''
+                    "
+                    class="text"
+                  >
+                    {{ rankMap[lang][getRank(initDom.count_rank)].text }}
+                  </p>
+                  <p class="name">@{{ posterData.user_login }}</p>
+                </div>
+              </div>
+              <p class="txt">{{ initDom[lang].page5.text[4] }}</p>
+              <p class="txt">{{ initDom[lang].page5.text[5] }}</p>
+            </div>
+
+            <div class="big">
+              <p class="">{{ initDom[lang].page5.text[0] }}</p>
+              <img
+                class="code-img"
+                src="https://opengauss-website.test.osinfra.cn/assets/wechat.1a8221eb.png"
+              />
+              <p>{{ initDom[lang].page5.text[1] }}</p>
+              <p style="font-size: 16px">{{ initDom[lang].page5.text[2] }}</p>
+            </div>
+
+            <img class="logo" src="@/assets/logo.svg" />
+          </div>
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="no-contribution">
+      <div class="container box-1">
+        <div class="front">
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+      <div class="container box-2">
+        <div class="front">
+          <div class="video-bg">
+            <video muted autoplay loop playsinline="true" :poster="bannerBg">
+              <source :src="videoPath" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <div class="back"></div>
+      </div>
+    </div>
+  </div>
+  <div v-else class="mo-post">
+    <div ref="wrapper" class="slide-wrapper" :class="lang">
+      <div v-if="isContributor" class="slide-content contribution">
+        <div class="slide-page" :class="currentPage === 0 ? 'current' : ''">
+          <div class="page-flex page1">
+            <div class="page-cover">
+              <h3>{{ initDom[lang].page1.text[0] }}</h3>
+              <div class="go-start card" @click.stop="goStart">
+                <span class="card-content"
+                  ><span>{{ initDom[lang].page1.text[1] }}</span
+                  ><em class="arrow"></em
+                ></span>
+              </div>
+              <p class="page-text fade-time-1">
+                {{ initDom[lang].page1.text[2] }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-page" :class="currentPage === 1 ? 'current' : ''">
+          <div class="page-flex page2">
+            <div class="page2-content card">
+              <div class="card-content">
+                <h3>Dear {{ posterData.user_login }}</h3>
+                <p
+                  v-for="(sub, index) in initDom[lang].page2.text"
+                  :key="index"
+                  :class="`txt fade-time-${index}`"
+                  v-html="sub"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-page" :class="currentPage === 2 ? 'current' : ''">
+          <div class="page-flex page3">
+            <div class="card">
+              <div class="card-content">
+                <p
+                  v-for="(sub, index) in initDom[lang].page3.text"
+                  :key="index"
+                  :class="`txt fade-time-${index}`"
+                  v-html="sub"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-page" :class="currentPage === 3 ? 'current' : ''">
+          <div class="page-flex page4">
+            <p class="big fade-time-0" v-html="initDom[lang].page4.text[0]"></p>
+            <p
+              style="margin-top: 0; letter-spacing: 2px"
+              class="big fade-time-1"
+              v-html="initDom[lang].page4.text[2]"
+            ></p>
+            <div class="card fade-time-2">
+              <div class="card-content">
+                <p class="name fade-time-3">
+                  @{{ initDom[lang].page4.text[3] }}
+                </p>
+              </div>
+            </div>
+            <p
+              style="margin-top: 10px"
+              class="txt fade-time-4"
+              v-html="initDom[lang].page4.text[1]"
+            ></p>
+          </div>
+        </div>
+        <div class="slide-page" :class="currentPage === 4 ? 'current' : ''">
+          <div class="page-flex page5">
+            <div class="tile fade-time-0">
+              <p
+                class="txt fade-time-0"
+                v-html="initDom[lang].page5.text[3]"
+              ></p>
+              <div class="card fade-time-1" style="margin-top: 12px">
+                <div class="card-content">
+                  <p class="title fade-time-2">
+                    {{ rankMap[lang][getRank(initDom.count_rank)].title }}
+                  </p>
+                  <p
+                    v-if="
+                      rankMap[lang][getRank(initDom.count_rank)].text !== ''
+                    "
+                    class="text fade-time-2"
+                  >
+                    {{ rankMap[lang][getRank(initDom.count_rank)].text }}
+                  </p>
+                  <p class="name fade-time-2">@{{ posterData.user_login }}</p>
+                </div>
+              </div>
+              <p class="txt fade-time-3">{{ initDom[lang].page5.text[4] }}</p>
+              <p class="txt fade-time-4">{{ initDom[lang].page5.text[5] }}</p>
+            </div>
+
+            <div class="big fade-time-5">
+              <p class="">{{ initDom[lang].page5.text[0] }}</p>
+              <img
+                class="code-img"
+                src="https://opengauss-website.test.osinfra.cn/assets/wechat.1a8221eb.png"
+              />
+              <p>{{ initDom[lang].page5.text[1] }}</p>
+              <p style="font-size: 16px">{{ initDom[lang].page5.text[2] }}</p>
+            </div>
+
+            <img class="logo" src="@/assets/logo.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="video-bg">
+      <video muted autoplay loop playsinline="true" :poster="bannerBg">
+        <source :src="videoPath" type="video/mp4" />
+      </video>
     </div>
   </div>
 </template>
@@ -45,18 +691,654 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
 }
+.mo-post {
+  position: relative;
+}
+.card {
+  position: relative;
+  display: block;
+  padding: 4px;
+  background: rgba(64, 168, 154, 0.6);
+  border-radius: 5px;
+  width: 100%;
+  &::after,
+  &::before,
+  .card-content::after,
+  .card-content::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    position: absolute;
+    background: url(@/assets/border.png) no-repeat center/cover;
+  }
+  &::after {
+    top: -1px;
+    right: -1px;
+    transform: rotate(90deg);
+  }
+  &::before {
+    top: -1px;
+    left: -1px;
+  }
+  .card-content::after {
+    bottom: -1px;
+    right: -1px;
+    transform: rotate(180deg);
+  }
+  .card-content::before {
+    bottom: -1px;
+    left: -1px;
+    transform: rotate(270deg);
+  }
+  .card-content {
+    padding: 24px 12px;
+    border: 1px solid rgba(0, 55, 49, 0.6);
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+  }
+}
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+.mo-post {
+  .video-bg {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+.code-img {
+  margin: 12px 0;
+}
+.en {
+  .page1 .page-cover {
+    h3 {
+      font-size: 24px !important;
+      padding: 0 !important;
+      line-height: 32px !important;
+    }
+  }
+  .page5 {
+    .big {
+      font-size: 16px !important;
+    }
+    .title {
+      font-size: 24px !important;
+    }
+  }
+}
+.txt {
+  font-size: 12px;
+  font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
+  font-weight: normal;
+  color: #ffffff;
+  line-height: 30px;
+}
+.active {
+  color: #feb32a;
+  font-size: 14px;
+  font-family: 'PangMenZhengDao';
+  display: inline-block;
+}
 
 .slide-wrapper {
   width: 100vw;
   height: 100vh;
   position: relative;
   overflow: hidden;
+  z-index: 99;
   .slide-content {
     width: 100vw;
     .slide-page {
       width: 100vw;
       height: 100vh;
+      position: relative;
+      .page-flex {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+        height: 100%;
+
+        .active {
+          opacity: 0;
+        }
+      }
+      .page1 {
+        height: 100%;
+        position: relative;
+
+        .page-cover {
+          h3 {
+            font-size: 32px;
+            font-family: 'Milky-Han-Term-CN-Heavy-Italic';
+            font-weight: 600;
+            color: #fff;
+            line-height: 40px;
+            padding: 0 60px;
+            font-style: italic;
+          }
+          .go-start {
+            margin: 32px 0;
+            font-size: 16px;
+            color: #feb32a;
+            display: inline-flex;
+            align-items: center;
+            width: auto;
+            opacity: 0;
+            font-family: 'PangMenZhengDao';
+            letter-spacing: 2px;
+            .card-content {
+              padding: 8px 12px;
+            }
+            .arrow {
+              width: 12px;
+              height: 14px;
+              display: inline-block;
+              background: url(@/assets/arrow.png) no-repeat center/cover;
+              margin-left: 6px;
+              animation: headShake 2s 1.7s ease-in-out infinite alternate;
+            }
+          }
+          .page-text {
+            font-size: 16px;
+            font-family: 'PangMenZhengDao';
+            color: #ffffff;
+            line-height: 22px;
+            letter-spacing: 2px;
+          }
+        }
+        .agreement {
+          font-size: 12px;
+          position: absolute;
+          bottom: 55px;
+          width: 100%;
+          text-align: center;
+          a {
+            color: #feb32a;
+            display: inline-block;
+          }
+        }
+      }
+      .page4 {
+        .card {
+          opacity: 0;
+        }
+      }
+      .page5 {
+        justify-content: space-evenly;
+        .big,
+        .code-img,
+        .logo,
+        .title,
+        .tile {
+          opacity: 0;
+        }
+      }
     }
+  }
+}
+.page2 {
+  height: 100%;
+  position: relative;
+  .page2-content {
+    h3 {
+      font-size: 24px;
+      font-family: PangMenZhengDao;
+      color: #feb32a;
+      line-height: 27px;
+      margin: 12px 0 24px;
+    }
+  }
+}
+.big {
+  display: block;
+  margin: 20px 0;
+  font-size: 20px;
+  font-family: PangMenZhengDao;
+  color: #ffffff;
+  line-height: 30px;
+  .active {
+    font-size: 20px !important;
+  }
+}
+.page4 {
+  .name {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 1px;
+    font-family: 'Milky-Han-Term-CN-Heavy-Italic';
+    color: #ffffff;
+  }
+}
+.page5 {
+  justify-content: space-around;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  .big {
+    margin: 0;
+  }
+  .code-img {
+    height: 64px;
+  }
+  .card {
+    margin-bottom: 10px;
+    p {
+      font-family: 'Milky-Han-Term-CN-Heavy-Italic';
+      color: #ffffff;
+    }
+  }
+  .title {
+    font-size: 28px;
+    margin-bottom: 16px;
+    line-height: 35px;
+    letter-spacing: 3px;
+  }
+
+  .text {
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 2px;
+  }
+  .name {
+    font-size: 12px;
+    line-height: 22px;
+    letter-spacing: 1px;
+    margin-top: 16px;
+  }
+}
+.logo {
+  width: 78px;
+  height: 50px;
+}
+.slide-wrapper p {
+  opacity: 0;
+}
+.current {
+  p {
+    animation: fade 0.8s ease-in-out forwards;
+    .active {
+      animation: slide-top 0.8s ease-in-out forwards;
+    }
+  }
+  .page1 {
+    .go-start {
+      animation: fade 1.2s ease-in-out forwards;
+    }
+    h3 {
+      animation: bounceIn 1s ease-in-out forwards;
+    }
+  }
+  .page4 {
+    .card {
+      animation: slide-top 3s ease-in-out forwards;
+    }
+  }
+  .page5 {
+    .code-img {
+      animation: slide-top 1.2s ease-in-out forwards;
+    }
+    .big {
+      animation: fade 2.5s ease-in-out forwards;
+      animation-delay: 2.5s;
+    }
+    .logo {
+      animation: slide-top 1.2s ease-in-out forwards;
+      animation-delay: 3s;
+    }
+
+    .tile {
+      animation: slide-top 1s ease-in-out forwards;
+    }
+  }
+  @for $i from 0 through 22 {
+    .fade-time-#{ $i} {
+      animation-delay: #{$i * 0.5}s;
+      .active {
+        animation-delay: #{$i * 0.5 + 0.5}s;
+      }
+    }
+  }
+}
+// ipad 适配
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 86px !important;
+  }
+}
+@keyframes fade {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-top {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+@keyframes slide-top1 {
+  0% {
+    transform: translateY(12px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounceIn {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9);
+    transform: scale3d(0.9, 0.9, 0.9);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+    transform: scale3d(0.97, 0.97, 0.97);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+}
+
+@keyframes headShake {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+
+  15% {
+    -webkit-transform: translateX(-2px) rotateY(-4deg);
+    transform: translateX(-2px) rotateY(-4deg);
+  }
+
+  32% {
+    -webkit-transform: translateX(2px) rotateY(4deg);
+    transform: translateX(2px) rotateY(4deg);
+  }
+
+  50% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* 开始编写CSS */
+.pc-zh {
+  @for $i from 1 through 4 {
+    .box-#{ $i} {
+      .pc-top {
+        .text {
+          background-image: url('@/assets/pc-bg-#{$i}.png');
+        }
+      }
+    }
+  }
+}
+.pc-en {
+  @for $i from 1 through 4 {
+    .box-#{ $i} {
+      .pc-top {
+        .text {
+          background-image: url('@/assets/pc-bg-#{$i}-en.png');
+          width: 122px;
+          height: 156px;
+        }
+      }
+    }
+  }
+  .box-2 .pc-top .text {
+    width: 130px;
+    height: 160px;
+  }
+  .txt {
+    line-height: 24px !important;
+  }
+  .big {
+    font-size: 16px !important;
+  }
+  .title {
+    font-size: 24px !important;
+  }
+}
+
+.pc-post {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  overflow: hidden;
+  height: 100vh;
+  padding: 50px;
+  max-width: 1920px;
+  @media screen and (max-width: 1460px) {
+    padding: 24px;
+  }
+  .contribution,
+  .no-contribution {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .page3 {
+    width: 100%;
+    height: 100%;
+    background-size: 100% auto;
+    .pc-top {
+      height: 100%;
+      position: relative;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url(@/assets/bg2.png) no-repeat center/cover;
+    }
+  }
+  .page2 {
+    position: relative;
+    z-index: 5;
+    .page2-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 210px;
+      width: 100%;
+      text-align: center;
+      padding: 0 12px;
+      color: #000;
+      p {
+        position: relative;
+        z-index: 10;
+      }
+      .active {
+        padding: 0 2px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #feb32a;
+      }
+      .user {
+        color: #feb32a;
+        font-size: 20px;
+        line-height: 24px;
+        font-family: PangMenZhengDao;
+      }
+      .main-text {
+        line-height: 32px;
+        font-size: 12px;
+      }
+    }
+    .img-box > img {
+      position: absolute;
+    }
+    .desktop {
+      left: 80px;
+      bottom: 100px;
+      width: 74px;
+      z-index: 1;
+      animation: slide-top1 2s infinite linear alternate;
+    }
+    .mobile {
+      bottom: 240px;
+      right: 12px;
+      width: 82px;
+      z-index: 1;
+      animation: slide-top1 3s infinite linear alternate;
+    }
+    .notebook {
+      top: 144px;
+      left: 12px;
+      width: 80px;
+      z-index: 1;
+      animation: slide-top1 5s infinite linear alternate;
+    }
+    .database {
+      top: 100px;
+      right: 15px;
+      width: 90px;
+      z-index: 1;
+      animation: slide-top1 4s infinite linear alternate;
+    }
+  }
+  body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background-color: white;
+  }
+
+  .container {
+    position: relative;
+    max-width: 360px;
+    width: 100%;
+    max-height: 640px;
+    height: 100%;
+    overflow: hidden;
+    .page5 {
+      justify-content: space-evenly;
+    }
+  }
+  .no-contribution {
+    justify-content: space-around;
+  }
+  .front,
+  .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition: transform 0.7s ease-in-out;
+  }
+  .front {
+    z-index: 10;
+  }
+
+  .no-contribution .qr-code {
+    padding-top: 50px;
+  }
+  .noContribution .qr-code img {
+    border: 1px solid black;
+  }
+  .no-contribution .qr-code img {
+    border: 1px solid black;
+  }
+  .no-contribution .qr-code p {
+    padding-top: 20px;
+  }
+  .back {
+    transform: rotateY(180deg);
+  }
+
+  .pc-top {
+    display: flex;
+    justify-content: center;
+    .text {
+      width: 125px;
+      height: 109px;
+      background-position: center center;
+      background-size: cover;
+    }
+  }
+
+  .pc-post .euler-title2 {
+    padding: 10px 0;
+  }
+  .pc-post .euler-title3 {
+    padding: 0 0 10px;
+  }
+  .contents {
+    width: 100%;
+    height: 100%;
+    transform: translateZ(60px);
+    padding: 0 20px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+  }
+  .contents .page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 }
 </style>
