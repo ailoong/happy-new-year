@@ -29,7 +29,7 @@ watch(
 );
 const params = ref({
   community: 'opengauss',
-  user: 'zhongjun2' || 'liyang0608',
+  user: 'haml' || 'liyang0608',
   year: '2022',
 });
 
@@ -159,8 +159,8 @@ const pageCentent: any = computed(() => {
       page6: {
         text: [
           '在这一年里',
-          `你的贡献度击败了社区 <span class="active">${posterData.value.count_rank}</span>`,
-          `<span class="active bold">恭喜你获得</span>`,
+          `你的贡献度击败了社区 <span class="active">${posterData.value.count_rank}</span>的开发者`,
+          `<span class="active pg-6-text">恭喜你获得</span>`,
         ],
       },
       page7: {
@@ -521,14 +521,14 @@ onUnmounted(() => {
                   {{ item }}
                 </p>
               </div>
-              <div class="bottom-scan margin-top-h4">
+              <div class="bottom-scan margin-top-h5">
                 <p
                   v-for="item in pageCentent[lang].page3.bottomText"
                   :key="item"
                 >
                   {{ item }}
                 </p>
-                <div class="qr-box margin-top-h5">
+                <div class="qr-box margin-top-h6">
                   <img :src="pageCentent[lang].page3.img" alt="" />
                 </div>
               </div>
@@ -565,7 +565,30 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="back">
-          <div class="contents"></div>
+          <div class="contents pg-5 current">
+            <div class="pg-5-main">
+              <p
+                v-for="(item, index) in pageCentent[lang].page4.text"
+                :key="item.value"
+                :class="`fade-time-${index + 1}`"
+              >
+                <span v-if="item.key" v-html="item.value"></span>
+              </p>
+              <div class="main-text">
+                <p
+                  v-for="(item, index) in pageCentent[lang].page5.text"
+                  :key="item.value"
+                  :class="`fade-time-${index}`"
+                >
+                  <span
+                    v-if="item.key && item.key !== '0'"
+                    v-html="item.value"
+                  ></span>
+                </p>
+              </div>
+            </div>
+            <div class="img-box"></div>
+          </div>
         </div>
       </div>
       <div class="container box-4">
@@ -587,17 +610,111 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="back">
-          <div class="contents"></div>
+          <div class="contents">
+            <div class="contents pg-6 current">
+              <div class="pg-6-main">
+                <div class="pg-6-top">
+                  <p
+                    v-for="item in pageCentent[lang].page6.text"
+                    :key="item"
+                    v-html="item"
+                  ></p>
+                  <p
+                    :class="[
+                      `color-${getRank(posterData.count_rank) + 1}`,
+                      lang !== 'zh' ? 'rank' : '',
+                    ]"
+                  >
+                    {{ rankMap[lang][getRank(posterData.count_rank)] }}
+                  </p>
+                </div>
+                <div class="pg-6-main-text">
+                  <p v-for="item in pageCentent[lang].page7.text" :key="item">
+                    {{ item }}
+                  </p>
+                  <img src="@/assets/logo-w.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div v-else class="no-contribution">
       <div class="container box-1">
-        <div class="front"></div>
-        <div class="back"></div>
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="back">
+          <div class="pg-2 contents current">
+            <div class="pg-2-main">
+              <p class="blod active celebrat">
+                Celebrating 3 years of openEuler
+              </p>
+
+              <div class="user margin-top-h6">
+                <p class="blod active user">
+                  Dear <br />
+                  {{ params.user }}
+                </p>
+              </div>
+              <div class="main-text margin-top-h7">
+                <p
+                  v-for="(item, index) in pageCentent[lang].page2.text"
+                  :key="item"
+                  :class="`fade-time-${index + 1}`"
+                  v-html="item"
+                ></p>
+              </div>
+              <div class="img-box">
+                <img :src="database" class="database" alt="" />
+                <img :src="mobile" class="mobile" alt="" />
+                <img :src="notebook" class="notebook" alt="" />
+                <img :src="desktop" class="desktop" alt="" />
+                <img src="@/assets/feather-1.png" class="feather-1" alt="" />
+                <img src="@/assets/feather-2.png" class="feather-2" alt="" />
+                <img src="@/assets/feather-3.png" class="feather-3" alt="" />
+                <img src="@/assets/feather-4.png" class="feather-4" alt="" />
+                <img src="@/assets/feather-5.png" class="feather-5" alt="" />
+                <img src="@/assets/feather-6.png" class="feather-6" alt="" />
+                <img src="@/assets/feather-7.png" class="feather-7" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="container box-2">
-        <div class="front"></div>
+        <div class="front">
+          <div class="slide-page pg-3 current">
+            <div class="pc-top">
+              <div class="text"></div>
+            </div>
+            <div class="img-box">
+              <img :src="handAi" class="hand-ai" alt="" />
+              <img :src="handMan" class="hand-man" alt="" />
+              <img :src="hexagon" class="hexagon" alt="" />
+              <div class="hexagon-box">
+                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
+                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
+                <img src="@/assets/glow.png" class="glow" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="back"></div>
       </div>
     </div>
@@ -658,7 +775,7 @@ onUnmounted(() => {
               {{ item }}
             </p>
           </div>
-          <div class="bottom-scan margin-top-h4 bold">
+          <div class="bottom-scan margin-top-h4">
             <p v-for="item in pageCentent[lang].page3.bottomText" :key="item">
               {{ item }}
             </p>
@@ -745,17 +862,18 @@ onUnmounted(() => {
     </div>
     <div v-else class="slide-content no-contribution">
       <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
-        <div class="pg1-top">
-          <p class="title">2022年度贡献报告</p>
-          <p>你的点滴 【openGauss】全都记得......</p>
+        <div class="pg1-top margin-top-h1">
+          Celebrating 3 years of openEuler
         </div>
-        <div class="pg1-buttom">
-          <p class="fade-time-1">又是一年</p>
-          <p class="fade-time-2">我们穿过时间的缝隙</p>
-          <p class="fade-time-3">定格最特别的你</p>
-          <div class="go-start" @click.stop="">
-            <span>生成</span> <span>报告</span>
-          </div>
+        <div class="pg1-bottom">
+          <img :src="database" class="database" alt="" />
+          <img :src="mobile" class="mobile" alt="" />
+          <img :src="notebook" class="notebook" alt="" />
+          <img :src="desktop" class="desktop" alt="" />
+          <img src="@/assets/pg-1-mo.png" class="pg-1-mo" alt="" />
+          <img src="@/assets/fire-1.png" class="fire-1" alt="" />
+          <img src="@/assets/fire-2.png" class="fire-2" alt="" />
+          <img src="@/assets/fire-3.png" class="fire-3" alt="" />
         </div>
       </div>
     </div>
@@ -771,6 +889,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   display: inline-block;
   opacity: 0;
   color: $active;
+  font-family: PangMenZhengDao;
 }
 .bold {
   font-weight: 700;
@@ -1370,7 +1489,7 @@ p {
 }
 
 /* 开始编写CSS */
-.pc-zh {
+.pc-zh.pc-post {
   @for $i from 1 through 4 {
     .box-#{ $i} {
       .pc-top {
@@ -1380,13 +1499,47 @@ p {
       }
     }
   }
+  .no-contribution {
+    @for $i from 1 through 2 {
+      .box-#{ $i} {
+        .pc-top {
+          .text {
+            width: 180px;
+            background-size: 180px auto;
+            background-repeat: no-repeat;
+            background-image: url('@/assets/pc-bg-no-#{$i}.png');
+          }
+        }
+      }
+    }
+  }
 }
-.pc-en {
+.pc-en.pc-post {
+  p {
+    line-height: 16px;
+  }
   @for $i from 1 through 4 {
     .box-#{ $i} {
       .pc-top {
         .text {
+          width: 180px;
+          background-size: 180px auto;
+          background-repeat: no-repeat;
           background-image: url('@/assets/pc-bg-#{$i}-en.png');
+        }
+      }
+    }
+  }
+  .no-contribution {
+    @for $i from 1 through 2 {
+      .box-#{ $i} {
+        .pc-top {
+          .text {
+            width: 133px;
+            background-size: 133px auto;
+            background-repeat: no-repeat;
+            background-image: url('@/assets/pc-bg-no-#{$i}-en.png');
+          }
         }
       }
     }
@@ -1416,6 +1569,7 @@ p {
     width: 100%;
     height: 100%;
     background-size: 100% 460px !important;
+    background-repeat: no-repeat;
     .pc-top {
       max-height: 320px;
       height: 100%;
@@ -1425,7 +1579,7 @@ p {
       background-image: url('@/assets/pc-bg.png');
     }
     .pg-3-main {
-      padding: 40px 54px;
+      padding: 40px 40px;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -1468,6 +1622,7 @@ p {
         display: inline-block;
         left: 0;
         width: calc(50% - 3px);
+        z-index: 1;
       }
       .hexagon-box {
         position: absolute;
@@ -1620,16 +1775,76 @@ p {
       width: 138px;
     }
   }
-  body {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: white;
-    background-color: white;
+  .pg-5 {
+    padding: 40px;
+    background-position: bottom;
+    background-size: cover !important;
+    .pg-5-main {
+      color: #fff;
+      padding: 14px 24px;
+      border: 1px solid #fff;
+      font-size: 12px;
+      text-align: center;
+      line-height: 24px;
+      background-color: rgba($color: #002fa7, $alpha: 0.8);
+      .active {
+        font-weight: 500;
+        padding: 0 2px;
+        font-size: 14px;
+        color: #feb32a;
+        font-family: PangMenZhengDao;
+      }
+    }
   }
-
+  .pg-6 {
+    padding: 40px;
+    color: #fff;
+    position: relative;
+    background-image: url('@/assets/bg-4.png');
+    background-position: top;
+    background-size: cover !important;
+    .pg-6-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 24px;
+      height: 100%;
+      border: 1px solid #fff;
+      font-size: 12px;
+      text-align: center;
+      line-height: 24px;
+      background-color: rgba($color: #002fa7, $alpha: 0.8);
+      .pg-6-top {
+        font-size: 14px;
+        font-family: PangMenZhengDao;
+        .active {
+          color: #406ef7;
+        }
+        .pg-6-text {
+          margin-top: 24px;
+          font-size: 24px;
+          color: #feb32a;
+        }
+        p:last-child {
+          margin-top: 56px;
+          font-size: 40px;
+        }
+        .rank {
+          margin-top: 24px !important;
+          line-height: 46px;
+        }
+      }
+      .pg-6-main-text {
+        font-size: 12px;
+        img {
+          margin-top: 40px;
+          width: 82px;
+        }
+      }
+    }
+  }
+  .no-contribution {
+  }
   .container {
     position: relative;
     max-width: 360px;
