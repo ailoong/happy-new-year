@@ -33,8 +33,10 @@ const params = ref({
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
-    if (res.data) {
-      params.value.user = res.data.user;
+    console.log(res);
+
+    if (res) {
+      params.value.user = res.user;
     }
   });
 }
