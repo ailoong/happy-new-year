@@ -29,7 +29,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'zhang-zz1248',
+  user: '',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -352,7 +352,7 @@ async function getPosterDataFun() {
 }
 
 let slide: BScrollInstance;
-const currentPage = ref(0);
+const currentPage = ref(-1);
 function getZero(time: number) {
   return time < 9 ? '0' + time : time;
 }
@@ -417,6 +417,7 @@ onMounted(async () => {
   await getUserDataFun();
   await getPosterDataFun();
   pcClick();
+  currentPage.value = 0;
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
       scrollX: false,
