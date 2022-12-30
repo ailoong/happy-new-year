@@ -90,14 +90,24 @@ onMounted(async () => {
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
+    // 触摸屏幕播放动画
+    wrapper.value?.addEventListener('pointerup', function () {
+      if (isVideo.value) {
+        videoRef.value?.play();
+        bgm.value?.play();
+        isVideo.value = false;
+      }
+    });
   }
-  bgm.value?.addEventListener('pause', function () {
-    bgmOpen.value?.classList.remove('run-bgm');
-  });
-  bgmOpen.value?.addEventListener('touchstart', function () {
-    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-    bgmOpen.value.classList.add('run-bgm');
-  });
+  if (screenWidth.value < 1200) {
+    bgm.value?.addEventListener('pause', function () {
+      bgmOpen.value?.classList.remove('run-bgm');
+    });
+    bgmOpen.value?.addEventListener('touchstart', function () {
+      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+      bgmOpen.value.classList.add('run-bgm');
+    });
+  }
 });
 
 function goStart() {
@@ -491,6 +501,8 @@ function pcClick() {
 // 背景音乐
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
+const videoRef: any = ref('video');
+const isVideo = ref(true);
 </script>
 
 <template>
@@ -946,7 +958,15 @@ const bgmOpen: any = ref('bgmOpen');
       </div>
     </div>
     <div class="video-bg">
-      <video muted autoplay loop playsinline="true" :poster="bannerBg">
+      <video
+        id="videoRef"
+        ref="videoRef"
+        muted
+        autoplay
+        loop
+        playsinline="true"
+        :poster="bannerBg"
+      >
         <source :src="videoPath" type="video/mp4" />
       </video>
     </div>
@@ -1105,6 +1125,7 @@ a {
         }
       }
       .page1 {
+        background: url('@/assets/bg2.png') no-repeat center/contain;
         .go-start {
           opacity: 0;
         }
