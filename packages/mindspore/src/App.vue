@@ -26,9 +26,9 @@ const params = ref({
 async function getUserDataFun() {
   await getUserData().then((res) => {
     console.log(res);
+
     if (res.user) {
       params.value.user = res.user;
-      console.log(res.user);
     }
   });
 }
@@ -456,6 +456,8 @@ const registerTime = ref([]);
 async function getPosterDataFun() {
   await getPosterData(params.value)
     .then((res) => {
+      console.log(res);
+      
       if (res.code === 200 && res.data.length) {
         isContributor.value = true;
         posterData.value = res.data[0];
@@ -472,8 +474,11 @@ async function getPosterDataFun() {
 }
 
 async function getMonthountFun() {
+
   await getMonthcount(params.value).then((res) => {
     if (res.code === 200 && res.data) {
+      console.log(res);
+
       monthData.value = res.data;
     }
   });

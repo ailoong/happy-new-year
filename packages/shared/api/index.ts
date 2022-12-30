@@ -23,7 +23,7 @@ export function getUserData() {
 }
 
 export function getMonthcount(params: any) {
-  const url = '/zh/query/newYear/monthcount';
+  const url = '/query/newYear/monthcount';
   return request
     .get(url, {
       params,
