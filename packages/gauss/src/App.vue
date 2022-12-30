@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'zhongjun2',
+  user: 'haml',
   year: '2022',
 });
 
@@ -137,7 +137,7 @@ async function getPosterDataFun() {
 }
 
 let slide: BScrollInstance;
-const currentPage = ref(0);
+const currentPage = ref(-1);
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
@@ -149,6 +149,8 @@ onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
   await getPosterDataFun();
+  currentPage.value = 0;
+  pcClick();
 
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -170,12 +172,31 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
+  if (screenWidth.value > 1200) {
+    bgm.value?.addEventListener('pause', function () {
+      bgmOpen.value?.classList.remove('run-bgm');
+    });
+    bgmOpen.value?.addEventListener('touchstart', function () {
+      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+      bgmOpen.value.classList.add('run-bgm');
+    });
+  }
 });
 
 function goStart() {
   const nextPage = isContributor.value ? '.pg-2' : '.pg-3';
 
   slide.scrollToElement(nextPage, 500, 0, 0);
+  console.log(bgmOpen.value);
+  try {
+    bgmOpen.value.classList.add('run-bgm');
+    bgm.value?.play();
+    // const event = document.createEvent('Events');
+    // event.initEvent('touchstart', true, true);
+    // bgmOpen.value?.dispatchEvent(event);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 onMounted(async () => {
@@ -222,6 +243,15 @@ function pcClick() {
     });
   }
 }
+// 背景音乐
+const bgm: any = ref('bgm');
+const bgmOpen: any = ref('bgmOpen');
+
+onUnmounted(() => {
+  if (slide) {
+    slide.destroy();
+  }
+});
 onUnmounted(() => {
   if (slide) {
     slide.destroy();
@@ -230,6 +260,10 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <audio id="bgm" ref="bgm" src="/bgm/BGM_2021.mp3" preload="auto" loop></audio>
+  <div ref="bgmOpen" class="bgm-open">
+    <img class="closebgm" src="@/assets/close.svg" alt="" />
+  </div>
   <div v-if="screenWidth > 1200" class="pc-post" @click="pcClick">
     <div v-if="isContributor" class="contribution none">
       <div class="container box-1">
@@ -238,12 +272,12 @@ onUnmounted(() => {
           <div class="pg-2-top">
             <p class="fade-time-1">HI~很高兴遇见你！</p>
             <p class="fade-time-2">你的故事要从这个数字说起……</p>
-            <p class="fade-time-3">
+            <p class="fade-time-3 active">
               {{ dayTime(posterData?.first_time_of_enter) }}
             </p>
           </div>
           <div class="pg-2-main">
-            <p class="fade-time-4">
+            <p class="fade-time-4 active">
               那是{{ changeTime(posterData?.first_time_of_enter) }}
             </p>
             <p class="fade-time-5">我第一次遇见你</p>
@@ -253,7 +287,8 @@ onUnmounted(() => {
               }}个日夜
             </p>
             <p class="fade-time-7">
-              感谢相遇，{{ params.user }}这个名字我已经铭记
+              感谢相遇，<span class="active">{{ params.user }}</span>
+              这个名字我已经铭记
             </p>
             <p class="fade-time-8">在openGauss的开源世界</p>
             <p class="fade-time-9">
@@ -455,22 +490,28 @@ onUnmounted(() => {
         <div class="pg-2-top">
           <p class="fade-time-1">HI~很高兴遇见你！</p>
           <p class="fade-time-2">你的故事要从这个数字说起……</p>
-          <p class="fade-time-3">
+          <p class="fade-time-3 active">
             {{ dayTime(posterData?.first_time_of_enter) }}
           </p>
         </div>
         <div class="pg-2-main">
           <p class="fade-time-4">
-            那是{{ changeTime(posterData?.first_time_of_enter) }}
+            那是
+            <span class="active">{{
+              changeTime(posterData?.first_time_of_enter)
+            }}</span>
           </p>
           <p class="fade-time-5">我第一次遇见你</p>
           <p class="fade-time-6">
-            至今，我们已经走过了{{
+            至今，我们已经走过了
+            <span class="active">{{
               dayTime(posterData?.first_time_of_enter)
-            }}个日夜
+            }}</span>
+            个日夜
           </p>
           <p class="fade-time-7">
-            感谢相遇，{{ params.user }}这个名字我已经铭记
+            感谢相遇，<span class="active">{{ params.user }}</span>
+            这个名字我已经铭记
           </p>
           <p class="fade-time-8">在openGauss的开源世界</p>
           <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
@@ -697,6 +738,30 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   width: 100vw;
   height: 100vh;
 }
+.bgm-open {
+  position: absolute;
+  width: 23px;
+  top: 18px;
+  right: 18px;
+  z-index: 999;
+  @media screen and (min-width: 1200px) {
+    display: none;
+  }
+}
+
+.bgm-open img {
+  width: 100%;
+}
+
+.run-bgm {
+  animation: runBgm 4s infinite;
+}
+
+@keyframes runBgm {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .pc-post {
   font-size: 16px;
 }
@@ -791,6 +856,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
             background-color: rgba(254, 207, 107, 0.22);
             animation: halo 0.8s ease-in infinite alternate;
           }
+          @media screen and (max-height: 800px) {
+            margin: 40px 0 24px;
+          }
         }
       }
     }
@@ -807,6 +875,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         p {
           line-height: 28px;
           font-size: 12px;
+        }
+        .active {
+          font-size: 14px;
         }
       }
     }
@@ -911,6 +982,8 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
 
           &-right {
             width: 82px;
+            padding: 3px;
+            background-color: #a865eb;
             img {
               width: 100%;
             }
@@ -1072,6 +1145,8 @@ p {
 
           &-right {
             width: 82px;
+            padding: 3px;
+            background-color: #a865eb;
             img {
               width: 100%;
             }
