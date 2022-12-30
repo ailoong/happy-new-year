@@ -172,22 +172,18 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
-  if (screenWidth.value > 1200) {
-    bgm.value?.addEventListener('pause', function () {
-      bgmOpen.value?.classList.remove('run-bgm');
-    });
-    bgmOpen.value?.addEventListener('touchstart', function () {
-      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-      bgmOpen.value.classList.add('run-bgm');
-    });
-  }
+  bgm.value?.addEventListener('pause', function () {
+    bgmOpen.value?.classList.remove('run-bgm');
+  });
+  bgmOpen.value?.addEventListener('touchstart', function () {
+    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+    bgmOpen.value.classList.add('run-bgm');
+  });
 });
 
 function goStart() {
   const nextPage = isContributor.value ? '.pg-2' : '.pg-3';
-
   slide.scrollToElement(nextPage, 500, 0, 0);
-  console.log(bgmOpen.value);
   try {
     bgmOpen.value.classList.add('run-bgm');
     bgm.value?.play();
@@ -247,11 +243,6 @@ function pcClick() {
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
 
-onUnmounted(() => {
-  if (slide) {
-    slide.destroy();
-  }
-});
 onUnmounted(() => {
   if (slide) {
     slide.destroy();
