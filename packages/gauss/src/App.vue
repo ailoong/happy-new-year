@@ -46,7 +46,7 @@ const posterContent = computed(() => {
           key: posterData.value.user_login_with_most_contact,
         },
         {
-          value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
+          value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多`,
           key: posterData.value.contact_users_num,
         },
         {
@@ -122,22 +122,22 @@ const rankMap: any = computed(() => {
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p> <br> 你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ `,
+    )}%</p> <br> 你积极思考、独到透彻、表达跳脱<br>openGauss因为有你而变得不一样！ `,
     `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「见识非凡的探索家」</span> <br>这一年，你在openGauss收获同好，分享智慧，恭喜你收获了更好的自己。 `,
+    )}%</p>「见识非凡的探索家」</span> <br>这一年，你在openGauss收获同好，分享智慧<br>恭喜你收获了更好的自己。 `,
     `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「新知青年」</span><br> 你用好奇探索真理，也因认真进入无数openGauss的平行世界。 `,
+    )}%</p>「新知青年」</span><br> 你用好奇探索真理<br>也因认真进入无数openGauss的平行世界。 `,
     `<p class="font-size-tip margin-top-h4" >你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「openGauss的萌新好友」</span> <br>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇，请日后多多关照openGauss啦。 `,
+    )}%</p>「openGauss的萌新好友」</span> <br>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇<br>请日后多多关照openGauss啦。 `,
   ];
 });
 async function getPosterDataFun() {
@@ -399,7 +399,7 @@ onUnmounted(() => {
         <div class="back wrapper-l current pg-1">
           <div class="pg1-top">
             <p class="title">2022年度贡献报告</p>
-            <p>你的点滴 【openGauss】全都记得......</p>
+            <p>你的点滴「openGauss」全都记得</p>
           </div>
           <div class="pg1-buttom">
             <p class="fade-time-1">又是一年</p>
@@ -491,7 +491,7 @@ onUnmounted(() => {
         <div class="pg1-top">
           <p class="title">2022年度贡献报告</p>
           <p>关于你的点滴</p>
-          <p>「openGauss」全都记得......</p>
+          <p>「openGauss」全都记得</p>
         </div>
         <div class="pg1-buttom">
           <p class="fade-time-1">又是一年</p>
@@ -626,7 +626,7 @@ onUnmounted(() => {
       >
         <div class="pg1-top">
           <p class="title">2022年度贡献报告</p>
-          <p>你的点滴 【openGauss】全都记得......</p>
+          <p>你的点滴 「openGauss」全都记得</p>
         </div>
         <div class="pg1-buttom">
           <p class="fade-time-1">又是一年</p>
@@ -828,6 +828,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         line-height: 32px;
       }
       .pg1-top {
+        font-weight: 700;
         .title {
           margin-bottom: 12px;
           font-size: 26px;
@@ -884,6 +885,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
     }
     .pg-2 {
       .pg-2-top {
+        font-weight: 700;
         margin-top: 100px;
         p {
           line-height: 32px;
@@ -951,6 +953,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         margin-top: 12px;
         color: #fdfd19;
         font-size: 20px;
+        font-weight: 700;
       }
       .active {
         font-size: 20px;
@@ -964,7 +967,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       }
     }
     .pg-6 {
-      font-size: 13px;
+      font-size: 12px;
       line-height: 26px;
       .mask.margin-top-h4 {
         padding: 21px 16px;
@@ -1168,6 +1171,9 @@ p {
     }
     .box-2 {
       .pg-3-mask {
+        .active {
+          font-size: 14px;
+        }
         margin-top: 0;
         .pg-3-bottom {
           display: flex;
@@ -1210,6 +1216,7 @@ p {
       line-height: 32px;
     }
     .pg1-top {
+      font-weight: 700;
       .title {
         margin-bottom: 12px;
         font-size: 26px;
@@ -1327,6 +1334,7 @@ p {
       margin-top: 12px;
       color: #fdfd19;
       font-size: 20px;
+      font-weight: 700;
     }
     .active {
       font-size: 20px;
@@ -1340,7 +1348,7 @@ p {
     }
   }
   .pg-6 {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 26px;
     .mask.margin-top-h4 {
       padding: 21px 16px;
