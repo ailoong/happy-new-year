@@ -134,7 +134,7 @@ const mindsporeData: any = computed(() => {
           '每一位小孢子的加入，都是对社区的有一次充能',
         ],
         top_no: [
-          '2023年3月28号，昇思MindSpore正式开源',
+          '2020年3月28号，昇思MindSpore正式开源',
           '短短两年多的时光里我们已经结识了一群好朋友',
         ],
         middle_no: [
