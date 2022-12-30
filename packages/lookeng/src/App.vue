@@ -958,7 +958,7 @@ const bgmOpen: any = ref('bgmOpen');
       ref="bgm"
       src="/openlookeng-bgm.mp3"
       autoplay
-      preload
+      preload=""
       loop
     ></audio>
   </div>
@@ -1412,11 +1412,23 @@ a {
       .pc-top {
         .text {
           background-image: url('@/assets/pc-bg-#{$i}.png');
-          & ~ .text {
-            background-image: url('@/assets/pc-bg-#{$i+1}.png');
-            margin-top: 48px;
-          }
         }
+      }
+    }
+  }
+  .box-1 .pc-top {
+    .text {
+      & ~ .text {
+        background-image: url('@/assets/pc-bg-2.png');
+        margin-top: 48px;
+      }
+    }
+  }
+  .box-3 .pc-top {
+    .text {
+      & ~ .text {
+        background-image: url('@/assets/pc-bg-4.png');
+        margin-top: 48px;
       }
     }
   }
@@ -1429,13 +1441,27 @@ a {
           background-image: url('@/assets/pc-bg-#{$i}-en.png');
           width: 61px;
           height: 78px;
-          & ~ .text {
-            background-image: url('@/assets/pc-bg-#{$i+1}-en.png');
-            margin-top: 48px;
-            width: 61px;
-            height: 78px;
-          }
         }
+      }
+    }
+  }
+  .box-1 .pc-top {
+    .text {
+      & ~ .text {
+        background-image: url('@/assets/pc-bg-2-en.png');
+        margin-top: 48px;
+        width: 61px;
+        height: 78px;
+      }
+    }
+  }
+  .box-3 .pc-top {
+    .text {
+      & ~ .text {
+        background-image: url('@/assets/pc-bg-4-en.png');
+        margin-top: 48px;
+        width: 61px;
+        height: 78px;
       }
     }
   }
