@@ -28,14 +28,12 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: '',
+  user: 'pig-s-trotters',
   year: '2022',
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
-    console.log(res);
-
-    if (res) {
+    if (res.user) {
       params.value.user = res.user;
     }
   });
@@ -73,9 +71,9 @@ const pageCentent: any = computed(() => {
       page4: {
         text: [
           {
-            value: `Hi ${params.value.user}，我们在一起${
-              getYear(posterData.value?.first_time_of_enter) || 1
-            }年啦！ `,
+            value: `Hi ${params.value.user}，我们在一起${getYear(
+              posterData.value?.first_time_of_enter
+            )}年啦！ `,
             key: posterData.value.first_time_of_enter,
           },
           {
@@ -93,7 +91,11 @@ const pageCentent: any = computed(() => {
             key: posterData.value.first_time_of_comment,
           },
           {
-            value: `初来乍到，${posterData.value.first_user_of_be_comment}第一个解决了你的问题；`,
+            value: `<span class="active">${changeTime(
+              posterData.value.first_time_of_be_comment
+            )}，</span> <br>初来乍到，${
+              posterData.value.first_user_of_be_comment
+            }第一个解决了你的问题；`,
             key: posterData.value.first_user_of_be_comment,
           },
           {
@@ -335,14 +337,21 @@ const posterData: any = ref({
 });
 
 async function getPosterDataFun() {
-  await getPosterData(params.value).then((res) => {
-    if (res.code === 200 && res.data.length) {
-      isContributor.value = true;
-      posterData.value = res.data[0];
-    } else {
+  await getPosterData(params.value)
+    .then((res) => {
+      if (res?.code === 200 && res.data.length) {
+        isContributor.value = true;
+        posterData.value = res.data[0];
+        posterData.value.code_lines_add =
+          Number(posterData.value.code_lines_add) +
+          Number(posterData.value.code_lines_delete);
+      } else {
+        isContributor.value = false;
+      }
+    })
+    .catch(() => {
       isContributor.value = false;
-    }
-  });
+    });
 }
 
 let slide: BScrollInstance;
@@ -387,7 +396,8 @@ function getYear(time: any) {
   if (time) {
     const today = new Date().getTime();
     const endTime = new Date(time).getTime();
-    return Math.ceil((today - endTime) / 1000 / 24 / 60 / 60 / 365);
+    const year = Math.ceil((today - endTime) / 1000 / 24 / 60 / 60 / 365);
+    return year > 3 ? 3 : year;
   }
 }
 function getPercentage(per: any) {
@@ -430,6 +440,13 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
+  bgm.value?.addEventListener('pause', function () {
+    bgmOpen.value?.classList.remove('run-bgm');
+  });
+  bgmOpen.value?.addEventListener('touchstart', function () {
+    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+    bgmOpen.value.classList.add('run-bgm');
+  });
 });
 function pcClick() {
   const front: any = document.querySelectorAll('.front');
@@ -449,6 +466,10 @@ function pcClick() {
     });
   }
 }
+// 背景音乐
+const bgm: any = ref('bgm');
+const bgmOpen: any = ref('bgmOpen');
+
 onUnmounted(() => {
   if (slide) {
     slide.destroy();
@@ -457,6 +478,17 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <audio
+    id="bgm"
+    ref="bgm"
+    src="/bgm/openEuler_BGM_2021.mp3"
+    autoplay
+    preload
+    loop
+  ></audio>
+  <div ref="bgmOpen" class="bgm-open">
+    <img class="closebgm" src="@/assets/close.svg" alt="" />
+  </div>
   <div
     v-if="screenWidth > 1200"
     class="pc-post"
@@ -904,7 +936,11 @@ onUnmounted(() => {
       </div>
       <div class="slide-page pg-7" :class="currentPage === 6 ? 'current' : ''">
         <div class="pg-7-top">
-          <p v-for="item in pageCentent[lang].page7.text" :key="item">
+          <p
+            v-for="(item, index) in pageCentent[lang].page7.text"
+            :class="`fade-time-${index}`"
+            :key="item"
+          >
             {{ item }}
           </p>
         </div>
@@ -1017,7 +1053,27 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   width: 100vw;
   height: 100vh;
 }
+.bgm-open {
+  position: absolute;
+  width: 23px;
+  top: 18px;
+  right: 18px;
+  z-index: 999;
+}
 
+.bgm-open img {
+  width: 100%;
+}
+
+.run-bgm {
+  animation: runBgm 4s infinite;
+}
+
+@keyframes runBgm {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .slide-wrapper {
   width: 100vw;
   height: 100vh;
@@ -1232,7 +1288,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
     .pg-3 {
       position: relative;
       padding: 40px 12px 0;
-      background-size: 100% auto;
+      background-size: 100% 460px;
       .main-text {
         font-size: 12px;
         line-height: 24px;
@@ -1428,6 +1484,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
       font-size: 12px;
       line-height: 24px;
       color: #000;
+      background-repeat: no-repeat;
       .pg-7-logo {
         opacity: 0;
         margin-top: 40px;
@@ -1442,8 +1499,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
     }
   }
 }
-.pg-7-logo {
-}
+
 p {
   opacity: 0;
 }
@@ -1960,7 +2016,8 @@ p {
       line-height: 24px;
       color: #000;
       text-align: center;
-      border: 1px solid rgba($color: #fff, $alpha: 0.7);
+      background-position: 0 0;
+      border: 1px solid #e5e5e5;
       .pg-7-logo {
         margin-top: 40px;
         width: 82px;
