@@ -670,7 +670,7 @@ const isVideo = ref(true);
               <p class="txt">{{ initDom[lang].page5.text[5] }}</p>
             </div>
 
-            <div style="margin-top: 24px">
+            <div class="big">
               <p class="">{{ initDom[lang].page5.text[0] }}</p>
               <img class="code-img" :src="initDom[lang].code" />
               <p>{{ initDom[lang].page5.text[1] }}</p>
