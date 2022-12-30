@@ -46,7 +46,7 @@ const posterContent = computed(() => {
           key: posterData.value.user_login_with_most_contact,
         },
         {
-          value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多`,
+          value: `<span class='active'>${posterData.value.contact_users_num}</span>，一定很特别，你们沟通最多`,
           key: posterData.value.contact_users_num,
         },
         {
@@ -341,14 +341,10 @@ onUnmounted(() => {
             <p class="margin-top-h5">2022年</p>
             <p>已经有越来越多的人走进 openGauss 的开源世界</p>
             <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-            <!-- <p
-              v-for="item in posterContent.page3.text"
-              :class="`fade-time-`"
-              :key="item.value"
-            >
-              <span v-if="item.key">{{ item.value }}</span>
+            <p v-for="item in posterContent.page3.text" :key="item.value">
+              <span v-if="item.key" v-html="item.value"></span>
             </p>
-            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p> -->
+            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
           </div>
         </div>
       </div>
@@ -1064,12 +1060,13 @@ p {
 
   @for $i from 0 through 22 {
     .fade-time-#{ $i} {
-      animation-delay: #{$i * 0.5}s;
+      animation-delay: #{$i * 0.5+2}s;
       .active {
-        animation-delay: #{$i * 0.5 + 0.5}s;
+        animation-delay: #{$i * 0.5 +2 + 0.5}s;
       }
     }
   }
+
   ///
   .pg-3-bottom {
     animation-duration: 0.8s;
@@ -1078,7 +1075,25 @@ p {
   }
 }
 // 动效
-
+// .current.slide-page {
+//   @for $i from 0 through 22 {
+//     .fade-time-#{ $i} {
+//       animation-delay: #{$i * 0.5 + 2}s;
+//       .active {
+//         animation-delay: #{$i * 0.5 + 2 + 0.5}s;
+//       }
+//     }
+//   }
+// }
+// .current.pg-1,
+// .current.pg-2,
+// .current.pg-3,
+// .current.pg-4,
+// .current.pg-5,
+// .current.pg-6 {
+//   background-position: 100% center;
+//   animation: zoomin 2s ease-in forwards;
+// }
 @keyframes fade {
   100% {
     opacity: 1;
@@ -1466,6 +1481,11 @@ p {
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+}
+@keyframes zoomin {
+  100% {
+    background-position: 0% center;
   }
 }
 </style>

@@ -187,7 +187,7 @@ const pageCentent: any = computed(() => {
           `I'm so grateful that you've joined me on this journey`,
           `Over the past three years, we've accomplished so much:`,
           `<span class="active">1003000+ users</span>`,
-          `<span class="active">88200 PRs</span>`,
+          `<span class="active">88200+ PRs</span>`,
           `<span class="active">12700+ contributors</span>`,
           `<span class="active">18 commercial OSVs</span>`,
           `<span class="active">710+ enterprise members</span>`,
@@ -238,7 +238,7 @@ const pageCentent: any = computed(() => {
           {
             value: `<span class="active">On ${changeTime(
               posterData.value.first_time_of_comment
-            )},</span> <br> you first commented on <span class="active"> ${
+            )},</span> <br>this year you first commented on <span class="active"> ${
               posterData.value.first_user_of_comment
             }'s</span> post.`,
             key: posterData.value.first_time_of_comment,
@@ -270,10 +270,6 @@ const pageCentent: any = computed(() => {
           },
           {
             value: `and you have been at the center of it all.`,
-            key: true,
-          },
-          {
-            value: `The openEuler community grew rapidly in 2022,`,
             key: true,
           },
           {
