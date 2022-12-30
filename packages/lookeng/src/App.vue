@@ -19,14 +19,14 @@ const screenWidth = useWindowResize();
 watch(
   () => window.location.href,
   (val) => {
-    lang.value = val.includes('/zh') ? 'zh' : 'en';
+    lang.value = val.includes('/en/') ? 'en' : 'zh';
   },
   { immediate: true }
 );
 
 const params = ref({
   community: 'openlookeng',
-  user: '',
+  user: 'ailoooong',
   year: '2022',
 });
 
@@ -65,13 +65,26 @@ async function getPosterDataFun() {
     });
 }
 let slide: BScrollInstance;
-const currentPage = ref(0);
+const currentPage = ref(-1);
 
 onMounted(async () => {
   await getUserDataFun();
+  // 社区埋点
+  try {
+    const sensors = (window as any)['sensorsDataAnalytic201505'];
+    sensors?.setProfile({
+      user_logo: params.value.user,
+      community: params.value.community,
+      created_at: new Date(),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   // 必须先确定是否为贡献者
   await getPosterDataFun();
   pcClick();
+  currentPage.value = 0;
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
       scrollX: false,
@@ -426,7 +439,9 @@ function changeTime(time: string) {
 
 function getPercentage(per: any) {
   if (per) {
-    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
+    return per === '1'
+      ? 1
+      : ((1 - Number(per?.replace('%', ''))) * 100).toFixed(2);
   }
 }
 function getRank(per: string) {
