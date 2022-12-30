@@ -14,10 +14,22 @@ watch(
   () => window.location.href,
   (val) => {
     lang.value = val.includes('/zh/') ? 'zh' : 'en';
-    lang.value = 'zh';
   },
   { immediate: true }
 );
+
+const params = ref({
+  community: 'mindspore',
+  user: 'pig-s-trotters',
+  year: '2022',
+});
+async function getUserDataFun() {
+  await getUserData().then((res) => {
+    if (res.user) {
+      params.value.user = res.user;
+    }
+  });
+}
 
 const mindsporeData: any = computed(() => {
   return {
@@ -430,40 +442,31 @@ const mindsporeData: any = computed(() => {
   };
 });
 
-const params = ref({
-  community: 'mindspore',
-  user: '',
-  year: '2022',
-});
-function getUserDataFun() {
-  getUserData().then((res) => {
-    if (res.user) {
-      params.value.user = res.user;
-    }
-  });
-}
-
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 
-const isContributor = ref(true);
+const isContributor = ref(false);
 const posterData: any = ref({});
 const monthData: any = ref({});
 const registerTime = ref([]);
 
 async function getPosterDataFun() {
-  await getPosterData(params.value).then((res) => {
-    if (res.code === 200 && res.data.length) {
-      isContributor.value = true;
-      posterData.value = res.data[0];
-      if (res.data[0].time_of_register_xihe) {
-        registerTime.value = splitTime(res.data[0].time_of_register_xihe);
+  await getPosterData(params.value)
+    .then((res) => {
+      if (res.code === 200 && res.data.length) {
+        isContributor.value = true;
+        posterData.value = res.data[0];
+        if (res.data[0].time_of_register_xihe) {
+          registerTime.value = splitTime(res.data[0].time_of_register_xihe);
+        }
+      } else {
+        isContributor.value = false;
       }
-    } else {
+    })
+    .catch(() => {
       isContributor.value = false;
-    }
-  });
+    });
 }
 
 async function getMonthountFun() {
@@ -495,11 +498,12 @@ function splitTime(data: any) {
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  await getPosterDataFun();
   await getUserDataFun();
+  await getPosterDataFun();
   await getMonthountFun();
 
   pcClick();
+
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
       scrollX: false,
@@ -520,12 +524,24 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
+
+  bgm.value?.addEventListener('pause', function () {
+    bgmOpen.value?.classList.remove('run-bgm');
+  });
+  bgmOpen.value?.addEventListener('touchstart', function () {
+    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+    bgmOpen.value.classList.add('run-bgm');
+  });
 });
 
 function goStart() {
   slide.scrollToElement('.pg-3', 500, 0, 0);
 }
 const isShowStar = ref(false);
+
+// 背景音乐
+const bgm: any = ref('bgm');
+const bgmOpen: any = ref('bgmOpen');
 
 function pcClick() {
   const front: any = document.querySelectorAll('.front');
@@ -544,6 +560,7 @@ function pcClick() {
       }
     });
   }
+
   clickCount.value++;
   if (clickCount.value > 1) {
     isShowStar.value = !isShowStar.value;
@@ -558,11 +575,34 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <audio
+    id="bgm"
+    ref="bgm"
+    src="/bgm/MindSpore_BGM_2021.mp3"
+    autoplay
+    preload
+    loop
+  ></audio>
+  <div ref="bgmOpen" class="bgm-open">
+    <img class="closebgm" src="@/assets/close.svg" alt="" />
+  </div>
+
   <div v-if="screenWidth > 1200" class="pc-post" @click="pcClick">
     <div class="contribution">
       <div class="container box-1">
         <div class="front">
-          <img class="bg-imgage" src="@/assets/pc-bg1.png" alt="" />
+          <img
+            v-if="lang === 'zh'"
+            class="bg-imgage"
+            src="@/assets/pc-bg1.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="bg-imgage"
+            src="@/assets/bg-image2-en.jpg"
+            alt=""
+          />
         </div>
 
         <div class="back">
@@ -613,7 +653,18 @@ onUnmounted(() => {
 
       <div class="container box-2">
         <div class="front">
-          <img class="bg-imgage" src="@/assets/pc-bg2.png" alt="" />
+          <img
+            v-if="lang === 'zh'"
+            class="bg-imgage"
+            src="@/assets/pc-bg2.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="bg-imgage"
+            src="@/assets/bg-image1-en.jpg"
+            alt=""
+          />
         </div>
         <div class="back">
           <div class="content-2 pg-3" :class="clickCount > 1 ? 'current' : ''">
@@ -685,7 +736,18 @@ onUnmounted(() => {
 
       <div class="container box-3">
         <div class="front">
-          <img class="bg-imgage" src="@/assets/pc-bg3.png" alt="" />
+          <img
+            v-if="lang === 'zh'"
+            class="bg-imgage"
+            src="@/assets/pc-bg3.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="bg-imgage"
+            src="@/assets/bg-image2-en.jpg"
+            alt=""
+          />
         </div>
         <div class="back">
           <div class="content-3 pg-4" :class="clickCount > 1 ? 'current' : ''">
@@ -773,12 +835,23 @@ onUnmounted(() => {
 
       <div class="container box-4">
         <div class="front">
-          <img class="bg-imgage" src="@/assets/pc-bg4.png" alt="" />
+          <img
+            v-if="lang === 'zh'"
+            class="bg-imgage"
+            src="@/assets/pc-bg4.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="bg-imgage"
+            src="@/assets/bg-image2-en.jpg"
+            alt=""
+          />
         </div>
         <div class="back">
           <div class="content-4 pg-5" :class="clickCount > 1 ? 'current' : ''">
             <img class="pg5-clock" src="@/assets/clock.png" alt="" />
-            <img class="pg5-sun" src="@/assets/sun.png" alt="" />
+            <img class="pg5-sun-pc" src="@/assets/sun.png" alt="" />
             <img class="pg5-sunshine" src="@/assets/sunshine.png" alt="" />
             <img class="pg5-cloud-left" src="@/assets/cloud-left.png" alt="" />
             <img
@@ -1106,6 +1179,28 @@ onUnmounted(() => {
   height: 100vh;
 }
 
+.bgm-open {
+  position: absolute;
+  width: 23px;
+  top: 18px;
+  right: 18px;
+  z-index: 999;
+}
+
+.bgm-open img {
+  width: 100%;
+}
+
+.run-bgm {
+  animation: runBgm 4s infinite;
+}
+
+@keyframes runBgm {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 // ipad 适配
 @media screen and (min-width: 768px) {
   html {
@@ -1372,6 +1467,11 @@ p {
   .pg5-sun {
     animation: sun-left 1s 0s 1 cubic-bezier(0.15, 0.76, 0.25, 0.86),
       sun-top 1s 0s 1 linear;
+    animation-fill-mode: forwards;
+  }
+  .pg5-sun-pc {
+    animation: sun-left1 1s 0s 1 cubic-bezier(0.15, 0.76, 0.25, 0.86),
+      sun-top1 1s 0s 1 linear;
     animation-fill-mode: forwards;
   }
 
@@ -2217,6 +2317,15 @@ p {
       right: -130px;
     }
   }
+  @keyframes sun-left1 {
+    0% {
+      right: -240px;
+    }
+
+    100% {
+      right: -110px;
+    }
+  }
 
   @keyframes sun-top {
     0% {
@@ -2224,7 +2333,16 @@ p {
     }
 
     100% {
-      bottom: 260px;
+      bottom: 160px;
+    }
+  }
+  @keyframes sun-top1 {
+    0% {
+      bottom: -90px;
+    }
+
+    100% {
+      bottom: 160px;
     }
   }
 
@@ -2365,8 +2483,8 @@ p {
       position: absolute;
       bottom: -200px;
       left: -74px;
-      // left: 50%;
-      // transform: translateX(-50%);
+      left: 50%;
+      transform: translateX(-50%);
       opacity: 0;
     }
     .point-1 {
@@ -2555,7 +2673,7 @@ p {
       right: -450px;
     }
 
-    .pg5-sun {
+    .pg5-sun-pc {
       height: 128px;
       position: absolute;
       right: -240px;
