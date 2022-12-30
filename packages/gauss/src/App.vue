@@ -49,44 +49,48 @@ const posterContent = computed(() => {
           value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
           key: posterData.value.contact_users_num,
         },
+        {
+          value: `相信一定是志同道合的伙伴`,
+          key: posterData.value.contact_users_num,
+        },
       ],
     },
     page4: {
       text: [
         {
-          value: `贡献了<span class='active'>${posterData.value.code_lines_add}</span>行代码，`,
+          value: `贡献了<span class='active'>${posterData.value.code_lines_add}</span>行代码`,
           key: posterData.value.code_lines_add,
         },
         {
-          value: `提交了<span class='active'>${posterData.value.pr_num}</span>个PR，`,
+          value: `提交了<span class='active'>${posterData.value.pr_num}</span>个PR`,
           key: posterData.value.pr_num,
         },
         {
-          value: `提出了<span class='active'>${posterData.value.issue_num}</span>个Issue，`,
+          value: `提出了<span class='active'>${posterData.value.issue_num}</span>个Issue`,
           key: posterData.value.issue_num,
         },
         {
-          value: `Star了<span class='active'>${posterData.value.star_num}</span>个代码仓库，`,
+          value: `Star了<span class='active'>${posterData.value.star_num}</span>个代码仓库`,
           key: posterData.value.star_num,
         },
         {
-          value: `Fork了<span class='active'>${posterData.value.fork_num}</span>个代码仓库，`,
+          value: `Fork了<span class='active'>${posterData.value.fork_num}</span>个代码仓库`,
           key: posterData.value.fork_num,
         },
         {
-          value: `Watch了<span class='active'>${posterData.value.watch_num}</span>个代码仓库，`,
+          value: `Watch了<span class='active'>${posterData.value.watch_num}</span>个代码仓库`,
           key: posterData.value.watch_num,
         },
         {
-          value: `你对某行代码的好奇与关注，`,
+          value: `你对某行代码的好奇与关注`,
           key: true,
         },
         {
-          value: `对某个问题的存疑亦或是认可，`,
+          value: `对某个问题的存疑亦或是认可`,
           key: true,
         },
         {
-          value: `都代表了「你」看待这个数字世界的独特视角。`,
+          value: `都代表了「你」看待这个数字世界的独特视角`,
           key: true,
         },
       ],
@@ -308,9 +312,7 @@ onUnmounted(() => {
               这个名字我已经铭记
             </p>
             <p class="fade-time-9">在openGauss的开源世界</p>
-            <p class="fade-time-10">
-              每一次相遇，每一次陪伴，一定都是双向奔赴。
-            </p>
+            <p class="fade-time-10">每一次相遇，每一次陪伴，一定都是双向奔赴</p>
           </div>
         </div>
       </div>
@@ -323,9 +325,9 @@ onUnmounted(() => {
             </p>
             <p>openGauss如期在2022年发布<span class="active">3个</span>版本</p>
             <p>
-              你们的成果被<span class="active">96个</span>国家、<span
+              你们的成果被<span class="active">108个</span>国家、<span
                 class="active"
-                >765个</span
+                >1000个</span
               >城市下载应用
             </p>
             <p>吸引了超过<span class="active">200家</span>企业加入社区</p>
@@ -337,7 +339,7 @@ onUnmounted(() => {
               并且举办了openGauss<span class="active">第1次</span>开发者大会
             </p>
             <p class="margin-top-h5">2022年</p>
-            <p>已经有越来越多的人走进 openGauss 的开源世界。</p>
+            <p>已经有越来越多的人走进 openGauss 的开源世界</p>
             <p>与openGauss保持同频 分享热爱 留下宝藏</p>
             <!-- <p
               v-for="item in posterContent.page3.text"
@@ -383,8 +385,8 @@ onUnmounted(() => {
           <p class="margin-top-h4">
             感谢2022年的相遇、陪伴、沟通、成长
             2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
-            愿你元旦快乐。
           </p>
+          <p>愿你元旦快乐</p>
           <div class="logo-box margin-top-h4">
             <img src="@/assets/qrCode.png" alt="" />
           </div>
@@ -430,9 +432,9 @@ onUnmounted(() => {
                   超过<span class="active">4000+</span>开发者并肩同行
                 </p>
                 <p class="fade-time-9">
-                  下载量遍及全球<span class="active">96个</span>国家、<span
+                  下载量遍及全球<span class="active">108个</span>国家、<span
                     class="active"
-                    >765个</span
+                    >1000个</span
                   >城市
                 </p>
                 <p class="fade-time-10">
@@ -532,7 +534,7 @@ onUnmounted(() => {
             这个名字我已经铭记
           </p>
           <p class="fade-time-9">在openGauss的开源世界</p>
-          <p class="fade-time-10">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
+          <p class="fade-time-10">每一次相遇，每一次陪伴，一定都是双向奔赴</p>
         </div>
       </div>
       <div
@@ -540,41 +542,40 @@ onUnmounted(() => {
         :class="currentPage === 2 ? 'current' : ''"
       >
         <div class="mask">
-          <p class="fade-time-0">
-            你一次次完成自我的深度探索，也找到了契合的同行者
-          </p>
-          <p class="fade-time-1 margin-top-h6">
+          <p class="fade-time-0">你一次次完成自我的深度探索</p>
+          <p class="fade-time-1">也找到了契合的同行者</p>
+          <p class="fade-time-2 margin-top-h6">
             因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
           </p>
-          <p class="fade-time-2">
+          <p class="fade-time-3">
             openGauss如期在2022年发布<span class="active">3个</span>版本
           </p>
-          <p class="fade-time-3">
-            你们的成果被<span class="active">96个</span>国家、<span
+          <p class="fade-time-4">
+            你们的成果被<span class="active">108个</span>国家、<span
               class="active"
-              >765个</span
+              >1000个</span
             >城市下载应用
           </p>
-          <p class="fade-time-4">
+          <p class="fade-time-5">
             吸引了超过<span class="active">200家</span>企业加入社区
           </p>
-          <p class="fade-time-5">
+          <p class="fade-time-6">
             openGauss在国内<span class="active">15个</span>城市建立了用户组
           </p>
-          <p class="fade-time-6">走进<span class="active">72所</span>高校</p>
-          <p class="fade-time-7">
+          <p class="fade-time-7">走进<span class="active">72所</span>高校</p>
+          <p class="fade-time-8">
             并且举办了openGauss<span class="active">第1次</span>开发者大会
           </p>
         </div>
         <div class="mask margin-top-h7" style="padding: 16px 12px">
-          <p class="fade-time-8">2022年</p>
-          <p class="fade-time-9">
-            已经有越来越多的人走进 openGauss 的开源世界。
+          <p class="fade-time-9">2022年</p>
+          <p class="fade-time-10">
+            已经有越来越多的人走进 openGauss 的开源世界
           </p>
-          <p class="fade-time-10">与openGauss保持同频 分享热爱 留下宝藏</p>
+          <p class="fade-time-11">与openGauss保持同频 分享热爱 留下宝藏</p>
           <p
             v-for="(item, index) in posterContent.page3.text"
-            :class="`fade-time-${index + 1 + 10}`"
+            :class="`fade-time-${index + 1 + 11}`"
             :key="item.value"
           >
             <span v-if="item.key" v-html="item.value"></span>
@@ -609,11 +610,10 @@ onUnmounted(() => {
           class="margin-top-h6"
           v-html="rankMap[getRank(getPercentage(posterData.count_rank))]"
         ></p>
-        <p class="margin-top-h4">
-          感谢2022年的相遇、陪伴、沟通、成长
-          2023，你相信如果可能，那么美好就一定会发生的。 雾霾散去，重见光明
-          愿你元旦快乐。
-        </p>
+        <p class="margin-top-h4">感谢2022年的相遇、陪伴、沟通、成长</p>
+        <p>2023，你相信如果可能，那么美好就一定会发生的</p>
+        <p>雾霾散去，重见光明</p>
+        <p>愿你元旦快乐</p>
         <div class="logo-box margin-top-h4">
           <img src="@/assets/qrCode.png" alt="" />
         </div>
@@ -652,7 +652,7 @@ onUnmounted(() => {
           <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
           <p class="fade-time-7">感谢相遇，XXX(Gitee Name)这个名字我已经铭记</p>
           <p class="fade-time-8">在openGauss的开源世界</p>
-          <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
+          <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴</p>
         </div>
       </div> -->
       <div
@@ -677,9 +677,9 @@ onUnmounted(() => {
                 超过<span class="active">4000+</span>开发者并肩同行
               </p>
               <p class="fade-time-9">
-                下载量遍及全球<span class="active">96个</span>国家、<span
+                下载量遍及全球<span class="active">108个</span>国家、<span
                   class="active"
-                  >765个</span
+                  >1000个</span
                 >城市
               </p>
               <p class="fade-time-10">
@@ -843,6 +843,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         text-align: left;
         align-items: center;
         flex-direction: column;
+        p {
+          font-weight: 700;
+        }
 
         .go-start {
           position: relative;
@@ -930,6 +933,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
       flex-direction: column;
       // justify-content: center;
       .title {
+        margin-top: 12px;
+      }
+      .title:first-child {
         margin-top: 40px;
       }
       p {
@@ -968,6 +974,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         }
       }
       .fade-time-0 {
+        line-height: 32px;
+        font-size: 18px;
+      }
+      .fade-time-1 {
         line-height: 32px;
         font-size: 18px;
       }
@@ -1214,6 +1224,9 @@ p {
       text-align: left;
       align-items: center;
       flex-direction: column;
+      p {
+        font-weight: 700;
+      }
 
       .go-start {
         position: relative;
