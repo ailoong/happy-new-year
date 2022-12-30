@@ -187,7 +187,9 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.star_num,
           },
           {
-            value: `提出了<span class="active">${posterData.value.issue_num}</span>个${posterData.value.issue_num > 1 ? 'Issues' : 'Issue'}`,
+            value: `提出了<span class="active">${
+              posterData.value.issue_num
+            }</span>个${posterData.value.issue_num > 1 ? 'Issues' : 'Issue'}`,
             key: posterData.value.issue_num,
           },
           {
@@ -2622,10 +2624,8 @@ p {
 // pc端
 .pc-post {
   height: 100vh;
-  padding: 50px;
-  @media screen and (max-width: 1460px) {
-    padding: 24px;
-  }
+  padding: 50px 24px;
+
   // transform: translate3d(0, 0, 0);
   transform: translateZ(0);
   will-change: transform;
@@ -2821,6 +2821,16 @@ p {
       bottom: 216px;
       opacity: 0;
     }
+    .pg4-door-light-1,
+    .pg4-door-light-2,
+    .pg4-door-num-1,
+    .pg4-door-num-2,
+    .pg4-track-left,
+    .pg4-track-right {
+      @media screen and (max-width: 1556px) {
+        display: none;
+      }
+    }
 
     .pg4-door-light-1 {
       width: 13px;
@@ -2959,6 +2969,7 @@ p {
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    gap: 24px;
   }
 
   .container {
