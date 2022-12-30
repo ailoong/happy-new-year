@@ -25,8 +25,10 @@ const params = ref({
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
+    console.log(res);
     if (res.user) {
       params.value.user = res.user;
+      console.log(res.user);
     }
   });
 }
