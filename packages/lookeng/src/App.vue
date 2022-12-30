@@ -97,6 +97,7 @@ onMounted(async () => {
         videoRef.value?.play();
         bgm.value?.play();
         isVideo.value = false;
+        bgmOpen.value.classList.add('run-bgm');
       }
     });
   }
@@ -422,9 +423,10 @@ function changeTime(time: string) {
     return all;
   }
 }
-function getPercentage(per: string) {
+
+function getPercentage(per: any) {
   if (per) {
-    return (100 - Number(per.replace('%', ''))).toFixed(2);
+    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
   }
 }
 function getRank(per: string) {
@@ -877,7 +879,9 @@ const isVideo = ref(true);
                 </div>
               </div>
               <p class="txt fade-time-3">{{ initDom[lang].page5.text[4] }}</p>
-              <p class="txt fade-time-4">{{ initDom[lang].page5.text[5] }}</p>
+              <p v-if="initDom[lang].page5.text[5]" class="txt fade-time-4">
+                {{ initDom[lang].page5.text[5] }}
+              </p>
             </div>
 
             <div class="big fade-time-5">
@@ -1066,7 +1070,7 @@ a {
   opacity: 0;
 }
 .code-img {
-  margin: 12px 0;
+  margin: 8px 0;
   height: 64px;
   border: 2px solid #fff;
 }
@@ -1120,7 +1124,7 @@ a {
         justify-content: center;
         align-items: center;
         text-align: center;
-        padding: 0 20px;
+        padding: 0 20px 20px;
         height: 100%;
 
         .active {
@@ -1134,6 +1138,9 @@ a {
         }
       }
       .page4 {
+        .big {
+          font-size: 18px;
+        }
         .card {
           opacity: 0;
         }
@@ -1165,7 +1172,7 @@ a {
       font-style: italic;
     }
     .go-start {
-      margin: 32px 0;
+      margin: 40px 0;
       font-size: 16px;
       color: #feb32a;
       display: inline-flex;
@@ -1232,7 +1239,7 @@ a {
 }
 .page4 {
   .name {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
     letter-spacing: 1px;
     font-family: 'Milky-Han-Term-CN-Heavy-Italic';
@@ -1245,6 +1252,7 @@ a {
   padding-bottom: 60px;
   .big {
     margin: 0;
+    font-size: 16px;
   }
   .code-img {
     height: 64px;
@@ -1702,8 +1710,8 @@ a {
 
 .bgm-open {
   position: fixed;
-  top: 24px;
-  right: 24px;
+  top: 16px;
+  right: 16px;
   width: 24px;
   height: 24px;
   display: block;
