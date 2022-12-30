@@ -27,6 +27,16 @@ async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
+      try {
+        const sensors = (window as any)['sensorsDataAnalytic201505'];
+        sensors?.setProfile({
+          user_logo: res.user,
+          community: 'mindspore',
+          created_at: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 }
@@ -1261,11 +1271,7 @@ p {
 
 // 滑到页面才触发动画
 .current {
-  transform: translate3d(0, 0, 0);
-  transform: translateZ(0);
-  will-change: transform;
   .ship {
-    // :TODO:调整速度
     animation: to-right 1s 0.4s 1 linear,
       to-top 1s 0.4s 1 cubic-bezier(0.23, 0.88, 0.67, 0.26);
     animation-fill-mode: forwards;
@@ -1551,6 +1557,15 @@ p {
     animation-name: appear;
     animation-duration: 1s;
     animation-delay: 3s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  .qr-code {
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-delay: 4s;
     animation-iteration-count: 1;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
@@ -1856,8 +1871,7 @@ p {
         left: 50%;
         transform: translateX(-50%);
         padding: 0 16px;
-        @media screen and (min-height: 375px) {
-          // top: 30px;
+        @media screen and (max-height: 668px) {
           p {
             line-height: 20px;
           }
@@ -1868,14 +1882,14 @@ p {
         &-middle {
           opacity: 0;
           margin-top: 20px;
-          @media screen and (min-height: 375px) {
+          @media screen and (max-height: 668px) {
             margin-top: 10px;
           }
         }
         &-bottom {
           opacity: 0;
           margin-top: 20px;
-          @media screen and (min-height: 375px) {
+          @media screen and (max-height: 668px) {
             margin-top: 10px;
           }
         }
@@ -2069,6 +2083,7 @@ p {
         position: absolute;
         right: 28px;
         bottom: 28px;
+        opacity: 0;
         z-index: 8;
       }
 
@@ -2431,7 +2446,9 @@ p {
   @media screen and (max-width: 1460px) {
     padding: 24px;
   }
-
+  // transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  will-change: transform;
   p {
     font-size: 12px;
     line-height: 20px;
