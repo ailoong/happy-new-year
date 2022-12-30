@@ -20,13 +20,11 @@ watch(
 
 const params = ref({
   community: 'mindspore',
-  user: 'liyang0608',
+  user: 'lishengboo',
   year: '2022',
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
-    console.log(res);
-
     if (res.user) {
       params.value.user = res.user;
     }
@@ -87,11 +85,11 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.issue_num,
           },
           {
-            value: `社区下载量突破<span class="active">3558682</span>`,
+            value: `社区下载量突破<span class="active">3560000+</span>`,
             key: '3558682',
           },
           {
-            value: `超过<span class="active">21188</span>开发者在社区做出贡献`,
+            value: `超过<span class="active">21190+</span>开发者在社区做出贡献`,
             key: '21188',
           },
           {
@@ -130,11 +128,11 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `社区下载量突破<span class="active">3558682</span>`,
+            value: `社区下载量突破<span class="active">3560000+</span>`,
             key: '1',
           },
           {
-            value: `超过<span class="active">21188</span>开发者在社区做出贡献`,
+            value: `超过<span class="active">21190+</span>开发者在社区做出贡献`,
             key: '1',
           },
           {
@@ -170,7 +168,7 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.star_num,
           },
           {
-            value: `提出了<span class="active">${posterData.value.issue_num}</span>个issue`,
+            value: `提出了<span class="active">${posterData.value.issue_num}</span>个Issue`,
             key: posterData.value.issue_num,
           },
           {
@@ -296,14 +294,15 @@ const mindsporeData: any = computed(() => {
           },
           {
             value: `Received <span class="active">${posterData.value.issue_num}</span> issues and <span class="active">${posterData.value.pr_num}</span> PRs`,
-            key: posterData.value.pr_num,
+            key:
+              posterData.value.pr_num || posterData.value.issue_num ? '' : '1',
           },
           {
-            value: `Surpassed <span class="active">3558682</span> downloads`,
+            value: `Surpassed <span class="active">3560000+</span> downloads`,
             key: '3558682',
           },
           {
-            value: `Worked with over <span class="active">21188</span> developers`,
+            value: `Worked with over <span class="active">21190+</span> developers`,
             key: '21188',
           },
           {
@@ -334,11 +333,11 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `Surpassed <span class="active">3558682</span> downloads`,
+            value: `Surpassed <span class="active">3560000+</span> downloads`,
             key: '3558682',
           },
           {
-            value: `Worked with over <span class="active">21188</span> developers`,
+            value: `Worked with over <span class="active">21190+</span> developers`,
             key: '21188',
           },
           {
@@ -369,15 +368,21 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `Forked <span class="active">${posterData.value.star_num}</span> repos`,
+            value: `Forked <span class="active">${
+              posterData.value.star_num
+            }</span> ${posterData.value.star_num > 1 ? 'repos' : 'repo'}`,
             key: posterData.value.star_num,
           },
           {
-            value: `Raised <span class="active">${posterData.value.issue_num}</span> issues`,
+            value: `Raised <span class="active">${
+              posterData.value.issue_num
+            }</span> ${posterData.value.issue_num > 1 ? 'issues' : 'issue'}`,
             key: posterData.value.issue_num,
           },
           {
-            value: `Submitted <span class="active">${posterData.value.pr_num}</span> PRs`,
+            value: `Submitted <span class="active">${
+              posterData.value.pr_num
+            }</span> ${posterData.value.pr_num > 1 ? 'PRs' : 'PR'}`,
             key: posterData.value.pr_num,
           },
           {
@@ -389,7 +394,7 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.first_user_of_be_comment,
           },
           {
-            value: `You've made <span class="active">${monthData.value.count}</span> contributions in ${monthData.value.month} this year`,
+            value: `You've made <span class="active">${monthData.value.count}</span> contributions in <span class="active">${monthData.value.month}</span> this year`,
             key: monthData.value.count,
           },
           {
@@ -451,18 +456,16 @@ BScroll.use(Slide);
 const isContributor = ref(false);
 const posterData: any = ref({});
 const monthData: any = ref({});
-const registerTime = ref([]);
+const registerTime: any = ref([]);
 
 async function getPosterDataFun() {
   await getPosterData(params.value)
     .then((res) => {
-      console.log(res);
-      
       if (res.code === 200 && res.data.length) {
         isContributor.value = true;
         posterData.value = res.data[0];
         if (res.data[0].time_of_register_xihe) {
-          registerTime.value = splitTime(res.data[0].time_of_register_xihe);
+          registerTime.value = timesDiff(res.data[0].time_of_register_xihe);
         }
       } else {
         isContributor.value = false;
@@ -474,11 +477,8 @@ async function getPosterDataFun() {
 }
 
 async function getMonthountFun() {
-
   await getMonthcount(params.value).then((res) => {
     if (res.code === 200 && res.data) {
-      console.log(res);
-
       monthData.value = res.data;
     }
   });
@@ -497,10 +497,30 @@ function transformTime(time: string) {
   return days;
 }
 
-function splitTime(data: any) {
-  const d1 = data.split(' ');
-  const d2 = d1[0].split('/');
-  return d2;
+function timesDiff(timesData: any) {
+  const dateBegin = new Date(); //获取当前时间
+  const dateEnd = new Date(timesData); //将-转化为/，使用new Date
+  const dateDiff = dateEnd.getTime() - dateBegin.getTime(); //时间差的毫秒数
+  const days = -Math.floor(dateDiff / (24 * 3600 * 1000)); //计算出相差天数
+  const leave1 = dateDiff % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+  const hours = Math.floor(leave1 / (3600 * 1000)); //计算出小时数
+  const leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+  const minutes = Math.floor(leave2 / (60 * 1000)); //计算相差分钟数
+  const diffObj = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  };
+
+  if (days !== 0) {
+    diffObj.days = days;
+  } else if (days === 0 && hours !== 0) {
+    diffObj.hours = hours;
+  } else if (days === 0 && hours === 0) {
+    diffObj.minutes = minutes;
+  }
+
+  return diffObj;
 }
 
 onMounted(async () => {
@@ -1136,6 +1156,14 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-5" :class="currentPage === 4 ? 'current' : ''">
+        <img
+          v-if="lang === 'zh'"
+          class="qr-code"
+          src="@/assets/qr-code-zh.png"
+          alt=""
+        />
+        <img v-else class="qr-code" src="@/assets/qr-code-en.png" alt="" />
+
         <img class="pg5-clock" src="@/assets/clock.png" alt="" />
         <img class="pg5-sun" src="@/assets/sun.png" alt="" />
         <img class="pg5-sunshine" src="@/assets/sunshine.png" alt="" />
@@ -1556,6 +1584,7 @@ p {
         left: 50%;
         transform: translateX(-50%);
         z-index: 9;
+        object-fit: contain;
       }
       .machine {
         width: 390px;
@@ -1830,7 +1859,7 @@ p {
         @media screen and (min-height: 375px) {
           // top: 30px;
           p {
-            line-height: 21px;
+            line-height: 20px;
           }
         }
         &-top {
@@ -2034,6 +2063,15 @@ p {
 
     .pg-5 {
       position: relative;
+      .qr-code {
+        width: 122px;
+        height: 122px;
+        position: absolute;
+        right: 28px;
+        bottom: 28px;
+        z-index: 8;
+      }
+
       .pg5-main {
         width: 100%;
         padding: 0 16px;
@@ -2054,8 +2092,6 @@ p {
         position: absolute;
         bottom: -268px;
         right: -450px;
-        @media screen and (min-width: 768px) {
-        }
       }
 
       .pg5-sun {
@@ -2345,7 +2381,7 @@ p {
     }
 
     100% {
-      bottom: 160px;
+      bottom: 240px;
     }
   }
   @keyframes sun-top1 {
@@ -2746,7 +2782,7 @@ p {
     overflow: hidden;
   }
   .front {
-    background-color: rgb(0, 47, 156);
+    background-color: #0d8dff;
     z-index: 10;
     background-position: -6px -2px;
     background-repeat: no-repeat;
