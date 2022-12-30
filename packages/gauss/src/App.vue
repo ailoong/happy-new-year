@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'zhongjun2',
+  user: 'tuzouzhi999',
   year: '2022',
 });
 
@@ -46,7 +46,7 @@ const posterContent = computed(() => {
           key: posterData.value.user_login_with_most_contact,
         },
         {
-          value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多`,
+          value: `<span class='active'>${posterData.value.contact_users_num}</span>，一定很特别，你们沟通最多`,
           key: posterData.value.contact_users_num,
         },
         {
@@ -118,26 +118,28 @@ function getRank(per: any) {
 }
 const rankMap: any = computed(() => {
   return [
-    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><span class="active1">「浑然天成的当代缪斯」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+    `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「浑然天成的当代缪斯」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p> <br> 你积极思考、独到透彻、表达跳脱<br>openGauss因为有你而变得不一样！ `,
-    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+    )}%</span> 的人</p> <br> 你积极思考、独到透彻、表达跳脱<br>openGauss因为有你而变得不一样！ `,
+
+    `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「见识非凡的探索家」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「见识非凡的探索家」</span> <br>这一年，你在openGauss收获同好，分享智慧<br>恭喜你收获了更好的自己。 `,
-    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+    )}%</span> 的人</p> <br> 这一年，你在openGauss收获同好，分享智慧<br>恭喜你收获了更好的自己 `,
+
+    `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「新知青年」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「新知青年」</span><br> 你用好奇探索真理<br>也因认真进入无数openGauss的平行世界。 `,
-    `<p class="font-size-tip margin-top-h4" >你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+    )}%</span> 的人</p> <br> 你用好奇探索真理<br>也因认真进入无数openGauss的平行世界`,
+    `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「openGauss的萌新好友」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</p>「openGauss的萌新好友」</span> <br>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇<br>请日后多多关照openGauss啦。 `,
+    )}%</span> 的人</p> <br> 都说有人不想变老就能一直年轻，秘诀是对世界保存好奇<br>请日后多多关照openGauss啦 `,
   ];
 });
 async function getPosterDataFun() {
@@ -341,14 +343,10 @@ onUnmounted(() => {
             <p class="margin-top-h5">2022年</p>
             <p>已经有越来越多的人走进 openGauss 的开源世界</p>
             <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-            <!-- <p
-              v-for="item in posterContent.page3.text"
-              :class="`fade-time-`"
-              :key="item.value"
-            >
-              <span v-if="item.key">{{ item.value }}</span>
+            <p v-for="item in posterContent.page3.text" :key="item.value">
+              <span v-if="item.key" v-html="item.value"></span>
             </p>
-            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p> -->
+            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
           </div>
         </div>
       </div>
@@ -729,17 +727,21 @@ onUnmounted(() => {
 <style lang="scss">
 $active: #fdfd19;
 $spacings: 62 40 32 24 16 12 10 8 6 4;
+
 .active {
   display: inline-block;
   opacity: 0;
   color: $active;
   font-size: 14px;
 }
+
 .bold {
   font-weight: 500;
 }
+
 @each $spacing in $spacings {
   $i: index($spacings, $spacing);
+
   .margin-top-h#{$i} {
     margin-top: #{$spacing}px;
   }
@@ -754,12 +756,14 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   height: 100vh;
   font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
 }
+
 .bgm-open {
   position: absolute;
   width: 23px;
   top: 18px;
   right: 18px;
   z-index: 999;
+
   @media screen and (min-width: 1200px) {
     display: none;
   }
@@ -778,21 +782,26 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
     transform: rotate(360deg);
   }
 }
+
 .pc-post {
   font-size: 16px;
 }
+
 .mask {
   border-radius: 4px;
   padding: 24px 16px;
   background: rgba(108, 11, 190, 0.6);
   border: 1px solid #471d9b;
 }
+
 .wrapper-l {
   padding: 40px;
 }
+
 .wrapper-m {
   padding: 32px 24px;
 }
+
 .slide-wrapper {
   width: 100vw;
   height: 100vh;
@@ -805,6 +814,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   .slide-content {
     width: 100vw;
     overflow: hidden;
+
     .slide-page {
       width: 100vw;
       height: 100vh;
@@ -817,33 +827,40 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         background-image: url('@/assets/bg#{$i}.png');
       }
     }
+
     .pg-1 {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       p {
         width: 100%;
         text-align: left;
         font-size: 18px;
         line-height: 32px;
       }
+
       .pg1-top {
         font-weight: 700;
+
         .title {
           margin-bottom: 12px;
           font-size: 26px;
         }
+
         p {
           margin-top: 2px;
           line-height: normal;
           font-size: 16px;
         }
       }
+
       .pg1-buttom {
         display: flex;
         text-align: left;
         align-items: center;
         flex-direction: column;
+
         p {
           font-weight: 700;
         }
@@ -866,6 +883,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           width: 100px;
           font-size: 18px;
           z-index: 10;
+
           &::before {
             content: '';
             display: block;
@@ -877,27 +895,33 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
             background-color: rgba(254, 207, 107, 0.22);
             animation: halo 0.8s ease-in infinite alternate;
           }
+
           @media screen and (max-height: 800px) {
             margin: 40px 0 24px;
           }
         }
       }
     }
+
     .pg-2 {
       .pg-2-top {
         font-weight: 700;
         margin-top: 100px;
+
         p {
           line-height: 32px;
           font-size: 18px;
         }
       }
+
       .pg-2-main {
         margin-top: 55px;
+
         p {
           line-height: 28px;
           font-size: 12px;
         }
+
         .active {
           font-size: 14px;
         }
@@ -909,45 +933,55 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         margin-top: 76px;
         font-size: 13px;
         line-height: 26px;
+
         .bold {
           font-size: 17px;
           line-height: 28px;
         }
       }
     }
+
     .pg-4 {
       .mask {
         margin-top: 76px;
         font-size: 13px;
         line-height: 26px;
+
         .bold {
           font-size: 20px;
           line-height: 34px;
         }
       }
+
       .active {
         padding: 0 2px;
         font-size: 14px;
       }
     }
+
     .pg-5 {
       display: flex;
       flex-direction: column;
+
       // justify-content: center;
       .title {
         margin-top: 12px;
       }
+
       .title:first-child {
         margin-top: 40px;
       }
+
       p {
         line-height: 20px;
         font-size: 13px;
       }
+
       .bold {
         font-size: 20px;
         line-height: 26px;
       }
+
       .active1 {
         display: inline-block;
         margin-top: 12px;
@@ -955,64 +989,79 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         font-size: 20px;
         font-weight: 700;
       }
+
       .active {
         font-size: 20px;
       }
+
       .rank {
         margin: 14px 0 22px;
         font-size: 20px;
       }
+
       .logo-box {
         margin-bottom: 40px;
       }
     }
+
     .pg-6 {
       font-size: 12px;
       line-height: 26px;
+
       .mask.margin-top-h4 {
         padding: 21px 16px;
         line-height: 28px;
+
         p:first-child {
           font-size: 15px;
         }
       }
+
       .fade-time-0 {
         line-height: 32px;
         font-size: 18px;
       }
+
       .fade-time-1 {
         line-height: 32px;
         font-size: 18px;
       }
+
       .active {
         padding: 0 2px;
         font-size: 15px;
       }
+
       .mask:first-child {
         margin-top: 40px;
       }
     }
   }
 }
+
 .slide-wrapper {
   .no-contribution {
     .pg-3 {
       height: 100%;
       background-image: url('@/assets/bg6.png');
+
       .pg-3-mask {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         margin-top: 0;
         height: 100%;
+
         .pg-3-main {
           line-height: 24px;
           font-size: 13px;
+
           .active {
             display: inline-block;
             font-size: 15px;
           }
         }
+
         .pg-3-bottom {
           display: flex;
           justify-content: space-between;
@@ -1024,18 +1073,21 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
             width: 82px;
             padding: 3px;
             background-color: #a865eb;
+
             img {
               width: 100%;
             }
           }
         }
       }
+
       @media screen and (max-height: 820px) {
         .pg-3-mask {
           .pg-3-main {
             line-height: 22px;
             font-size: 12px;
             justify-content: space-between;
+
             .margin-top-h4 {
               margin-top: 0;
             }
@@ -1045,18 +1097,22 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
     }
   }
 }
+
 // ipad 适配
 @media screen and (min-width: 768px) {
   html {
     font-size: 110px !important;
   }
 }
+
 p {
   opacity: 0;
 }
+
 .current {
   p {
     animation: fade 0.8s ease-in-out forwards;
+
     .active {
       animation: slide-top 0.8s ease-in-out forwards;
     }
@@ -1065,11 +1121,13 @@ p {
   @for $i from 0 through 22 {
     .fade-time-#{ $i} {
       animation-delay: #{$i * 0.5}s;
+
       .active {
         animation-delay: #{$i * 0.5 + 0.5}s;
       }
     }
   }
+
   ///
   .pg-3-bottom {
     animation-duration: 0.8s;
@@ -1077,31 +1135,55 @@ p {
     animation-fill-mode: forwards;
   }
 }
-// 动效
 
+// 动效
+// .current.slide-page {
+//   @for $i from 0 through 22 {
+//     .fade-time-#{ $i} {
+//       animation-delay: #{$i * 0.5 + 2}s;
+//       .active {
+//         animation-delay: #{$i * 0.5 + 2 + 0.5}s;
+//       }
+//     }
+//   }
+// }
+// .current.pg-1,
+// .current.pg-2,
+// .current.pg-3,
+// .current.pg-4,
+// .current.pg-5,
+// .current.pg-6 {
+//   background-position: 100% center;
+//   animation: zoomin 2s ease-in forwards;
+// }
 @keyframes fade {
   100% {
     opacity: 1;
   }
 }
+
 @keyframes halo {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0.81);
   }
 }
+
 @keyframes slide-top {
   0% {
     opacity: 0;
     transform: translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
+
 .pc-post {
   @for $i from 1 through 4 {
     .box-#{ $i} {
@@ -1110,6 +1192,7 @@ p {
       }
     }
   }
+
   .no-contribution {
     @for $i from 1 through 2 {
       .box-#{ $i} {
@@ -1120,14 +1203,17 @@ p {
     }
   }
 }
+
 .logo-box {
   padding: 5px;
   width: 105px;
   background-color: #a865eb;
+
   img {
     width: 100%;
   }
 }
+
 .pc-post {
   display: flex;
   margin: 0 auto;
@@ -1136,51 +1222,62 @@ p {
   height: 100vh;
   padding: 50px;
   max-width: 1920px;
+
   @media screen and (max-width: 1620px) {
     padding: 24px;
   }
+
   .box-1 {
     .back {
       background-image: url('@/assets/bg2.png');
     }
   }
+
   .box-2 {
     .back {
       background-image: url('@/assets/bg6.png');
     }
   }
+
   .box-3 {
     .back {
       background-image: url('@/assets/bg4.png');
     }
   }
+
   .box-4 {
     .back {
       background-image: url('@/assets/bg5.png');
     }
   }
+
   .no-contribution {
     .box-1 {
       .back {
         justify-content: space-between;
         background-image: url('@/assets/bg1.png');
+
         .go-start {
           opacity: 0;
         }
       }
     }
+
     .box-2 {
       .pg-3-mask {
         .active {
           font-size: 14px;
         }
+
         margin-top: 0;
+
         .pg-3-bottom {
           display: flex;
           justify-content: space-between;
           align-items: center;
           font-size: 19px;
           opacity: 0;
+
           p {
             opacity: 1;
           }
@@ -1189,6 +1286,7 @@ p {
             width: 82px;
             padding: 3px;
             background-color: #a865eb;
+
             img {
               width: 100%;
             }
@@ -1197,6 +1295,7 @@ p {
       }
     }
   }
+
   .contribution,
   .no-contribution {
     display: flex;
@@ -1205,32 +1304,39 @@ p {
     align-items: center;
     justify-content: space-between;
   }
+
   .pg-1 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     p {
       width: 100%;
       text-align: left;
       font-size: 18px;
       line-height: 32px;
     }
+
     .pg1-top {
       font-weight: 700;
+
       .title {
         margin-bottom: 12px;
         font-size: 26px;
       }
+
       p {
         line-height: normal;
         font-size: 16px;
       }
     }
+
     .pg1-buttom {
       display: flex;
       text-align: left;
       align-items: center;
       flex-direction: column;
+
       p {
         font-weight: 700;
       }
@@ -1253,6 +1359,7 @@ p {
         width: 100px;
         font-size: 18px;
         z-index: 10;
+
         &::before {
           content: '';
           display: block;
@@ -1267,20 +1374,25 @@ p {
       }
     }
   }
+
   .pg-2 {
     .pg-2-top {
       margin-top: 100px;
+
       p {
         line-height: 32px;
         font-size: 18px;
       }
     }
+
     .pg-2-main {
       margin-top: 55px;
+
       p {
         line-height: 28px;
         font-size: 12px;
       }
+
       .active {
         font-size: 14px;
       }
@@ -1292,43 +1404,52 @@ p {
       margin-top: 76px;
       font-size: 13px;
       line-height: 26px;
+
       .bold {
         font-size: 17px;
         line-height: 28px;
       }
     }
   }
+
   .pg-4 {
     .mask {
       margin-top: 76px;
       font-size: 13px;
       line-height: 26px;
+
       .bold {
         font-size: 20px;
         line-height: 34px;
       }
+
       .active {
         padding: 0 2px;
         font-size: 14px;
       }
     }
   }
+
   .pg-5 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center !important;
+
     .title {
       margin-top: 12px;
     }
+
     p {
       line-height: 20px;
       font-size: 13px;
     }
+
     .bold {
       font-size: 20px;
       line-height: 26px;
     }
+
     .active1 {
       display: inline-block;
       margin-top: 12px;
@@ -1336,31 +1457,39 @@ p {
       font-size: 20px;
       font-weight: 700;
     }
+
     .active {
       font-size: 20px;
     }
+
     .rank {
       margin: 14px 0 22px;
       font-size: 20px;
     }
+
     .logo-box {
       margin-bottom: 40px;
     }
   }
+
   .pg-6 {
     font-size: 12px;
     line-height: 26px;
+
     .mask.margin-top-h4 {
       padding: 21px 16px;
       line-height: 28px;
+
       p:first-child {
         font-size: 15px;
       }
     }
+
     .active {
       padding: 0 2px;
       font-size: 14px;
     }
+
     .mask:first-child {
       // margin-top: 76px;
     }
@@ -1377,15 +1506,18 @@ p {
       color: #000;
       text-align: center;
       border: 1px solid rgba($color: #fff, $alpha: 0.7);
+
       .pg-7-logo {
         margin-top: 40px;
         width: 82px;
+
         img {
           width: 100%;
         }
       }
     }
   }
+
   .container {
     position: relative;
     max-width: 360px;
@@ -1394,9 +1526,11 @@ p {
     height: 100%;
     overflow: hidden;
   }
+
   .no-contribution {
     justify-content: space-around;
   }
+
   .front,
   .back {
     position: absolute;
@@ -1411,6 +1545,7 @@ p {
     backface-visibility: hidden;
     transition: transform 0.7s ease-in-out;
   }
+
   .front {
     z-index: 10;
     background-repeat: no-repeat;
@@ -1419,15 +1554,19 @@ p {
   .no-contribution .qr-code {
     padding-top: 50px;
   }
+
   .noContribution .qr-code img {
     border: 1px solid black;
   }
+
   .no-contribution .qr-code img {
     border: 1px solid black;
   }
+
   .no-contribution .qr-code p {
     padding-top: 20px;
   }
+
   .back {
     display: flex;
     flex-direction: column;
@@ -1436,10 +1575,12 @@ p {
     background-image: url('@/assets/bg1.png');
     transform: rotateY(180deg);
   }
+
   .pc-top {
     display: flex;
     justify-content: center;
     z-index: 5;
+
     .text {
       margin-top: 62px;
       width: 106px;
@@ -1452,20 +1593,29 @@ p {
   .pc-post .euler-title2 {
     padding: 10px 0;
   }
+
   .pc-post .euler-title3 {
     padding: 0 0 10px;
   }
+
   .contents {
     width: 100%;
     height: 100%;
     transform: translateZ(60px);
     background-size: 100% 100%;
   }
+
   .contents .page {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+}
+
+@keyframes zoomin {
+  100% {
+    background-position: 0% center;
   }
 }
 </style>
