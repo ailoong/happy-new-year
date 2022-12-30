@@ -13,20 +13,30 @@ const screenWidth = useWindowResize();
 watch(
   () => window.location.href,
   (val) => {
-    lang.value = val.includes('/zh/') ? 'zh' : 'en';
+    lang.value = val.includes('/en/') ? 'en' : 'zh';
   },
   { immediate: true }
 );
 
 const params = ref({
   community: 'mindspore',
-  user: 'lishengboo',
+  user: '',
   year: '2022',
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
+      try {
+        const sensors = (window as any)['sensorsDataAnalytic201505'];
+        sensors?.setProfile({
+          user_logo: res.user,
+          community: 'mindspore',
+          created_at: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 }
@@ -154,10 +164,10 @@ const mindsporeData: any = computed(() => {
         ],
         bottom: [
           {
-            value: `我们已经相识<span class="active">${transformTime(
-              posterData.value.first_time_of_enter
-            )}</span>天啦`,
-            key: transformTime(posterData.value.first_time_of_enter),
+            value: `我们已经相识<span class="active">${
+              timesDiff(posterData.value.first_time_of_enter).days
+            }</span>天啦`,
+            key: timesDiff(posterData.value.first_time_of_enter).days,
           },
           {
             value: '今年您一共',
@@ -358,10 +368,10 @@ const mindsporeData: any = computed(() => {
         ],
         bottom: [
           {
-            value: `We've met for <span class="active">${transformTime(
-              posterData.value.first_time_of_enter
-            )}</span> days`,
-            key: transformTime(posterData.value.first_time_of_enter),
+            value: `We've met for <span class="active">${
+              timesDiff(posterData.value.first_time_of_enter).days
+            }</span> days`,
+            key: timesDiff(posterData.value.first_time_of_enter).days,
           },
           {
             value: "This year, you've",
@@ -465,7 +475,7 @@ async function getPosterDataFun() {
         isContributor.value = true;
         posterData.value = res.data[0];
         if (res.data[0].time_of_register_xihe) {
-          registerTime.value = timesDiff(res.data[0].time_of_register_xihe);
+          registerTime.value = getYMD(res.data[0].time_of_register_xihe);
         }
       } else {
         isContributor.value = false;
@@ -495,6 +505,12 @@ function transformTime(time: string) {
   const days = Math.floor((currentTime - lastTime) / (1000 * 60 * 60 * 24));
 
   return days;
+}
+
+function getYMD(data: any) {
+  const list1 = data.split('T');
+  const list2 = list1[0].split('-');
+  return list2;
 }
 
 function timesDiff(timesData: any) {
@@ -1261,11 +1277,7 @@ p {
 
 // 滑到页面才触发动画
 .current {
-  transform: translate3d(0, 0, 0);
-  transform: translateZ(0);
-  will-change: transform;
   .ship {
-    // :TODO:调整速度
     animation: to-right 1s 0.4s 1 linear,
       to-top 1s 0.4s 1 cubic-bezier(0.23, 0.88, 0.67, 0.26);
     animation-fill-mode: forwards;
@@ -1551,6 +1563,15 @@ p {
     animation-name: appear;
     animation-duration: 1s;
     animation-delay: 3s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  .qr-code {
+    animation-name: appear;
+    animation-duration: 1s;
+    animation-delay: 4s;
     animation-iteration-count: 1;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
@@ -1856,8 +1877,7 @@ p {
         left: 50%;
         transform: translateX(-50%);
         padding: 0 16px;
-        @media screen and (min-height: 375px) {
-          // top: 30px;
+        @media screen and (max-height: 668px) {
           p {
             line-height: 20px;
           }
@@ -1868,14 +1888,14 @@ p {
         &-middle {
           opacity: 0;
           margin-top: 20px;
-          @media screen and (min-height: 375px) {
+          @media screen and (max-height: 668px) {
             margin-top: 10px;
           }
         }
         &-bottom {
           opacity: 0;
           margin-top: 20px;
-          @media screen and (min-height: 375px) {
+          @media screen and (max-height: 668px) {
             margin-top: 10px;
           }
         }
@@ -2069,6 +2089,7 @@ p {
         position: absolute;
         right: 28px;
         bottom: 28px;
+        opacity: 0;
         z-index: 8;
       }
 
@@ -2431,7 +2452,9 @@ p {
   @media screen and (max-width: 1460px) {
     padding: 24px;
   }
-
+  // transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  will-change: transform;
   p {
     font-size: 12px;
     line-height: 20px;
