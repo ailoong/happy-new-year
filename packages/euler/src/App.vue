@@ -28,7 +28,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'pig-s-trotters',
+  user: '',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -45,14 +45,14 @@ const pageCentent: any = computed(() => {
       page2: {
         text: [
           `今天是openEuler的三周年庆典！`,
-          `感谢你的一路相陪`,
+          `感谢你的一路相陪，`,
           `在这三年的时光里，`,
           `openEuler在茁壮地成长：`,
-          `社区用户<span class="active">1003267+；</span>`,
-          `社区PR数<span class="active">88.2k；</span>`,
-          `社区贡献者<span class="active">12700+；</span>`,
-          `商用OSV<span class="active">18家；</span>`,
-          `企业成员<span class="active">710家+；</span>`,
+          `社区用户<span class="active">1003000+</span>`,
+          `社区PR数<span class="active">88200+</span>`,
+          `社区贡献者<span class="active">12700+</span>`,
+          `商用OSV<span class="active">18家</span>`,
+          `企业成员<span class="active">710家+</span>`,
           '......',
         ],
       },
@@ -85,21 +85,17 @@ const pageCentent: any = computed(() => {
           {
             value: `<span class="active">${changeTime(
               posterData.value.first_time_of_comment
-            )}，</span> <br>你第一次在社区中评论了${
+            )}，</span> <br>今年你第一次在社区中评论了 <span class="active">${
               posterData.value.first_user_of_comment
-            }；  `,
+            }</span>；  `,
             key: posterData.value.first_time_of_comment,
           },
           {
-            value: `<span class="active">${changeTime(
-              posterData.value.first_time_of_be_comment
-            )}，</span> <br>初来乍到，${
-              posterData.value.first_user_of_be_comment
-            }第一个解决了你的问题；`,
+            value: `初来乍到， <span class="active">${posterData.value.first_user_of_be_comment}</span> 第一个解决了你的问题；`,
             key: posterData.value.first_user_of_be_comment,
           },
           {
-            value: `回忆满满，你与${posterData.value.user_login_with_most_contact}联系最多`,
+            value: `回忆满满，你与<span class="active">${posterData.value.user_login_with_most_contact}</span>联系最多`,
             key: posterData.value.user_login_with_most_contact,
           },
           {
@@ -179,8 +175,8 @@ const pageCentent: any = computed(() => {
           `Today marks my 3rd anniversary!`,
           `I'm so grateful that you've joined me on this journey`,
           `Over the past three years, we've accomplished so much:`,
-          `<span class="active">1003270+ users</span>`,
-          `<span class="active">88.2k PRs</span>`,
+          `<span class="active">1003000+ users</span>`,
+          `<span class="active">88200 PRs</span>`,
           `<span class="active">12700+ contributors</span>`,
           `<span class="active">18 commercial OSVs</span>`,
           `<span class="active">710+ enterprise members</span>`,
@@ -231,9 +227,9 @@ const pageCentent: any = computed(() => {
           {
             value: `<span class="active">On ${changeTime(
               posterData.value.first_time_of_comment
-            )},</span> <br> you first commented on ${
+            )},</span> <br> you first commented on <span class="active"> ${
               posterData.value.first_user_of_comment
-            }'s post.`,
+            }'s</span> post.`,
             key: posterData.value.first_time_of_comment,
           },
           // {
@@ -245,7 +241,7 @@ const pageCentent: any = computed(() => {
           //   key: posterData.value.first_commented_of_enter,
           // },
           {
-            value: `As a newcomer, you got your first issue reply from ${posterData.value.first_user_of_be_comment}`,
+            value: `As a newcomer, you got your first issue reply from <span class="active">${posterData.value.first_user_of_be_comment}</span>`,
             key: posterData.value.first_user_of_be_comment,
           },
           {
@@ -482,7 +478,6 @@ onUnmounted(() => {
     id="bgm"
     ref="bgm"
     src="/bgm/openEuler_BGM_2021.mp3"
-    autoplay
     preload
     loop
   ></audio>
@@ -1119,28 +1114,28 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
           left: 80px;
           top: 20px;
           width: 48px;
-          animation: desktop 10s infinite linear alternate;
+          animation: slide-top1 2s infinite linear alternate;
           z-index: 10;
         }
         .mobile {
           top: 85px;
           right: 12px;
           width: 82px;
-          animation: desktop 15s infinite linear alternate;
+          animation: slide-top1 3s infinite linear alternate;
           z-index: 10;
         }
         .notebook {
           top: 144px;
           left: 38px;
           width: 86px;
-          animation: desktop 20s infinite linear alternate;
+          animation: slide-top1 4s infinite linear alternate;
           z-index: 10;
         }
         .database {
           top: 212px;
           right: 20px;
           width: 90px;
-          animation: desktop 20s infinite linear alternate;
+          animation: slide-top1 5s infinite linear alternate;
           z-index: 10;
         }
         .pg-1-mo {
@@ -1299,10 +1294,12 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
         font-size: 14px;
         font-family: 'PangMenZhengDao';
         .qr-box {
+          position: relative;
           display: inline-block;
           padding: 8px;
           border: 1px solid rgba($color: #fff, $alpha: 0.7);
           background-color: rgba(0, 47, 167, 0.7);
+          z-index: 99;
           img {
             width: 95px;
           }
@@ -1668,6 +1665,7 @@ p {
         .pc-top {
           .text {
             width: 180px;
+            height: 93px;
             background-size: 180px auto;
             background-repeat: no-repeat;
             background-image: url('@/assets/pc-bg-no-#{$i}.png');
@@ -1699,6 +1697,7 @@ p {
         .pc-top {
           .text {
             width: 180px;
+            height: 94px;
             background-size: 180px auto;
             background-repeat: no-repeat;
             background-image: url('@/assets/pc-bg-no-#{$i}-en.png');
@@ -1717,7 +1716,7 @@ p {
   height: 100vh;
   padding: 50px;
   max-width: 1920px;
-  @media screen and (max-width: 1460px) {
+  @media screen and (max-width: 1620px) {
     padding: 24px;
   }
   .contribution,
@@ -1763,6 +1762,8 @@ p {
         display: inline-block;
         padding: 8px;
         border: 1px solid rgba($color: #fff, $alpha: 0.7);
+        position: relative;
+        z-index: 99;
         background-color: rgba(0, 47, 167, 0.7);
         img {
           width: 95px;
@@ -1981,7 +1982,7 @@ p {
         font-size: 14px;
         font-family: PangMenZhengDao;
         .active {
-          color: #406ef7;
+          color: #feb32a;
         }
         .pg-6-text {
           margin-top: 24px;
