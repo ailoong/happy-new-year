@@ -1524,11 +1524,9 @@ a {
   justify-content: center;
   overflow: hidden;
   height: 100vh;
-  padding: 50px;
+  padding: 50px 24px;
   max-width: 1920px;
-  @media screen and (max-width: 1460px) {
-    padding: 24px;
-  }
+
   .contribution,
   .no-contribution {
     display: flex;
@@ -1536,6 +1534,7 @@ a {
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    gap: 24px;
   }
   .page3 {
     width: 100%;
