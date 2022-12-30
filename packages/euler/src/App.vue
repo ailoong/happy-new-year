@@ -448,15 +448,13 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
-  if (screenWidth.value > 1200) {
-    bgm.value?.addEventListener('pause', function () {
-      bgmOpen.value?.classList.remove('run-bgm');
-    });
-    bgmOpen.value?.addEventListener('touchstart', function () {
-      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-      bgmOpen.value.classList.add('run-bgm');
-    });
-  }
+  bgm.value?.addEventListener('pause', function () {
+    bgmOpen.value?.classList.remove('run-bgm');
+  });
+  bgmOpen.value?.addEventListener('touchstart', function () {
+    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+    bgmOpen.value.classList.add('run-bgm');
+  });
 });
 function pcClick() {
   const front: any = document.querySelectorAll('.front');
