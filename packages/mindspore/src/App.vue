@@ -20,7 +20,7 @@ watch(
 
 const params = ref({
   community: 'mindspore',
-  user: 'pig-s-trotters',
+  user: 'liyang0608',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -525,13 +525,15 @@ onMounted(async () => {
     });
   }
 
-  bgm.value?.addEventListener('pause', function () {
-    bgmOpen.value?.classList.remove('run-bgm');
-  });
-  bgmOpen.value?.addEventListener('touchstart', function () {
-    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-    bgmOpen.value.classList.add('run-bgm');
-  });
+  if (screenWidth.value < 1200) {
+    bgm.value?.addEventListener('pause', function () {
+      bgmOpen.value?.classList.remove('run-bgm');
+    });
+    bgmOpen.value?.addEventListener('touchstart', function () {
+      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+      bgmOpen.value.classList.add('run-bgm');
+    });
+  }
 });
 
 function goStart() {
@@ -580,7 +582,7 @@ onUnmounted(() => {
     ref="bgm"
     src="/bgm/MindSpore_BGM_2021.mp3"
     autoplay
-    preload
+    preload="auto"
     loop
   ></audio>
   <div ref="bgmOpen" class="bgm-open">
@@ -1224,6 +1226,9 @@ p {
 
 // 滑到页面才触发动画
 .current {
+  transform: translate3d(0, 0, 0);
+  transform: translateZ(0);
+  will-change: transform;
   .ship {
     // :TODO:调整速度
     animation: to-right 1s 0.4s 1 linear,
