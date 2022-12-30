@@ -819,7 +819,7 @@ onUnmounted(() => {
           <img
             v-if="lang === 'zh'"
             class="bg-imgage"
-            src="@/assets/pc-bg3.png"
+            src="@/assets/pc-bg4.png"
             alt=""
           />
           <img
@@ -918,7 +918,7 @@ onUnmounted(() => {
           <img
             v-if="lang === 'zh'"
             class="bg-imgage"
-            src="@/assets/pc-bg4.png"
+            src="@/assets/pc-bg3.png"
             alt=""
           />
           <img
