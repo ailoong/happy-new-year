@@ -968,7 +968,7 @@ onUnmounted(() => {
 
         <p class="start-intro">{{ mindsporeData[lang].page1.start }}</p>
 
-        <img class="glass" src="@/assets/glass.png" alt="" />
+        <!-- <img class="glass" src="@/assets/glass.png" alt="" /> -->
         <img class="card" src="@/assets/card.png" alt="" />
         <img class="middle-light" src="@/assets/middle-light.png" alt="" />
         <img class="middle-block" src="@/assets/middle-block.png" alt="" />
@@ -1679,17 +1679,17 @@ p {
           color: #ffffff;
         }
       }
-      .glass {
-        position: absolute;
-        bottom: 352px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 228px;
-        opacity: 0.3;
-        @media screen and (max-height: 738px) {
-          bottom: 250px;
-        }
-      }
+      // .glass {
+      //   position: absolute;
+      //   bottom: 352px;
+      //   left: 50%;
+      //   transform: translateX(-50%);
+      //   width: 228px;
+      //   opacity: 0.3;
+      //   @media screen and (max-height: 738px) {
+      //     bottom: 250px;
+      //   }
+      // }
       .card {
         width: 327px;
         position: absolute;
@@ -1704,10 +1704,10 @@ p {
         }
       }
       .middle-light {
-        width: 90px;
+        width: 94px;
         opacity: 0;
         position: absolute;
-        bottom: 200px;
+        bottom: 220px;
         left: 50%;
         transform: translateX(-50%);
         animation-name: middle-light;
@@ -1733,7 +1733,7 @@ p {
       position: relative;
       .ship {
         width: 296px;
-        height: 296px;
+        // height: 296px;
         position: absolute;
         left: -400px;
         bottom: 0;
