@@ -1120,10 +1120,10 @@ p {
 
   @for $i from 0 through 22 {
     .fade-time-#{ $i} {
-      animation-delay: #{$i * 0.5+2}s;
+      animation-delay: #{$i * 0.5}s;
 
       .active {
-        animation-delay: #{$i * 0.5 +2 + 0.5}s;
+        animation-delay: #{$i * 0.5 + 0.5}s;
       }
     }
   }
