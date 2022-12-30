@@ -478,7 +478,7 @@ onUnmounted(() => {
     id="bgm"
     ref="bgm"
     src="/bgm/openEuler_BGM_2021.mp3"
-    preload
+    preload="auto"
     loop
   ></audio>
   <div ref="bgmOpen" class="bgm-open">
@@ -1054,6 +1054,9 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   top: 18px;
   right: 18px;
   z-index: 999;
+  @media screen and (min-width: 1200px) {
+    display: none;
+  }
 }
 
 .bgm-open img {
