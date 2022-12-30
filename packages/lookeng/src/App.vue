@@ -32,8 +32,19 @@ const params = ref({
 
 async function getUserDataFun() {
   await getUserData().then((res) => {
-    if (res) {
+    if (res.user) {
       params.value.user = res.user;
+      // 社区埋点
+      try {
+        const sensors = (window as any)['sensorsDataAnalytic201505'];
+        sensors?.setProfile({
+          user_logo: res.user,
+          community: params.value.community,
+          created_at: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 }
@@ -69,17 +80,6 @@ const currentPage = ref(-1);
 
 onMounted(async () => {
   await getUserDataFun();
-  // 社区埋点
-  try {
-    const sensors = (window as any)['sensorsDataAnalytic201505'];
-    sensors?.setProfile({
-      user_logo: params.value.user,
-      community: params.value.community,
-      created_at: new Date(),
-    });
-  } catch (error) {
-    console.log(error);
-  }
 
   // 必须先确定是否为贡献者
   await getPosterDataFun();
@@ -108,9 +108,9 @@ onMounted(async () => {
     wrapper.value?.addEventListener('pointerup', function () {
       if (isVideo.value) {
         videoRef.value?.play();
-        bgm.value?.play();
+        // bgm.value?.play();
         isVideo.value = false;
-        bgmOpen.value.classList.add('run-bgm');
+        // bgmOpen.value.classList.add('run-bgm');
       }
     });
   }
