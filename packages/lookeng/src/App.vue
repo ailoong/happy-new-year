@@ -9,7 +9,8 @@ import Slide from '@better-scroll/slide';
 import { getPosterData, getUserData } from 'shared/api';
 
 import bannerBg from '@/assets/bg1.jpg';
-import QRcode_zh from '@/assets/QRcode.png';
+import QRcode_zh from '@/assets/QRcode-zh.png';
+import QRcode_en from '@/assets/QRcode-en.png';
 import musicIcon from '@/assets/bg-music.svg';
 
 const lang = ref('zh');
@@ -90,14 +91,24 @@ onMounted(async () => {
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
+    // 触摸屏幕播放动画
+    wrapper.value?.addEventListener('pointerup', function () {
+      if (isVideo.value) {
+        videoRef.value?.play();
+        bgm.value?.play();
+        isVideo.value = false;
+      }
+    });
   }
-  bgm.value?.addEventListener('pause', function () {
-    bgmOpen.value?.classList.remove('run-bgm');
-  });
-  bgmOpen.value?.addEventListener('touchstart', function () {
-    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-    bgmOpen.value.classList.add('run-bgm');
-  });
+  if (screenWidth.value < 1200) {
+    bgm.value?.addEventListener('pause', function () {
+      bgmOpen.value?.classList.remove('run-bgm');
+    });
+    bgmOpen.value?.addEventListener('touchstart', function () {
+      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+      bgmOpen.value.classList.add('run-bgm');
+    });
+  }
 });
 
 function goStart() {
@@ -257,6 +268,7 @@ const initDom: any = computed(() => {
           'openLooKeng开源社区呈上',
         ],
       },
+      code: QRcode_zh,
     },
     en: {
       page1: {
@@ -382,6 +394,7 @@ const initDom: any = computed(() => {
           'Happy New Year from the openLooKeng open source community!',
         ],
       },
+      code: QRcode_en,
     },
   };
 });
@@ -491,6 +504,8 @@ function pcClick() {
 // 背景音乐
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
+const videoRef: any = ref('video');
+const isVideo = ref(true);
 </script>
 
 <template>
@@ -653,12 +668,9 @@ const bgmOpen: any = ref('bgmOpen');
               <p class="txt">{{ initDom[lang].page5.text[5] }}</p>
             </div>
 
-            <div class="big">
+            <div style="margin-top: 24px">
               <p class="">{{ initDom[lang].page5.text[0] }}</p>
-              <img
-                class="code-img"
-                src="https://opengauss-website.test.osinfra.cn/assets/wechat.1a8221eb.png"
-              />
+              <img class="code-img" :src="initDom[lang].code" />
               <p>{{ initDom[lang].page5.text[1] }}</p>
               <p style="font-size: 16px">{{ initDom[lang].page5.text[2] }}</p>
             </div>
@@ -732,17 +744,19 @@ const bgmOpen: any = ref('bgmOpen');
                 class="txt"
                 v-html="sub"
               ></p>
-              <img class="code-img" :src="QRcode_zh" />
-              <p class="txt">
-                <a :href="communityData.path" target="_blank">{{
-                  communityData.path
-                }}</a>
-              </p>
-              <p class="txt">
-                <a :href="communityData.gitee" target="_blank">{{
-                  communityData.gitee
-                }}</a>
-              </p>
+              <div class="big">
+                <img class="code-img" :src="initDom[lang].code" />
+                <p class="txt">
+                  <a :href="communityData.path" target="_blank">{{
+                    communityData.path
+                  }}</a>
+                </p>
+                <p class="txt">
+                  <a :href="communityData.gitee" target="_blank">{{
+                    communityData.gitee
+                  }}</a>
+                </p>
+              </div>
             </div>
           </div>
           <div class="video-bg">
@@ -868,7 +882,7 @@ const bgmOpen: any = ref('bgmOpen');
 
             <div class="big fade-time-5">
               <p class="">{{ initDom[lang].page5.text[0] }}</p>
-              <img class="code-img" :src="QRcode_zh" />
+              <img class="code-img" :src="initDom[lang].code" />
               <p>{{ initDom[lang].page5.text[1] }}</p>
               <p style="font-size: 16px">{{ initDom[lang].page5.text[2] }}</p>
             </div>
@@ -928,7 +942,7 @@ const bgmOpen: any = ref('bgmOpen');
                 v-html="sub"
               ></p>
               <div class="hide fade-time-7" style="margin-top: 24px">
-                <img class="code-img" :src="QRcode_zh" />
+                <img class="code-img" :src="initDom[lang].code" />
                 <p class="txt">
                   <a :href="communityData.path" target="_blank">{{
                     communityData.path
@@ -946,7 +960,15 @@ const bgmOpen: any = ref('bgmOpen');
       </div>
     </div>
     <div class="video-bg">
-      <video muted autoplay loop playsinline="true" :poster="bannerBg">
+      <video
+        id="videoRef"
+        ref="videoRef"
+        muted
+        autoplay
+        loop
+        playsinline="true"
+        :poster="bannerBg"
+      >
         <source :src="videoPath" type="video/mp4" />
       </video>
     </div>
@@ -1046,6 +1068,7 @@ a {
 .code-img {
   margin: 12px 0;
   height: 64px;
+  border: 2px solid #fff;
 }
 .en {
   .page1 .page-cover {
@@ -1105,6 +1128,7 @@ a {
         }
       }
       .page1 {
+        background: url('@/assets/bg2.png') no-repeat center/contain;
         .go-start {
           opacity: 0;
         }
