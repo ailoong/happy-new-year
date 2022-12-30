@@ -122,24 +122,24 @@ const rankMap: any = computed(() => {
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</span> 的人</p> <br> 你积极思考、独到透彻、表达跳脱<br>openGauss因为有你而变得不一样！ `,
+    )}%</span> 的人</p> <br>你积极思考、独到透彻、表达跳脱<br>openGauss因为有你而变得不一样！ `,
 
     `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「见识非凡的探索家」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</span> 的人</p> <br> 这一年，你在openGauss收获同好，分享智慧<br>恭喜你收获了更好的自己 `,
+    )}%</span> 的人</p> <br>这一年，你在openGauss收获同好，分享智慧<br>恭喜你收获了更好的自己 `,
 
     `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「新知青年」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</span> 的人</p> <br> 你用好奇探索真理<br>也因认真进入无数openGauss的平行世界`,
+    )}%</span> 的人</p> <br>你用好奇探索真理<br>也因认真进入无数openGauss的平行世界`,
     `<p class="font-size-tip margin-top-h4">你的2022年标签</p><span class="active1">「openGauss的萌新好友」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
       posterData.value?.count_rank
     )?.toFixed(
       2
-    )}%</span> 的人</p> <br> 都说有人不想变老就能一直年轻，秘诀是对世界保存好奇<br>请日后多多关照openGauss啦 `,
+    )}%</span> 的人</p> <br>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇<br>请日后多多关照openGauss啦 `,
   ];
 });
 async function getPosterDataFun() {
@@ -996,7 +996,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
 
       .rank {
         margin: 14px 0 22px;
-        font-size: 20px;
+        font-size: 16px;
+        .active {
+          font-size: 18px;
+        }
       }
 
       .logo-box {
@@ -1464,7 +1467,10 @@ p {
 
     .rank {
       margin: 14px 0 22px;
-      font-size: 20px;
+      font-size: 16px;
+      .active {
+        font-size: 18px;
+      }
     }
 
     .logo-box {
