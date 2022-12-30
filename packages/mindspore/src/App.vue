@@ -91,7 +91,7 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `收到了<span class="active">24100+</span>个issues和<span class="active">61900+</span>个prs`,
+            value: `收到了<span class="active">24100+</span>个Issues和<span class="active">61900+</span>个prs`,
             key: '1',
           },
           {
@@ -187,11 +187,13 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.star_num,
           },
           {
-            value: `提出了<span class="active">${posterData.value.issue_num}</span>个Issue`,
+            value: `提出了<span class="active">${posterData.value.issue_num}</span>个${posterData.value.issue_num > 1 ? 'Issues' : 'Issue'}`,
             key: posterData.value.issue_num,
           },
           {
-            value: `提交了<span class="active">${posterData.value.pr_num}</span>个pr`,
+            value: `提交了<span class="active">${
+              posterData.value.pr_num
+            }</span>个${posterData.value.pr_num > 1 ? 'PRs' : 'PR'}`,
             key: posterData.value.pr_num,
           },
           {
@@ -203,7 +205,7 @@ const mindsporeData: any = computed(() => {
             key: posterData.value.user_login_with_most_contact,
           },
           {
-            value: `<span class="active">${posterData.value.first_user_of_be_comment}</span>为您解决了今年的第一个issue`,
+            value: `<span class="active">${posterData.value.first_user_of_be_comment}</span>为您解决了今年的第一个Issue`,
             key: posterData.value.first_user_of_be_comment,
           },
           {
@@ -312,7 +314,7 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `Received <span class="active">24100+</span> issues and <span class="active">61900+</span> PRs`,
+            value: `Received <span class="active">24100+</span> Issues and <span class="active">61900+</span> PRs`,
             key: '1',
           },
           {
@@ -383,7 +385,7 @@ const mindsporeData: any = computed(() => {
           },
           {
             value: "This year, you've",
-            key: '1',
+            key: posterData.value.star_num,
           },
           {
             value: `Forked <span class="active">${
@@ -394,7 +396,7 @@ const mindsporeData: any = computed(() => {
           {
             value: `Raised <span class="active">${
               posterData.value.issue_num
-            }</span> ${posterData.value.issue_num > 1 ? 'issues' : 'issue'}`,
+            }</span> ${posterData.value.issue_num > 1 ? 'Issues' : 'Issue'}`,
             key: posterData.value.issue_num,
           },
           {
@@ -1091,7 +1093,7 @@ onUnmounted(() => {
         <img class="point-4" src="@/assets/point-4.png" alt="" />
 
         <div class="pg3-main">
-          <div class="pg3-main-bottom">
+          <div class="pg3-main-top">
             <p
               v-for="item in mindsporeData[lang].page3.bottom"
               :key="item"
