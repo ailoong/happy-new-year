@@ -23,7 +23,7 @@ const screenWidth = useWindowResize();
 watch(
   () => window.location.href,
   (val) => {
-    lang.value = val.includes('/zh/') ? 'zh' : 'en';
+    lang.value = val.includes('/en/') ? 'en' : 'zh';
   },
   { immediate: true }
 );
