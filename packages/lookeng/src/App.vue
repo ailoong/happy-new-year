@@ -1167,7 +1167,6 @@ a {
   .page-cover {
     h3 {
       font-size: 32px;
-      font-family: 'Milky-Han-Term-CN-Heavy-Italic';
       font-weight: 600;
       color: #fff;
       line-height: 40px;
@@ -1182,8 +1181,6 @@ a {
       display: inline-flex;
       align-items: center;
       width: auto;
-
-      font-family: 'PangMenZhengDao';
       letter-spacing: 2px;
       .card-content {
         padding: 8px 12px;
@@ -1199,7 +1196,7 @@ a {
     }
     .page-text {
       font-size: 16px;
-      font-family: 'PangMenZhengDao';
+
       color: #ffffff;
       line-height: 22px;
       letter-spacing: 2px;
