@@ -10,6 +10,7 @@ import { getPosterData, getUserData } from 'shared/api';
 
 import bannerBg from '@/assets/bg1.jpg';
 import QRcode_zh from '@/assets/QRcode.png';
+import musicIcon from '@/assets/bg-music.svg';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -62,7 +63,6 @@ async function getPosterDataFun() {
       isContributor.value = false;
     });
 }
-
 let slide: BScrollInstance;
 const currentPage = ref(0);
 
@@ -91,6 +91,13 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
+  bgm.value?.addEventListener('pause', function () {
+    bgmOpen.value?.classList.remove('run-bgm');
+  });
+  bgmOpen.value?.addEventListener('touchstart', function () {
+    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+    bgmOpen.value.classList.add('run-bgm');
+  });
 });
 
 function goStart() {
@@ -213,7 +220,9 @@ const initDom: any = computed(() => {
           '截图分享您的成就',
           '扫码看2022开发者贡献报告',
           '01/01 - 12/30',
-          `这一年，您在社区的贡献度超过了 <span class="active">${posterData.value.count_rank}</span> 的开发者`,
+          `这一年，您在社区的贡献度超过了 <span class="active">${getPercentage(
+            posterData.value?.count_rank
+          )}%</span> 的开发者`,
           `愿新的一年，我们并肩前行，`,
           `既能遇见新的热爱，也能初心重逢`,
         ],
@@ -343,7 +352,9 @@ const initDom: any = computed(() => {
           'SCAN for your exclusive wrap-up!',
           '2022 Developer Contribution Report',
           'Jan 1 to Dec 30',
-          `This year, your contributions in the community surpassed <span class="active">${posterData.value.count_rank}</span> of developers`,
+          `This year, your contributions in the community surpassed <span class="active">${getPercentage(
+            posterData.value.count_rank
+          )}%</span> of developers`,
           `Here's hoping that you reach the pinnacle of your passion in 2023 Happy creative New Year!`,
         ],
       },
@@ -398,22 +409,26 @@ function changeTime(time: string) {
     return all;
   }
 }
-
-function getRank(per: any) {
-  const percentage = Number(per?.replace('%', ''));
-  let rank = 0;
-  if (percentage <= 20) {
-    rank = 0;
-  } else if (20 < percentage && percentage <= 40) {
-    rank = 1;
-  } else if (40 < percentage && percentage <= 60) {
-    rank = 2;
-  } else if (60 < percentage && percentage <= 70) {
-    rank = 3;
-  } else if (70 < percentage) {
-    rank = 4;
+function getPercentage(per: string) {
+  if (per) {
+    return (100 - Number(per.replace('%', ''))).toFixed(2);
   }
-  return rank;
+}
+function getRank(per: string) {
+  if (per) {
+    const percentage = getPercentage(per) || 0;
+    let rank = 0;
+    if (percentage <= 25) {
+      rank = 0;
+    } else if (25 < percentage && percentage <= 50) {
+      rank = 1;
+    } else if (50 < percentage && percentage <= 75) {
+      rank = 2;
+    } else if (75 < percentage) {
+      rank = 3;
+    }
+    return rank;
+  }
 }
 const rankMap: any = ref({
   zh: [
@@ -472,6 +487,10 @@ function pcClick() {
     });
   }
 }
+
+// 背景音乐
+const bgm: any = ref('bgm');
+const bgmOpen: any = ref('bgmOpen');
 </script>
 
 <template>
@@ -574,7 +593,9 @@ function pcClick() {
             ></p>
             <div class="card">
               <div class="card-content">
-                <p class="name">@{{ initDom[lang].page4.text[3] }}</p>
+                <p class="name">
+                  @{{ posterData.user_login_with_most_contact }}
+                </p>
               </div>
             </div>
             <p
@@ -610,15 +631,20 @@ function pcClick() {
               <div class="card" style="margin-top: 12px">
                 <div class="card-content">
                   <p class="title">
-                    {{ rankMap[lang][getRank(initDom.count_rank)].title }}
+                    {{
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(posterData.count_rank)
+                      ].title
+                    }}
                   </p>
-                  <p
-                    v-if="
-                      rankMap[lang][getRank(initDom.count_rank)].text !== ''
-                    "
-                    class="text"
-                  >
-                    {{ rankMap[lang][getRank(initDom.count_rank)].text }}
+                  <p v-if="lang !== 'en'" class="text">
+                    {{
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(posterData.count_rank)
+                      ]?.text
+                    }}
                   </p>
                   <p class="name">@{{ posterData.user_login }}</p>
                 </div>
@@ -810,15 +836,28 @@ function pcClick() {
               <div class="card fade-time-1" style="margin-top: 12px">
                 <div class="card-content">
                   <p class="title fade-time-2">
-                    {{ rankMap[lang][getRank(initDom.count_rank)].title }}
+                    {{
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(posterData.count_rank)
+                      ].title
+                    }}
                   </p>
                   <p
                     v-if="
-                      rankMap[lang][getRank(initDom.count_rank)].text !== ''
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(posterData.count_rank)
+                      ].text !== ''
                     "
                     class="text fade-time-2"
                   >
-                    {{ rankMap[lang][getRank(initDom.count_rank)].text }}
+                    {{
+                      rankMap[lang][
+                        // @ts-ignore
+                        getRank(posterData.count_rank)
+                      ].text
+                    }}
                   </p>
                   <p class="name fade-time-2">@{{ posterData.user_login }}</p>
                 </div>
@@ -911,6 +950,17 @@ function pcClick() {
         <source :src="videoPath" type="video/mp4" />
       </video>
     </div>
+    <div ref="bgmOpen" class="bgm-open">
+      <img :src="musicIcon" />
+    </div>
+    <audio
+      id="bgm"
+      ref="bgm"
+      src="/openlookeng-bgm.mp3"
+      autoplay
+      preload
+      loop
+    ></audio>
   </div>
 </template>
 
@@ -1597,6 +1647,32 @@ a {
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+}
+
+.bgm-open {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  z-index: 9999;
+  transition: all 0.3s;
+}
+.bgm-open img {
+  width: 100%;
+}
+.bgm-open.run-bgm {
+  animation: rotate360 3s infinite linear;
+}
+
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
