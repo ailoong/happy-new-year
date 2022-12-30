@@ -91,7 +91,7 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `收到了<span class="active">24100+</span>个Issues和<span class="active">61900+</span>个prs`,
+            value: `收到了<span class="active">24100+</span>个Issues和<span class="active">61900+</span>个PRs`,
             key: '1',
           },
           {
