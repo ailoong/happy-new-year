@@ -70,7 +70,7 @@ const posterContent = computed(() => {
           key: posterData.value.star_num,
         },
         {
-          value: `Fork<span class='active'>${posterData.value.fork_num}</span>个代码仓库，`,
+          value: `Fork了<span class='active'>${posterData.value.fork_num}</span>个代码仓库，`,
           key: posterData.value.fork_num,
         },
         {
