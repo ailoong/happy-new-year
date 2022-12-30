@@ -13,14 +13,14 @@ const screenWidth = useWindowResize();
 watch(
   () => window.location.href,
   (val) => {
-    lang.value = val.includes('/zh/') ? 'zh' : 'en';
+    lang.value = val.includes('/en/') ? 'en' : 'zh';
   },
   { immediate: true }
 );
 
 const params = ref({
   community: 'mindspore',
-  user: 'lishengboo',
+  user: '',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -164,10 +164,10 @@ const mindsporeData: any = computed(() => {
         ],
         bottom: [
           {
-            value: `我们已经相识<span class="active">${transformTime(
-              posterData.value.first_time_of_enter
-            )}</span>天啦`,
-            key: transformTime(posterData.value.first_time_of_enter),
+            value: `我们已经相识<span class="active">${
+              timesDiff(posterData.value.first_time_of_enter).days
+            }</span>天啦`,
+            key: timesDiff(posterData.value.first_time_of_enter).days,
           },
           {
             value: '今年您一共',
@@ -368,10 +368,10 @@ const mindsporeData: any = computed(() => {
         ],
         bottom: [
           {
-            value: `We've met for <span class="active">${transformTime(
-              posterData.value.first_time_of_enter
-            )}</span> days`,
-            key: transformTime(posterData.value.first_time_of_enter),
+            value: `We've met for <span class="active">${
+              timesDiff(posterData.value.first_time_of_enter).days
+            }</span> days`,
+            key: timesDiff(posterData.value.first_time_of_enter).days,
           },
           {
             value: "This year, you've",
@@ -475,7 +475,7 @@ async function getPosterDataFun() {
         isContributor.value = true;
         posterData.value = res.data[0];
         if (res.data[0].time_of_register_xihe) {
-          registerTime.value = timesDiff(res.data[0].time_of_register_xihe);
+          registerTime.value = getYMD(res.data[0].time_of_register_xihe);
         }
       } else {
         isContributor.value = false;
@@ -505,6 +505,12 @@ function transformTime(time: string) {
   const days = Math.floor((currentTime - lastTime) / (1000 * 60 * 60 * 24));
 
   return days;
+}
+
+function getYMD(data: any) {
+  const list1 = data.split('T');
+  const list2 = list1[0].split('-');
+  return list2;
 }
 
 function timesDiff(timesData: any) {
