@@ -91,8 +91,8 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `收到了<span class="active">${posterData.value.issue_num}</span>个issue和<span class="active">${posterData.value.pr_num}</span>个pr`,
-            key: posterData.value.issue_num,
+            value: `收到了<span class="active">24100+</span>个issues和<span class="active">61900+</span>个prs`,
+            key: '1',
           },
           {
             value: `社区下载量突破<span class="active">3560000+</span>`,
@@ -106,11 +106,20 @@ const mindsporeData: any = computed(() => {
             value: `遍及全球<span class="active">142</span>个国家，<span class="active">1879</span>个城市`,
             key: '142',
           },
+          {
+            value: '下半年社区还开发了全新的一站式昇思大模型平台',
+            key: '1',
+          },
+          {
+            value: '开发者可以在线体验大模型推理任务',
+            key: '1',
+          },
+          {
+            value: `目前已经上线<span class="active">7</span>个大模型`,
+            key: '1',
+          },
         ],
         bottom: [
-          '下半年社区还开发了全新的一站式昇思大模型平台',
-          '开发者可以在线体验大模型推理任务',
-          `目前已经上线<span class="active">7</span>个大模型`,
           '您作为小孢子们的一份子',
           `我们共同经历<span class="active">160</span>场MSG系列活动`,
           `我们与来自<span class="active">2024</span>个企业的开发者一起`,
@@ -246,7 +255,7 @@ const mindsporeData: any = computed(() => {
           '昇思MindSpore社区将继续',
           '与您携手一起迎接新朋友',
           '昇思MindSpore也将',
-          '继续退出更强大的新版本',
+          '继续推出更强大的新版本',
           '届时您一定要多多支持！',
         ],
         bottom: [
@@ -303,9 +312,8 @@ const mindsporeData: any = computed(() => {
             key: '1',
           },
           {
-            value: `Received <span class="active">${posterData.value.issue_num}</span> issues and <span class="active">${posterData.value.pr_num}</span> PRs`,
-            key:
-              posterData.value.pr_num || posterData.value.issue_num ? '' : '1',
+            value: `Received <span class="active">24100+</span> issues and <span class="active">61900+</span> PRs`,
+            key: '1',
           },
           {
             value: `Surpassed <span class="active">3560000+</span> downloads`,
@@ -418,7 +426,11 @@ const mindsporeData: any = computed(() => {
           //   key: monthData.value.count,
           // },
           {
-            value: `On date<span class="active">${posterData.value.time_of_register_xihe}</span>, you registered the MindSpore Foundation Model Platform for the first time under the new name <span class="active">${posterData.value.username}</span>`,
+            value: `On date<span class="active">${changeTime(
+              posterData.value.time_of_register_xihe
+            )}</span>, you registered the MindSpore Foundation Model Platform for the first time under the new name <span class="active">${
+              posterData.value.username
+            }</span>`,
             key: posterData.value.username,
           },
           {
@@ -513,6 +525,25 @@ function getYMD(data: any) {
   return list2;
 }
 
+function getZero(time: number) {
+  return time < 9 ? '0' + time : time;
+}
+function changeTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const y = EndTime.getFullYear();
+    const m = EndTime.getMonth() + 1;
+    const d = EndTime.getDate();
+    let all = '';
+    if (lang.value === 'zh') {
+      all = `${y}年${getZero(m)}月${getZero(d)}日`;
+    } else {
+      all = `${getZero(d)}/${getZero(m)}/${y}`;
+    }
+    return all;
+  }
+}
+
 function timesDiff(timesData: any) {
   const dateBegin = new Date(); //获取当前时间
   const dateEnd = new Date(timesData); //将-转化为/，使用new Date
@@ -529,7 +560,7 @@ function timesDiff(timesData: any) {
   };
 
   if (days !== 0) {
-    diffObj.days = days;
+    diffObj.days = days - 1;
   } else if (days === 0 && hours !== 0) {
     diffObj.hours = hours;
   } else if (days === 0 && hours === 0) {
@@ -946,7 +977,7 @@ onUnmounted(() => {
   </div>
 
   <div v-else ref="wrapper" class="slide-wrapper">
-    <div class="slide-content">
+    <div v-if="isContributor" class="slide-content">
       <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
         <img
           v-if="lang === 'zh'"
@@ -960,7 +991,7 @@ onUnmounted(() => {
 
         <img
           v-if="lang === 'zh'"
-          class="machine"
+          class="machine machine-en"
           src="@/assets/machine.png"
           alt=""
         />
@@ -1002,7 +1033,7 @@ onUnmounted(() => {
         <img class="ship-light-1" src="@/assets/ship-light01.png" alt="" />
         <img class="ship-light-2" src="@/assets/ship-light02.png" alt="" />
 
-        <div v-if="isContributor" class="pg2-main">
+        <div class="pg2-main">
           <div class="pg2-top">
             <p v-for="item in mindsporeData[lang].page2.top" :key="item">
               {{ item }}
@@ -1011,20 +1042,6 @@ onUnmounted(() => {
 
           <div class="pg2-bottom">
             <p v-for="item in mindsporeData[lang].page2.bottom" :key="item">
-              {{ item }}
-            </p>
-          </div>
-        </div>
-
-        <div v-else class="pg2-main">
-          <div class="pg2-top">
-            <p v-for="item in mindsporeData[lang].page2.top_no" :key="item">
-              {{ item }}
-            </p>
-          </div>
-
-          <div class="pg2-bottom">
-            <p v-for="item in mindsporeData[lang].page2.bottom_no" :key="item">
               {{ item }}
             </p>
           </div>
@@ -1039,7 +1056,7 @@ onUnmounted(() => {
         <img class="point-3" src="@/assets/point-3.png" alt="" />
         <img class="point-4" src="@/assets/point-4.png" alt="" />
 
-        <div v-if="isContributor" class="pg3-main">
+        <div class="pg3-main">
           <div class="pg3-main-top">
             <p v-for="item in mindsporeData[lang].page3.top" :key="item">
               {{ item }}
@@ -1057,38 +1074,26 @@ onUnmounted(() => {
               ></span>
             </p>
           </div>
+        </div>
 
+        <div class="pg3-slide">
+          <img src="@/assets/arrow.png" alt="" />
+          <p>{{ mindsporeData[lang].page1.slide }}</p>
+        </div>
+      </div>
+
+      <div class="slide-page pg-3" :class="currentPage === 3 ? 'current' : ''">
+        <img class="earth" src="@/assets/earth.png" alt="" />
+        <img class="earth-circle" src="@/assets/earth-circle.png" alt="" />
+        <img class="point-1" src="@/assets/point-1.png" alt="" />
+        <img class="point-2" src="@/assets/point-2.png" alt="" />
+        <img class="point-3" src="@/assets/point-3.png" alt="" />
+        <img class="point-4" src="@/assets/point-4.png" alt="" />
+
+        <div class="pg3-main">
           <div class="pg3-main-bottom">
             <p
               v-for="item in mindsporeData[lang].page3.bottom"
-              :key="item"
-              v-html="item"
-            ></p>
-          </div>
-        </div>
-
-        <div v-else class="pg3-main">
-          <div class="pg3-main-top">
-            <p v-for="item in mindsporeData[lang].page3.top_no" :key="item">
-              {{ item }}
-            </p>
-          </div>
-
-          <div class="pg3-main-middle">
-            <p
-              v-for="item in mindsporeData[lang].page3.middle_no"
-              :key="item.value"
-            >
-              <span
-                v-if="item.key && item.key !== '0'"
-                v-html="item.value"
-              ></span>
-            </p>
-          </div>
-
-          <div class="pg3-main-bottom">
-            <p
-              v-for="item in mindsporeData[lang].page3.bottom_no"
               :key="item"
               v-html="item"
             ></p>
@@ -1101,7 +1106,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+      <div class="slide-page pg-4" :class="currentPage === 4 ? 'current' : ''">
         <img class="pg4-architecture" src="@/assets/architecture.png" alt="" />
         <img class="pg4-people" src="@/assets/people.png" alt="" />
         <img
@@ -1133,7 +1138,7 @@ onUnmounted(() => {
           <p>{{ mindsporeData[lang].page1.slide }}</p>
         </div>
 
-        <div v-if="isContributor" class="pg4-main">
+        <div class="pg4-main">
           <div class="pg4-main-top">
             <p v-for="item in mindsporeData[lang].page4.top" :key="item">
               <span v-html="item"></span>
@@ -1151,8 +1156,187 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
+      </div>
 
-        <div v-else class="pg4-main">
+      <div class="slide-page pg-5" :class="currentPage === 5 ? 'current' : ''">
+        <img
+          v-if="lang === 'zh'"
+          class="qr-code"
+          src="@/assets/qr-code-zh.png"
+          alt=""
+        />
+        <img v-else class="qr-code" src="@/assets/qr-code-en.png" alt="" />
+
+        <img class="pg5-clock" src="@/assets/clock.png" alt="" />
+        <img class="pg5-sun" src="@/assets/sun.png" alt="" />
+        <img class="pg5-sunshine" src="@/assets/sunshine.png" alt="" />
+        <img class="pg5-cloud-left" src="@/assets/cloud-left.png" alt="" />
+        <img class="pg5-cloud-right" src="@/assets/cloud-right.png" alt="" />
+
+        <div class="pg5-main">
+          <div class="pg5-main-top">
+            <p
+              v-for="item in mindsporeData[lang].page5.top"
+              :key="item"
+              v-html="item"
+            ></p>
+          </div>
+
+          <div class="pg5-main-bottom">
+            <p
+              v-for="item in mindsporeData[lang].page5.bottom"
+              :key="item"
+              v-html="item"
+            ></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 无贡献 -->
+    <div v-else class="slide-content">
+      <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
+        <img
+          v-if="lang === 'zh'"
+          class="title"
+          src="@/assets/title.png"
+          alt=""
+        />
+        <img v-else class="title" src="@/assets/title-en.png" alt="" />
+
+        <img class="light" src="@/assets/light.png" alt="" />
+
+        <img
+          v-if="lang === 'zh'"
+          class="machine machine-en"
+          src="@/assets/machine.png"
+          alt=""
+        />
+        <img v-else class="machine" src="@/assets/machine-en.png" alt="" />
+
+        <p class="start-intro">{{ mindsporeData[lang].page1.start }}</p>
+
+        <!-- <img class="glass" src="@/assets/glass.png" alt="" /> -->
+        <img class="card" src="@/assets/card.png" alt="" />
+        <img class="middle-light" src="@/assets/middle-light.png" alt="" />
+        <img class="middle-block" src="@/assets/middle-block.png" alt="" />
+
+        <div class="slide-top">
+          <img src="@/assets/arrow.png" alt="" />
+          <p>{{ mindsporeData[lang].page1.slide }}</p>
+        </div>
+      </div>
+
+      <div class="slide-page pg-2" :class="currentPage === 1 ? 'current' : ''">
+        <div
+          class="slide-page pg-2"
+          :class="currentPage === 1 ? 'current' : ''"
+        >
+          <img class="star-1" src="@/assets/star.png" alt="" />
+          <img class="ship" src="@/assets/ship.png" alt="" />
+          <img class="star-2" src="@/assets/star2.png" alt="" />
+          <img class="blue-halo" src="@/assets/blue-halo.png" alt="" />
+          <img
+            v-if="lang === 'zh'"
+            class="start-btn"
+            src="@/assets/start-btn.png"
+            alt=""
+            @click.stop="goStart"
+          />
+          <img
+            v-else
+            class="start-btn"
+            src="@/assets/start-btn-en.png"
+            alt=""
+            @click.stop="goStart"
+          />
+
+          <img class="ship-light-1" src="@/assets/ship-light01.png" alt="" />
+          <img class="ship-light-2" src="@/assets/ship-light02.png" alt="" />
+
+          <div class="pg2-main">
+            <div class="pg2-top">
+              <p v-for="item in mindsporeData[lang].page2.top_no" :key="item">
+                {{ item }}
+              </p>
+            </div>
+
+            <div class="pg2-bottom">
+              <p
+                v-for="item in mindsporeData[lang].page2.bottom_no"
+                :key="item"
+              >
+                {{ item }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
+        <img class="earth" src="@/assets/earth.png" alt="" />
+        <img class="earth-circle" src="@/assets/earth-circle.png" alt="" />
+        <img class="point-1" src="@/assets/point-1.png" alt="" />
+        <img class="point-2" src="@/assets/point-2.png" alt="" />
+        <img class="point-3" src="@/assets/point-3.png" alt="" />
+        <img class="point-4" src="@/assets/point-4.png" alt="" />
+
+        <div class="pg3-main">
+          <div class="pg3-main-top">
+            <p v-for="item in mindsporeData[lang].page3.top_no" :key="item">
+              {{ item }}
+            </p>
+          </div>
+
+          <div class="pg3-main-middle">
+            <p
+              v-for="item in mindsporeData[lang].page3.middle_no"
+              :key="item.value"
+            >
+              <span
+                v-if="item.key && item.key !== '0'"
+                v-html="item.value"
+              ></span>
+            </p>
+          </div>
+
+          <div class="pg3-main-bottom">
+            <p
+              v-for="item in mindsporeData[lang].page3.bottom_no"
+              :key="item"
+              v-html="item"
+            ></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+        <img class="pg4-architecture" src="@/assets/architecture.png" alt="" />
+        <img class="pg4-people" src="@/assets/people.png" alt="" />
+        <img
+          class="pg4-architecture-light"
+          src="@/assets/architecture-light.png"
+          alt=""
+        />
+        <img class="pg4-door-light-1" src="@/assets/door-light-1.png" alt="" />
+        <img class="pg4-door-light-2" src="@/assets/door-light-2.png" alt="" />
+        <img class="pg4-door-num-1" src="@/assets/door-num-1.png" alt="" />
+        <img class="pg4-door-num-2" src="@/assets/door-num-2.png" alt="" />
+        <img class="pg4-people-bg2" src="@/assets/people-bg2.png" alt="" />
+        <img class="pg4-people-bg1" src="@/assets/people-bg1.png" alt="" />
+
+        <div class="pg4-track-left">
+          <img class="pg4-track-left-1" src="@/assets/track-left.png" alt="" />
+        </div>
+
+        <div class="pg4-track-right">
+          <img
+            class="pg4-track-right-1"
+            src="@/assets/track-right.png"
+            alt=""
+          />
+        </div>
+
+        <div class="pg4-main">
           <div class="pg4-main-top">
             <p
               v-for="item in mindsporeData[lang].page4.top_no"
@@ -1168,6 +1352,11 @@ onUnmounted(() => {
               v-html="item"
             ></p>
           </div>
+        </div>
+
+        <div class="pg4-slide">
+          <img src="@/assets/arrow.png" alt="" />
+          <p>{{ mindsporeData[lang].page1.slide }}</p>
         </div>
       </div>
 
@@ -1186,25 +1375,7 @@ onUnmounted(() => {
         <img class="pg5-cloud-left" src="@/assets/cloud-left.png" alt="" />
         <img class="pg5-cloud-right" src="@/assets/cloud-right.png" alt="" />
 
-        <div v-if="isContributor" class="pg5-main">
-          <div class="pg5-main-top">
-            <p
-              v-for="item in mindsporeData[lang].page5.top"
-              :key="item"
-              v-html="item"
-            ></p>
-          </div>
-
-          <div class="pg5-main-bottom">
-            <p
-              v-for="item in mindsporeData[lang].page5.bottom"
-              :key="item"
-              v-html="item"
-            ></p>
-          </div>
-        </div>
-
-        <div v-else class="pg5-main">
+        <div class="pg5-main">
           <div class="pg5-main-top">
             <p
               v-for="item in mindsporeData[lang].page5.top_no"
@@ -1664,7 +1835,7 @@ p {
         animation-timing-function: ease-in-out;
         animation-fill-mode: forwards;
         img {
-          width: 20px;
+          width: 18px;
           height: 25px;
           animation-name: move;
           animation-delay: 3.5s;
@@ -1704,10 +1875,10 @@ p {
         }
       }
       .middle-light {
-        width: 94px;
+        width: 92px;
         opacity: 0;
         position: absolute;
-        bottom: 220px;
+        bottom: 198px;
         left: 50%;
         transform: translateX(-50%);
         animation-name: middle-light;
@@ -2120,6 +2291,7 @@ p {
         position: absolute;
         right: -240px;
         bottom: -90px;
+        z-index: 9;
       }
 
       .pg5-sunshine {
@@ -2170,7 +2342,7 @@ p {
       transform: scale(1) translateY(0px);
     }
     50% {
-      transform: scale(1.2) translateY(-3px);
+      transform: scale(1.1) translateY(-2px);
     }
     100% {
       transform: scale(1) translateY(0px);
@@ -2796,7 +2968,7 @@ p {
     overflow: hidden;
     .bg-imgage {
       width: 100%;
-      max-height: 640px;
+      min-height: 640px;
     }
   }
 
