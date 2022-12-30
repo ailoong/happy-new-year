@@ -12,7 +12,8 @@ import database from '@/assets/database.png';
 import mobile from '@/assets/mobile .png';
 import notebook from '@/assets/notebook.png';
 import desktop from '@/assets/desktop.png';
-import QRcode_zh from '@/assets/QRcode.png';
+import QRcode_zh from '@/assets/QRcode_zh.png';
+import QRcode_en from '@/assets/QRcode_en.png';
 import handAi from '@/assets/hand-ai.png';
 import handMan from '@/assets/hand-man.png';
 import hexagon from '@/assets/hexagon.png';
@@ -28,7 +29,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: '',
+  user: 'zhang-zz1248',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -194,7 +195,7 @@ const pageCentent: any = computed(() => {
           'Scan the QR code',
           'to see your own openEuler milestones.',
         ],
-        img: QRcode_zh,
+        img: QRcode_en,
       },
       page4: {
         text: [
@@ -398,7 +399,7 @@ function getYear(time: any) {
 }
 function getPercentage(per: any) {
   if (per) {
-    return (100 - Number(per?.replace('%', ''))).toFixed(2);
+    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
   }
 }
 const rankMap: any = ref({
@@ -436,13 +437,15 @@ onMounted(async () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
   }
-  bgm.value?.addEventListener('pause', function () {
-    bgmOpen.value?.classList.remove('run-bgm');
-  });
-  bgmOpen.value?.addEventListener('touchstart', function () {
-    bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-    bgmOpen.value.classList.add('run-bgm');
-  });
+  if (screenWidth.value > 1200) {
+    bgm.value?.addEventListener('pause', function () {
+      bgmOpen.value?.classList.remove('run-bgm');
+    });
+    bgmOpen.value?.addEventListener('touchstart', function () {
+      bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
+      bgmOpen.value.classList.add('run-bgm');
+    });
+  }
 });
 function pcClick() {
   const front: any = document.querySelectorAll('.front');

@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'haml',
+  user: 'zhongjun2',
   year: '2022',
 });
 
@@ -41,40 +41,40 @@ const posterContent = computed(() => {
   return {
     page3: {
       text: [
-        // {
-        //   value: `这一年，你与${posterData.value.user_login_with_most_contact}人建立了联系`,
-        //   key: posterData.value.user_login_with_most_contact,
-        // },
         {
-          value: `${posterData.value.user_login_with_most_contact}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
+          value: `这一年，你与<span class='active'>${posterData.value.user_login_with_most_contact}</span>人建立了联系`,
           key: posterData.value.user_login_with_most_contact,
+        },
+        {
+          value: `${posterData.value.contact_users_num}，一定很特别，你们沟通最多，相信一定是志同道合的伙伴`,
+          key: posterData.value.contact_users_num,
         },
       ],
     },
     page4: {
       text: [
         {
-          value: `贡献了${posterData.value.code_lines_add}行代码，`,
+          value: `贡献了<span class='active'>${posterData.value.code_lines_add}</span>行代码，`,
           key: posterData.value.code_lines_add,
         },
         {
-          value: `提交了${posterData.value.pr_num}个PR，`,
+          value: `提交了<span class='active'>${posterData.value.pr_num}</span>个PR，`,
           key: posterData.value.pr_num,
         },
         {
-          value: `提出了${posterData.value.issue_num}个Issue，`,
+          value: `提出了<span class='active'>${posterData.value.issue_num}</span>个Issue，`,
           key: posterData.value.issue_num,
         },
         {
-          value: `Star了${posterData.value.star_num}个代码仓库，`,
+          value: `Star了<span class='active'>${posterData.value.star_num}</span>个代码仓库，`,
           key: posterData.value.star_num,
         },
         {
-          value: `Fork${posterData.value.fork_num}个代码仓库，`,
+          value: `Fork<span class='active'>${posterData.value.fork_num}</span>个代码仓库，`,
           key: posterData.value.fork_num,
         },
         {
-          value: `Watch了${posterData.value.watch_num}个代码仓库，`,
+          value: `Watch了<span class='active'>${posterData.value.watch_num}</span>个代码仓库，`,
           key: posterData.value.watch_num,
         },
         {
@@ -278,7 +278,7 @@ onUnmounted(() => {
             </p>
             <p>吸引了超过<span class="active">200家</span>企业加入社区</p>
             <p>
-              openGauss在国内<span class="active">14个</span>城市建立了用户组
+              openGauss在国内<span class="active">15个</span>城市建立了用户组
             </p>
             <p>走进<span class="active">72所</span>高校</p>
             <p>
@@ -287,14 +287,14 @@ onUnmounted(() => {
             <p class="margin-top-h5">2022年</p>
             <p>已经有越来越多的人走进 openGauss 的开源世界。</p>
             <p>与openGauss保持同频 分享热爱 留下宝藏</p>
-            <p
+            <!-- <p
               v-for="item in posterContent.page3.text"
               :class="`fade-time-`"
               :key="item.value"
             >
               <span v-if="item.key">{{ item.value }}</span>
             </p>
-            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p>
+            <p class="bold">你一次次完成自我的深度探索，也找到了契合的同行者</p> -->
           </div>
         </div>
       </div>
@@ -311,7 +311,10 @@ onUnmounted(() => {
                 `fade-time-${index}`,
               ]"
             >
-              <span v-if="item.key && item.key !== '0'">{{ item.value }}</span>
+              <span
+                v-if="item.key && item.key !== '0'"
+                v-html="item.value"
+              ></span>
             </p>
           </div>
         </div>
@@ -332,10 +335,7 @@ onUnmounted(() => {
             愿你元旦快乐。
           </p>
           <div class="logo-box margin-top-h4">
-            <img
-              src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-              alt=""
-            />
+            <img src="@/assets/qrCode.png" alt="" />
           </div>
         </div>
       </div>
@@ -400,7 +400,7 @@ onUnmounted(() => {
                   吸引了超过<span class="active">200家</span>企业加入社区
                 </p>
                 <p class="fade-time-14">
-                  至今在国内<span class="active">14个</span>城市建立了用户组
+                  至今在国内<span class="active">15个</span>城市建立了用户组
                 </p>
                 <p class="fade-time-15">
                   走进<span class="active">72所</span>高校
@@ -420,10 +420,7 @@ onUnmounted(() => {
             <div class="pg-3-bottom fade-time-21">
               <div class="pg-3-bottom-left">openGauss 星球</div>
               <div class="pg-3-bottom-right">
-                <img
-                  src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-                  alt=""
-                />
+                <img src="@/assets/qrCode.png" alt="" />
               </div>
             </div>
           </div>
@@ -432,7 +429,7 @@ onUnmounted(() => {
     </div>
   </div>
 
-  <div ref="wrapper" class="slide-wrapper">
+  <div v-else ref="wrapper" class="slide-wrapper">
     <div v-if="isContributor" class="slide-content contribution">
       <div
         class="slide-page wrapper-l pg-1"
@@ -500,13 +497,15 @@ onUnmounted(() => {
             吸引了超过<span class="active">200家</span>企业加入社区
           </p>
           <p class="fade-time-5">
-            openGauss在国内<span class="active">14个</span>城市建立了用户组
+            openGauss在国内<span class="active">15个</span>城市建立了用户组
           </p>
           <p class="fade-time-6">走进<span class="active">72所</span>高校</p>
           <p class="fade-time-7">
             并且举办了openGauss<span class="active">第1次</span>开发者大会
           </p>
-          <p class="margin-top-h5 fade-time-8">2022年</p>
+        </div>
+        <div class="mask margin-top-h7">
+          <p class="fade-time-8">2022年</p>
           <p class="fade-time-9">
             已经有越来越多的人走进 openGauss 的开源世界。
           </p>
@@ -516,7 +515,7 @@ onUnmounted(() => {
             :class="`fade-time-${index + 1 + 10}`"
             :key="item.value"
           >
-            <span v-if="item.key">{{ item.value }}</span>
+            <span v-if="item.key" v-html="item.value"></span>
           </p>
           <p
             class="bold fade-time-10"
@@ -537,7 +536,10 @@ onUnmounted(() => {
             :key="item.value"
             :class="[index === 0 ? 'margin-top-h4' : '', `fade-time-${index}`]"
           >
-            <span v-if="item.key && item.key !== '0'">{{ item.value }}</span>
+            <span
+              v-if="item.key && item.key !== '0'"
+              v-html="item.value"
+            ></span>
           </p>
         </div>
       </div>
@@ -558,10 +560,7 @@ onUnmounted(() => {
           愿你元旦快乐。
         </p>
         <div class="logo-box margin-top-h4">
-          <img
-            src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-            alt=""
-          />
+          <img src="@/assets/qrCode.png" alt="" />
         </div>
       </div>
     </div>
@@ -644,7 +643,7 @@ onUnmounted(() => {
                 吸引了超过<span class="active">200家</span>企业加入社区
               </p>
               <p class="fade-time-14">
-                至今在国内<span class="active">14个</span>城市建立了用户组
+                至今在国内<span class="active">15个</span>城市建立了用户组
               </p>
               <p class="fade-time-15">
                 走进<span class="active">72所</span>高校
@@ -663,10 +662,7 @@ onUnmounted(() => {
           <div class="pg-3-bottom fade-time-21">
             <div class="pg-3-bottom-left">openGauss 星球</div>
             <div class="pg-3-bottom-right">
-              <img
-                src="https://www.openeuler.org/assets/code-xzs.28d49899.png"
-                alt=""
-              />
+              <img src="@/assets/qrCode.png" alt="" />
             </div>
           </div>
         </div>
@@ -836,6 +832,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           line-height: 34px;
         }
       }
+      .active {
+        padding: 0 2px;
+        font-size: 14px;
+      }
     }
     .pg-5 {
       display: flex;
@@ -874,10 +874,11 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         }
       }
       .active {
+        padding: 0 2px;
         font-size: 15px;
       }
       .mask:first-child {
-        margin-top: 76px;
+        margin-top: 40px;
       }
     }
   }
@@ -1009,6 +1010,7 @@ p {
 .logo-box {
   padding: 5px;
   width: 105px;
+  background-color: #a865eb;
   img {
     width: 100%;
   }
@@ -1181,6 +1183,10 @@ p {
         font-size: 20px;
         line-height: 34px;
       }
+      .active {
+        padding: 0 2px;
+        font-size: 14px;
+      }
     }
   }
   .pg-5 {
@@ -1267,6 +1273,7 @@ p {
     background-size: cover;
     background-position: center;
     display: flex;
+    background-color: #471d9b;
     justify-content: center;
     transform-style: preserve-3d;
     backface-visibility: hidden;

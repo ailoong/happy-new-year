@@ -17,6 +17,16 @@
   </div>
   <script type="module" src="/src/main.ts"></script>
   <script>
+    var _hmt = _hmt || [];
+    (function () {
+      // 百度统计
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ab8d86daab9a8e98cf8faa239aefcd3c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <script>
     function isIE() {
       if (!!window.ActiveXObject || 'ActiveXObject' in window) return true;
       else return false;
