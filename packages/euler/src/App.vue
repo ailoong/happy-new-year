@@ -29,13 +29,23 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'haml',
+  user: 'georgecao',
   year: '2022',
 });
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
+      try {
+        const sensors = (window as any)['sensorsDataAnalytic201505'];
+        sensors?.setProfile({
+          user_logo: res.user,
+          community: 'openeuler',
+          created_at: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 }
@@ -154,7 +164,7 @@ const pageCentent: any = computed(() => {
           '在这一年里',
           `你的贡献度击败了社区 <span class="active">${getPercentage(
             posterData.value?.count_rank
-          )}%</span>的开发者`,
+          )?.toFixed(2)}%</span>的开发者`,
           `<span class="active pg-6-text">恭喜你获得</span>`,
         ],
       },
@@ -302,7 +312,7 @@ const pageCentent: any = computed(() => {
         text: [
           `Your contributions place you ahead of <span class="active">${getPercentage(
             posterData.value.count_rank
-          )}%</span>`,
+          )?.toFixed(2)}%</span>`,
           `<span class="active bold">Congratulations</span>`,
         ],
       },
@@ -409,16 +419,6 @@ const rankMap: any = ref({
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
-  try {
-    const sensors = (window as any)['sensorsDataAnalytic201505'];
-    sensors?.setProfile({
-      user_logo: params.value.user,
-      community: 'openeuler',
-      created_at: new Date(),
-    });
-  } catch (error) {
-    console.log(error);
-  }
   await getPosterDataFun();
   pcClick();
   currentPage.value = 0;
