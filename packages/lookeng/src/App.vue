@@ -1173,6 +1173,7 @@ a {
       line-height: 40px;
       padding: 0 60px;
       font-style: italic;
+      opacity: 0;
     }
     .go-start {
       margin: 40px 0;
@@ -1308,7 +1309,8 @@ a {
       animation: fade 1.2s ease-in-out forwards;
     }
     h3 {
-      animation: bounceIn 1s ease-in-out forwards;
+      // animation: bounceIn 1s ease-in-out forwards;
+      animation: slide-top 1.2s ease-in-out forwards;
     }
   }
   .page4 {
