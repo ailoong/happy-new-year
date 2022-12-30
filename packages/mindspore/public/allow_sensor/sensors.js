@@ -515,7 +515,7 @@ function initSensor() {
     window['sensorsCustomBuriedData'][key] = value;
   };
   sensors.init({
-    server_url: 'https://omapi.osinfra.cn/query/track?community=openEuler',
+    server_url: 'https://omapi.osinfra.cn/query/track?community=mindspore',
     use_client_time: true,
     // 调试时开启
     show_log: false,
