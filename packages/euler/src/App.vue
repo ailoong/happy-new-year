@@ -296,12 +296,6 @@ const pageCentent: any = computed(() => {
             }</span> SIG${posterData.value?.sig_num !== '1' ? 's' : ''}`,
             key: posterData.value.sig_num,
           },
-          {
-            value: `forked  <span class="active">${
-              posterData.value?.fork_num
-            }</span> repo${posterData.value?.fork_num !== '1' ? 's' : ''}`,
-            key: posterData.value.fork_num,
-          },
         ],
       },
       page6: {
