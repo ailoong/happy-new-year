@@ -200,13 +200,7 @@ const initDom: any = computed(() => {
                 )}`
               : ' '
           }`,
-          `${
-            posterData.value.sig_num > 0
-              ? `<span class='active'>${
-                  posterData.value.sig_num
-                }</span> 个SIG${pluralComputed(posterData.value.sig_num)}`
-              : ' '
-          }`,
+
           `${
             posterData.value.star_num > 0
               ? `<span class='active'>${posterData.value.star_num}</span> 个仓库`
@@ -332,13 +326,7 @@ const initDom: any = computed(() => {
                 }</span> Comment${pluralComputed(posterData.value.comment_num)}`
               : ' '
           }`,
-          `${
-            posterData.value.sig_num > 0
-              ? `<span class='active'>${
-                  posterData.value.sig_num
-                }</span> SIG${pluralComputed(posterData.value.sig_num)}`
-              : ' '
-          }`,
+
           `${
             posterData.value.star_num > 0
               ? `<span class='active'>${
