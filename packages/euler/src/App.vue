@@ -29,7 +29,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: '',
+  user: 'haml',
   year: '2022',
 });
 async function getUserDataFun() {
@@ -415,6 +415,16 @@ const rankMap: any = ref({
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
+  try {
+    const sensors = (window as any)['sensorsDataAnalytic201505'];
+    sensors?.setProfile({
+      user_logo: params.value.user,
+      community: 'openeuler',
+      created_at: new Date(),
+    });
+  } catch (error) {
+    console.log(error);
+  }
   await getPosterDataFun();
   pcClick();
   currentPage.value = 0;
