@@ -29,7 +29,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'georgecao',
+  user: '',
   year: '2022',
 });
 async function getUserDataFun() {

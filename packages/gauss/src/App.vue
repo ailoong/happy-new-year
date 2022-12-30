@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'haml',
+  user: 'zhongjun2',
   year: '2022',
 });
 
@@ -95,11 +95,11 @@ const posterContent = computed(() => {
 });
 function getPercentage(per: any) {
   if (per) {
-    return Number(per?.replace('%', ''));
+    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
   }
 }
 function getRank(per: any) {
-  const percentage = per;
+  const percentage = 100 - per;
   let rank = 0;
   if (percentage <= 25) {
     rank = 0;
@@ -112,12 +112,30 @@ function getRank(per: any) {
   }
   return rank;
 }
-const rankMap: any = ref([
-  '<span>「浑然天成的当代缪斯」</span>你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ ',
-  '<span>「见识非凡的探索家」</span>这一年，你在openGauss收获同好，分享智慧，恭喜你收获了更好的自己。 ',
-  '<span>「新知青年」</span>你用好奇探索真理，也因认真进入无数openGauss的平行世界。 ',
-  '<span>「openGauss的萌新好友」</span>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇，请日后多多关照openGauss啦。 ',
-]);
+const rankMap: any = computed(() => {
+  return [
+    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><span class="active1">「浑然天成的当代缪斯」</span><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+      posterData.value?.count_rank
+    )?.toFixed(
+      2
+    )}%</p> <br> 你积极思考、独到透彻、表达跳脱、openGauss因为有你而变得不一样！ `,
+    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+      posterData.value?.count_rank
+    )?.toFixed(
+      2
+    )}%</p>「见识非凡的探索家」</span> <br>这一年，你在openGauss收获同好，分享智慧，恭喜你收获了更好的自己。 `,
+    `<p class="font-size-tip margin-top-h4">你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+      posterData.value?.count_rank
+    )?.toFixed(
+      2
+    )}%</p>「新知青年」</span><br> 你用好奇探索真理，也因认真进入无数openGauss的平行世界。 `,
+    `<p class="font-size-tip margin-top-h4" >你的2022年标签<p><p class='rank'>你的贡献度击败了社区 <span class="active">${getPercentage(
+      posterData.value?.count_rank
+    )?.toFixed(
+      2
+    )}%</p>「openGauss的萌新好友」</span> <br>都说有人不想变老就能一直年轻，秘诀是对世界保存好奇，请日后多多关照openGauss啦。 `,
+  ];
+});
 async function getPosterDataFun() {
   await getPosterData(params.value)
     .then((res) => {
@@ -142,6 +160,16 @@ async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
+      try {
+        const sensors = (window as any)['sensorsDataAnalytic201505'];
+        sensors?.setProfile({
+          user_logo: res.user,
+          community: 'opengauss',
+          created_at: new Date(),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 }
@@ -187,9 +215,6 @@ function goStart() {
   try {
     bgmOpen.value.classList.add('run-bgm');
     bgm.value?.play();
-    // const event = document.createEvent('Events');
-    // event.initEvent('touchstart', true, true);
-    // bgmOpen.value?.dispatchEvent(event);
   } catch (error) {
     console.log(error);
   }
@@ -264,7 +289,7 @@ onUnmounted(() => {
             <p class="fade-time-1">HI~很高兴遇见你！</p>
             <p class="fade-time-2">你的故事要从这个数字说起……</p>
             <p class="fade-time-3 active">
-              {{ dayTime(posterData?.first_time_of_enter) }}
+              {{ dayTime(posterData?.first_time_of_enter) }}天
             </p>
           </div>
           <div class="pg-2-main">
@@ -277,12 +302,13 @@ onUnmounted(() => {
                 dayTime(posterData?.first_time_of_enter)
               }}个日夜
             </p>
-            <p class="fade-time-7">
-              感谢相遇，<span class="active">{{ params.user }}</span>
+            <p class="fade-time-7">感谢相遇</p>
+            <p class="fade-time-8">
+              <span class="active">{{ params.user }}</span>
               这个名字我已经铭记
             </p>
-            <p class="fade-time-8">在openGauss的开源世界</p>
-            <p class="fade-time-9">
+            <p class="fade-time-9">在openGauss的开源世界</p>
+            <p class="fade-time-10">
               每一次相遇，每一次陪伴，一定都是双向奔赴。
             </p>
           </div>
@@ -350,7 +376,6 @@ onUnmounted(() => {
         <div class="back current wrapper-m pg-5">
           <p class="bold title">其实关于你的点滴</p>
           <p class="bold title">「openGauss」 全都记得</p>
-          <p class="font-size-tip margin-top-h4">你的2022年标签</p>
           <p
             class="margin-top-h6"
             v-html="rankMap[getRank(getPercentage(posterData.count_rank))]"
@@ -463,7 +488,8 @@ onUnmounted(() => {
       >
         <div class="pg1-top">
           <p class="title">2022年度贡献报告</p>
-          <p>你的点滴 【openGauss】全都记得......</p>
+          <p>关于你的点滴</p>
+          <p>「openGauss」全都记得......</p>
         </div>
         <div class="pg1-buttom">
           <p class="fade-time-1">又是一年</p>
@@ -482,7 +508,7 @@ onUnmounted(() => {
           <p class="fade-time-1">HI~很高兴遇见你！</p>
           <p class="fade-time-2">你的故事要从这个数字说起……</p>
           <p class="fade-time-3 active">
-            {{ dayTime(posterData?.first_time_of_enter) }}
+            {{ dayTime(posterData?.first_time_of_enter) }}天
           </p>
         </div>
         <div class="pg-2-main">
@@ -500,12 +526,13 @@ onUnmounted(() => {
             }}</span>
             个日夜
           </p>
-          <p class="fade-time-7">
-            感谢相遇，<span class="active">{{ params.user }}</span>
+          <p class="fade-time-7">感谢相遇</p>
+          <p class="fade-time-8">
+            <span class="active">{{ params.user }}</span>
             这个名字我已经铭记
           </p>
-          <p class="fade-time-8">在openGauss的开源世界</p>
-          <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
+          <p class="fade-time-9">在openGauss的开源世界</p>
+          <p class="fade-time-10">每一次相遇，每一次陪伴，一定都是双向奔赴。</p>
         </div>
       </div>
       <div
@@ -513,7 +540,10 @@ onUnmounted(() => {
         :class="currentPage === 2 ? 'current' : ''"
       >
         <div class="mask">
-          <p class="fade-time-1">
+          <p class="fade-time-0">
+            你一次次完成自我的深度探索，也找到了契合的同行者
+          </p>
+          <p class="fade-time-1 margin-top-h6">
             因为有<span class="active">4000+</span>个并肩同行的小伙伴一起战斗
           </p>
           <p class="fade-time-2">
@@ -536,7 +566,7 @@ onUnmounted(() => {
             并且举办了openGauss<span class="active">第1次</span>开发者大会
           </p>
         </div>
-        <div class="mask margin-top-h7">
+        <div class="mask margin-top-h7" style="padding: 16px 12px">
           <p class="fade-time-8">2022年</p>
           <p class="fade-time-9">
             已经有越来越多的人走进 openGauss 的开源世界。
@@ -548,12 +578,6 @@ onUnmounted(() => {
             :key="item.value"
           >
             <span v-if="item.key" v-html="item.value"></span>
-          </p>
-          <p
-            class="bold fade-time-10"
-            :class="`fade-time-${posterContent.page3.text.length + 11}`"
-          >
-            你一次次完成自我的深度探索，也找到了契合的同行者
           </p>
         </div>
       </div>
@@ -581,7 +605,6 @@ onUnmounted(() => {
       >
         <p class="bold title">其实关于你的点滴</p>
         <p class="bold title">「openGauss」 全都记得</p>
-        <p class="font-size-tip margin-top-h4">你的2022年标签</p>
         <p
           class="margin-top-h6"
           v-html="rankMap[getRank(getPercentage(posterData.count_rank))]"
@@ -710,9 +733,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
   display: inline-block;
   opacity: 0;
   color: $active;
+  font-size: 14px;
 }
 .bold {
-  font-weight: 700;
+  font-weight: 500;
 }
 @each $spacing in $spacings {
   $i: index($spacings, $spacing);
@@ -728,6 +752,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
 #app {
   width: 100vw;
   height: 100vh;
+  font-family: FZLTHJW--GB1-0, FZLTHJW--GB1;
 }
 .bgm-open {
   position: absolute;
@@ -808,6 +833,7 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
           font-size: 26px;
         }
         p {
+          margin-top: 2px;
           line-height: normal;
           font-size: 16px;
         }
@@ -902,9 +928,9 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
     .pg-5 {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
       .title {
-        margin-top: 12px;
+        margin-top: 40px;
       }
       p {
         line-height: 20px;
@@ -914,12 +940,18 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         font-size: 20px;
         line-height: 26px;
       }
+      .active1 {
+        display: inline-block;
+        margin-top: 12px;
+        color: #fdfd19;
+        font-size: 20px;
+      }
       .active {
-        font-size: 25px;
+        font-size: 20px;
       }
       .rank {
         margin: 14px 0 22px;
-        font-size: 16px;
+        font-size: 20px;
       }
       .logo-box {
         margin-bottom: 40px;
@@ -934,6 +966,10 @@ $spacings: 62 40 32 24 16 12 10 8 6 4;
         p:first-child {
           font-size: 15px;
         }
+      }
+      .fade-time-0 {
+        line-height: 32px;
+        font-size: 18px;
       }
       .active {
         padding: 0 2px;
@@ -1087,8 +1123,7 @@ p {
   height: 100vh;
   padding: 50px;
   max-width: 1920px;
-
-  @media screen and (max-width: 1460px) {
+  @media screen and (max-width: 1620px) {
     padding: 24px;
   }
   .box-1 {
@@ -1226,6 +1261,9 @@ p {
         line-height: 28px;
         font-size: 12px;
       }
+      .active {
+        font-size: 14px;
+      }
     }
   }
 
@@ -1271,12 +1309,18 @@ p {
       font-size: 20px;
       line-height: 26px;
     }
+    .active1 {
+      display: inline-block;
+      margin-top: 12px;
+      color: #fdfd19;
+      font-size: 20px;
+    }
     .active {
-      font-size: 25px;
+      font-size: 20px;
     }
     .rank {
       margin: 14px 0 22px;
-      font-size: 16px;
+      font-size: 20px;
     }
     .logo-box {
       margin-bottom: 40px;
@@ -1293,7 +1337,8 @@ p {
       }
     }
     .active {
-      font-size: 15px;
+      padding: 0 2px;
+      font-size: 14px;
     }
     .mask:first-child {
       // margin-top: 76px;
