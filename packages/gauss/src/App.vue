@@ -7,8 +7,8 @@ import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData, getUserData } from 'shared/api';
-const screenWidth = useWindowResize();
 
+const screenWidth = useWindowResize();
 const params = ref({
   community: 'opengauss',
   user: '',
@@ -185,7 +185,6 @@ onMounted(async () => {
   await getPosterDataFun();
   currentPage.value = 0;
   pcClick();
-
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
       scrollX: false,
@@ -194,7 +193,6 @@ onMounted(async () => {
       bounce: false,
       click: true,
       pullUpLoad: true,
-
       slide: {
         autoplay: false,
         loop: false,
@@ -226,32 +224,6 @@ function goStart() {
   }
 }
 
-onMounted(async () => {
-  // 必须先确定是否为贡献者
-  await getUserDataFun();
-  await getPosterDataFun();
-  pcClick();
-  if (wrapper.value) {
-    slide = new BScroll(wrapper.value as HTMLElement, {
-      scrollX: false,
-      scrollY: true,
-      momentum: false,
-      bounce: false,
-      click: true,
-      pullUpLoad: true,
-
-      slide: {
-        autoplay: false,
-        loop: false,
-        threshold: 100,
-      },
-      stopPropagation: true,
-    });
-    slide.on('slidePageChanged', () => {
-      currentPage.value = slide.getCurrentPage().pageY;
-    });
-  }
-});
 function pcClick() {
   const front: any = document.querySelectorAll('.front');
   const back: any = document.querySelectorAll('.back');
