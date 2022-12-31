@@ -11,7 +11,7 @@ const screenWidth = useWindowResize();
 
 const params = ref({
   community: 'opengauss',
-  user: 'tuzouzhi999',
+  user: '',
   year: '2022',
 });
 
@@ -635,24 +635,6 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <!-- <div
-        class="slide-page wrapper-l pg-2"
-        :class="currentPage === 1 ? 'current' : ''"
-      >
-        <div class="pg-2-top">
-          <p class="fade-time-1">HI~很高兴遇见你！</p>
-          <p class="fade-time-2">你的故事要从这个数字说起……</p>
-          <p class="fade-time-3">XXXXX（提取多少个日夜的数据）</p>
-        </div>
-        <div class="pg-2-main">
-          <p class="fade-time-4">那是XX年XX月XX日</p>
-          <p class="fade-time-5">我第一次遇见你</p>
-          <p class="fade-time-6">至今，我们已经走过了XX个日夜</p>
-          <p class="fade-time-7">感谢相遇，XXX(Gitee Name)这个名字我已经铭记</p>
-          <p class="fade-time-8">在openGauss的开源世界</p>
-          <p class="fade-time-9">每一次相遇，每一次陪伴，一定都是双向奔赴</p>
-        </div>
-      </div> -->
       <div
         class="slide-page wrapper-m pg-3"
         :class="currentPage === 1 ? 'current' : ''"
@@ -727,6 +709,7 @@ onUnmounted(() => {
 <style lang="scss">
 $active: #fdfd19;
 $spacings: 62 40 32 24 16 12 10 8 6 4;
+$bgTime: 0;
 
 .active {
   display: inline-block;
@@ -1143,22 +1126,20 @@ p {
 // .current.slide-page {
 //   @for $i from 0 through 22 {
 //     .fade-time-#{ $i} {
-//       animation-delay: #{$i * 0.5 + 2}s;
+//       animation-delay: #{$i * 0.5}s;
 //       .active {
-//         animation-delay: #{$i * 0.5 + 2 + 0.5}s;
+//         animation-delay: #{$i * 0.5 + 0.5}s;
 //       }
 //     }
 //   }
 // }
-// .current.pg-1,
-// .current.pg-2,
-// .current.pg-3,
-// .current.pg-4,
-// .current.pg-5,
-// .current.pg-6 {
-//   background-position: 100% center;
-//   animation: zoomin 2s ease-in forwards;
-// }
+.current.slide-page {
+  animation: zoomin 5s linear forwards;
+}
+.slide-page {
+  background-position: 100% center;
+}
+
 @keyframes fade {
   100% {
     opacity: 1;
