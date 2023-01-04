@@ -673,16 +673,11 @@ onUnmounted(() => {
         <div class="front">
           <img
             v-if="lang === 'zh'"
-            class="bg-imgage"
+            class="bg-image"
             src="@/assets/pc-bg1.png"
             alt=""
           />
-          <img
-            v-else
-            class="bg-imgage"
-            src="@/assets/bg-image2-en.jpg"
-            alt=""
-          />
+          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
         </div>
 
         <div class="back">
@@ -735,16 +730,11 @@ onUnmounted(() => {
         <div class="front">
           <img
             v-if="lang === 'zh'"
-            class="bg-imgage"
+            class="bg-image"
             src="@/assets/pc-bg2.png"
             alt=""
           />
-          <img
-            v-else
-            class="bg-imgage"
-            src="@/assets/bg-image1-en.jpg"
-            alt=""
-          />
+          <img v-else class="bg-image" src="@/assets/bg-image1-en.jpg" alt="" />
         </div>
         <div class="back">
           <div class="content-2 pg-3" :class="clickCount > 1 ? 'current' : ''">
@@ -818,16 +808,11 @@ onUnmounted(() => {
         <div class="front">
           <img
             v-if="lang === 'zh'"
-            class="bg-imgage"
+            class="bg-image"
             src="@/assets/pc-bg4.png"
             alt=""
           />
-          <img
-            v-else
-            class="bg-imgage"
-            src="@/assets/bg-image2-en.jpg"
-            alt=""
-          />
+          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
         </div>
         <div class="back">
           <div class="content-3 pg-4" :class="clickCount > 1 ? 'current' : ''">
@@ -917,16 +902,11 @@ onUnmounted(() => {
         <div class="front">
           <img
             v-if="lang === 'zh'"
-            class="bg-imgage"
+            class="bg-image"
             src="@/assets/pc-bg3.png"
             alt=""
           />
-          <img
-            v-else
-            class="bg-imgage"
-            src="@/assets/bg-image2-en.jpg"
-            alt=""
-          />
+          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
         </div>
         <div class="back">
           <div class="content-4 pg-5" :class="clickCount > 1 ? 'current' : ''">
@@ -1003,7 +983,6 @@ onUnmounted(() => {
 
         <p class="start-intro">{{ mindsporeData[lang].page1.start }}</p>
 
-        <!-- <img class="glass" src="@/assets/glass.png" alt="" /> -->
         <img class="card" src="@/assets/card.png" alt="" />
         <img class="middle-light" src="@/assets/middle-light.png" alt="" />
         <img class="middle-block" src="@/assets/middle-block.png" alt="" />
@@ -1854,17 +1833,7 @@ p {
           color: #ffffff;
         }
       }
-      // .glass {
-      //   position: absolute;
-      //   bottom: 352px;
-      //   left: 50%;
-      //   transform: translateX(-50%);
-      //   width: 228px;
-      //   opacity: 0.3;
-      //   @media screen and (max-height: 738px) {
-      //     bottom: 250px;
-      //   }
-      // }
+
       .card {
         width: 327px;
         position: absolute;
@@ -1884,7 +1853,7 @@ p {
         position: absolute;
         bottom: 198px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-51%);
         animation-name: middle-light;
         animation-duration: 2s;
         animation-iteration-count: infinite;
@@ -1895,11 +1864,14 @@ p {
       .middle-block {
         width: 24px;
         position: absolute;
-        bottom: 206px;
+        bottom: 204px;
         left: 50%;
         transform: translateX(-50%);
         @media screen and (max-height: 738px) {
           bottom: 106px;
+        }
+        @media screen and (max-width: 820px) {
+          transform: translateX(-56%) !important;
         }
       }
     }
@@ -2979,9 +2951,9 @@ p {
     max-height: 640px;
     height: 100%;
     overflow: hidden;
-    .bg-imgage {
+    .bg-image {
       width: 100%;
-      min-height: 640px;
+      min-height: 642px;
     }
   }
 
