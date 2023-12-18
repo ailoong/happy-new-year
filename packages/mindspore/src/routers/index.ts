@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 export const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: '/zh/2022/' },
+  { path: '/', redirect: '/zh/2023/' },
   // zh
   {
-    path: '/zh/2022',
-    name: '2022',
+    path: '/zh/2023',
+    name: '2023',
     component: () => import('@/App.vue'),
   },
   // en
   {
-    path: '/en/2022',
-    name: '2022_en',
+    path: '/en/2023',
+    name: '2023_en',
     component: () => import('@/App.vue'),
   },
 ];

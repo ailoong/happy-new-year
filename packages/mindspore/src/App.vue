@@ -20,9 +20,10 @@ watch(
 
 const params = ref({
   community: 'mindspore',
-  user: '',
-  year: '2022',
+  user: 'ailoooong',
+  year: '2023',
 });
+
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
@@ -57,12 +58,12 @@ const mindsporeData: any = computed(() => {
           '发送快捷的指令',
           '传输网络的密语',
           '便将一个个梦幻的理想变成神奇的现实',
-          '2022年，小孢子你又成长了哦！',
+          '2023年，小孢子你又成长了哦！',
         ],
         bottom: [
           '每一个节点的历程，都是带有温度的回忆',
           '请点击这份惊喜，出发去看看',
-          '属于你和我的MindSpore2022',
+          '属于你和我的MindSpore2023',
         ],
         top_no: [
           '编写智慧的程序',
@@ -139,7 +140,7 @@ const mindsporeData: any = computed(() => {
         ],
         middle_no: [
           {
-            value: `2022年昇思MindSpore发布了<span class="active">3</span>个新版本`,
+            value: `2023年昇思MindSpore发布了<span class="active">3</span>个新版本`,
             key: '1',
           },
           {
@@ -169,7 +170,7 @@ const mindsporeData: any = computed(() => {
         id: 4,
         top: [
           `Hi~，@<span class="active">${posterData.value.user_login}</span>`,
-          '截至2022年12月31日24时',
+          '截至2023年12月31日24时',
         ],
         bottom: [
           {
@@ -234,7 +235,7 @@ const mindsporeData: any = computed(() => {
           },
         ],
         top_no: [
-          '作为头孢新朋友，带您了解下2022年的MSG系列活动',
+          '作为头孢新朋友，带您了解下2023年的MSG系列活动',
           `我们与来自<span class="active">2042</span>个企业的开发者一起，贯穿8个行业`,
           '领域的分享',
           '很多都是首次通过MSG企业行触电AI',
@@ -263,7 +264,7 @@ const mindsporeData: any = computed(() => {
           '届时您一定要多多支持！',
         ],
         bottom: [
-          '2022年的昇思之旅感恩有您的参与，陪伴与支持',
+          '2023年的昇思之旅感恩有您的参与，陪伴与支持',
           '祝您在2023年继续“程”风破浪，快乐加“码”，',
           '再创佳绩！',
         ],
@@ -281,7 +282,7 @@ const mindsporeData: any = computed(() => {
         id: 2,
         top: [
           'Hey MindSpore developers,',
-          'Thanks for working with us in 2022',
+          'Thanks for working with us in 2023',
           'Every line of code you’ve written has been a source of inspiration',
           'Every program you’ve built has made our world more intelligent',
           'Every instruction and every message you’ve sent has made dreams come true',
@@ -289,7 +290,7 @@ const mindsporeData: any = computed(() => {
         bottom: [
           'Every stop on your journey has created new memories',
           'So why wait? ',
-          'Click here to embark on this exciting journey and discover what the future holds for you and MindSpore 2022',
+          'Click here to embark on this exciting journey and discover what the future holds for you and MindSpore 2023',
         ],
         top_no: [
           'Hi, there. I believe you are also a deep learning enthusiast',
@@ -305,7 +306,7 @@ const mindsporeData: any = computed(() => {
       },
       page3: {
         id: 3,
-        top: ['Thanks to your support', 'In 2022 MindSpore has:'],
+        top: ['Thanks to your support', 'In 2023 MindSpore has:'],
         middle: [
           {
             value: `Released <span class="active">3</span> new versions`,
@@ -376,7 +377,7 @@ const mindsporeData: any = computed(() => {
       page4: {
         id: 4,
         top: [
-          `Hi, <span class="active">${posterData.value.user_login}</span>, as of December 31, 2022 at 24:00`,
+          `Hi, <span class="active">${posterData.value.user_login}</span>, as of December 31, 2023 at 24:00`,
         ],
         bottom: [
           {
@@ -462,7 +463,7 @@ const mindsporeData: any = computed(() => {
           'With the release of new and more powerful versions',
         ],
         bottom: [
-          'We appreciate your support in 2022',
+          'We appreciate your support in 2023',
           'And can’t wait to see what 2023 will bring!',
         ],
         top_no: [
@@ -480,7 +481,25 @@ const wrapper = ref<HTMLElement | null>(null);
 BScroll.use(Slide);
 
 const isContributor = ref(false);
-const posterData: any = ref({});
+const posterData: any = ref({
+  comment_num: '4288',
+  user_login_with_most_contact: 'panxh_purple',
+  first_time_of_enter: '2020/1/2 17:37',
+  first_user_of_comment: 'lyn1001',
+  issue_num: '2424',
+  sig_num: '70',
+  star_num: '0',
+  fork_num: '12',
+  code_lines_delete: '7088',
+  count_rank: '0.0001',
+  first_time_of_comment: '2022/1/4 11:30',
+  user_login: 'licihua',
+  code_lines_add: '8062',
+  pr_num: '53',
+  first_time_of_be_comment: '2022/1/4 17:31',
+  first_user_of_be_comment: 'zzm_567',
+  watch_num: '717',
+});
 const monthData: any = ref({});
 const registerTime: any = ref([]);
 
@@ -576,11 +595,9 @@ function timesDiff(timesData: any) {
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  await getUserDataFun();
-  await getPosterDataFun();
-  await getMonthountFun();
-
-  pcClick();
+  // await getUserDataFun();
+  // await getPosterDataFun();
+  // await getMonthountFun();
 
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -603,7 +620,7 @@ onMounted(async () => {
     });
   }
 
-  if (screenWidth.value < 1200) {
+  if (screenWidth.value < 768) {
     bgm.value?.addEventListener('pause', function () {
       bgmOpen.value?.classList.remove('run-bgm');
     });
@@ -622,30 +639,6 @@ const isShowStar = ref(false);
 // 背景音乐
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
-
-function pcClick() {
-  const front: any = document.querySelectorAll('.front');
-  const back: any = document.querySelectorAll('.back');
-  for (let i = 0; i < front.length; i++) {
-    front[i].addEventListener('click', function () {
-      for (let j = 0; j < front.length; j++) {
-        front[j].style = 'transform:rotateY(-180deg)';
-        back[j].style = 'transform:rotateY(0deg)';
-      }
-    });
-    back[i].addEventListener('click', function () {
-      for (let z = 0; z < back.length; z++) {
-        back[z].style = 'transform:rotateY(180deg)';
-        front[z].style = 'transform:rotateY(0deg)';
-      }
-    });
-  }
-
-  clickCount.value++;
-  if (clickCount.value > 1) {
-    isShowStar.value = !isShowStar.value;
-  }
-}
 
 onUnmounted(() => {
   if (slide) {
@@ -667,300 +660,11 @@ onUnmounted(() => {
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
 
-  <div v-if="screenWidth > 1200" class="pc-post" @click="pcClick">
-    <div class="contribution">
-      <div class="container box-1">
-        <div class="front">
-          <img
-            v-if="lang === 'zh'"
-            class="bg-image"
-            src="@/assets/pc-bg1.png"
-            alt=""
-          />
-          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
-        </div>
-
-        <div class="back">
-          <div class="content-1 pg-2" :class="clickCount > 1 ? 'current' : ''">
-            <img class="star-1" src="@/assets/star.png" alt="" />
-            <img class="ship-pc" src="@/assets/ship.png" alt="" />
-            <img
-              v-if="isShowStar"
-              class="star-2"
-              src="@/assets/star2.png"
-              alt=""
-            />
-            <img class="blue-halo" src="@/assets/blue-halo.png" alt="" />
-
-            <div v-if="isContributor" class="pg2-main">
-              <div class="pg2-top">
-                <p v-for="item in mindsporeData[lang].page2.top" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-
-              <div class="pg2-bottom">
-                <p v-for="item in mindsporeData[lang].page2.bottom" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-            </div>
-
-            <div v-else class="pg2-main">
-              <div class="pg2-top">
-                <p v-for="item in mindsporeData[lang].page2.top_no" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-
-              <div class="pg2-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page2.bottom_no"
-                  :key="item"
-                >
-                  {{ item }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container box-2">
-        <div class="front">
-          <img
-            v-if="lang === 'zh'"
-            class="bg-image"
-            src="@/assets/pc-bg2.png"
-            alt=""
-          />
-          <img v-else class="bg-image" src="@/assets/bg-image1-en.jpg" alt="" />
-        </div>
-        <div class="back">
-          <div class="content-2 pg-3" :class="clickCount > 1 ? 'current' : ''">
-            <img class="earth-pc" src="@/assets/earth.png" alt="" />
-            <img class="earth-circle" src="@/assets/earth-circle.png" alt="" />
-            <img class="point-1" src="@/assets/point-1.png" alt="" />
-            <img class="point-2" src="@/assets/point-2.png" alt="" />
-            <img class="point-3" src="@/assets/point-3.png" alt="" />
-            <img class="point-4" src="@/assets/point-4.png" alt="" />
-
-            <div v-if="isContributor" class="pg3-main">
-              <div class="pg3-main-top">
-                <p v-for="item in mindsporeData[lang].page3.top" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-
-              <div class="pg3-main-middle">
-                <p
-                  v-for="item in mindsporeData[lang].page3.middle"
-                  :key="item.value"
-                >
-                  <span
-                    v-if="item.key && item.key !== '0'"
-                    v-html="item.value"
-                  ></span>
-                </p>
-              </div>
-
-              <div class="pg3-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page3.bottom"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-            </div>
-
-            <div v-else class="pg3-main">
-              <div class="pg3-main-top">
-                <p v-for="item in mindsporeData[lang].page3.top_no" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-
-              <div class="pg3-main-middle">
-                <p
-                  v-for="item in mindsporeData[lang].page3.middle_no"
-                  :key="item.value"
-                >
-                  <span
-                    v-if="item.key && item.key !== '0'"
-                    v-html="item.value"
-                  ></span>
-                </p>
-              </div>
-
-              <div class="pg3-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page3.bottom_no"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container box-3">
-        <div class="front">
-          <img
-            v-if="lang === 'zh'"
-            class="bg-image"
-            src="@/assets/pc-bg4.png"
-            alt=""
-          />
-          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
-        </div>
-        <div class="back">
-          <div class="content-3 pg-4" :class="clickCount > 1 ? 'current' : ''">
-            <img
-              class="pg4-architecture"
-              src="@/assets/architecture.png"
-              alt=""
-            />
-            <img class="pg4-people" src="@/assets/people.png" alt="" />
-            <img
-              class="pg4-architecture-light"
-              src="@/assets/architecture-light.png"
-              alt=""
-            />
-            <img
-              class="pg4-door-light-1"
-              src="@/assets/door-light-1.png"
-              alt=""
-            />
-            <img
-              class="pg4-door-light-2"
-              src="@/assets/door-light-2.png"
-              alt=""
-            />
-            <img class="pg4-door-num-1" src="@/assets/door-num-1.png" alt="" />
-            <img class="pg4-door-num-2" src="@/assets/door-num-2.png" alt="" />
-            <img class="pg4-people-bg2" src="@/assets/people-bg2.png" alt="" />
-            <img class="pg4-people-bg1" src="@/assets/people-bg1.png" alt="" />
-
-            <div class="pg4-track-left">
-              <img
-                class="pg4-track-left-1"
-                src="@/assets/track-left.png"
-                alt=""
-              />
-            </div>
-
-            <div class="pg4-track-right">
-              <img
-                class="pg4-track-right-1"
-                src="@/assets/track-right.png"
-                alt=""
-              />
-            </div>
-
-            <div v-if="isContributor" class="pg4-main">
-              <div class="pg4-main-top">
-                <p v-for="item in mindsporeData[lang].page4.top" :key="item">
-                  <span v-html="item"></span>
-                </p>
-              </div>
-              <div class="pg4-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page4.bottom"
-                  :key="item.value"
-                >
-                  <span
-                    v-if="item.key && item.key !== '0'"
-                    v-html="item.value"
-                  ></span>
-                </p>
-              </div>
-            </div>
-
-            <div v-else class="pg4-main">
-              <div class="pg4-main-top">
-                <p
-                  v-for="item in mindsporeData[lang].page4.top_no"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-
-              <div class="pg4-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page4.bottom_no"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container box-4">
-        <div class="front">
-          <img
-            v-if="lang === 'zh'"
-            class="bg-image"
-            src="@/assets/pc-bg3.png"
-            alt=""
-          />
-          <img v-else class="bg-image" src="@/assets/bg-image2-en.jpg" alt="" />
-        </div>
-        <div class="back">
-          <div class="content-4 pg-5" :class="clickCount > 1 ? 'current' : ''">
-            <img class="pg5-clock" src="@/assets/clock.png" alt="" />
-            <img class="pg5-sun-pc" src="@/assets/sun.png" alt="" />
-            <img class="pg5-sunshine" src="@/assets/sunshine.png" alt="" />
-            <img class="pg5-cloud-left" src="@/assets/cloud-left.png" alt="" />
-            <img
-              class="pg5-cloud-right"
-              src="@/assets/cloud-right.png"
-              alt=""
-            />
-            <div v-if="isContributor" class="pg5-main">
-              <div class="pg5-main-top">
-                <p
-                  v-for="item in mindsporeData[lang].page5.top"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-
-              <div class="pg5-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page5.bottom"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-            </div>
-
-            <div v-else class="pg5-main">
-              <div class="pg5-main-top">
-                <p
-                  v-for="item in mindsporeData[lang].page5.top_no"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-
-              <div class="pg5-main-bottom">
-                <p
-                  v-for="item in mindsporeData[lang].page5.bottom_no"
-                  :key="item"
-                  v-html="item"
-                ></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-else ref="wrapper" class="slide-wrapper">
+  <div
+    ref="wrapper"
+    class="slide-wrapper"
+    :class="screenWidth > 768 ? 'pc' : ''"
+  >
     <div v-if="isContributor" class="slide-content">
       <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
         <img
@@ -1382,8 +1086,17 @@ onUnmounted(() => {
 
 <style lang="scss">
 #app {
-  width: 100vw;
-  height: 100vh;
+  width: 390px;
+  height: 844px;
+  margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+.pc {
+  width: 390px;
+  height: 844px;
 }
 
 .bgm-open {
@@ -1392,6 +1105,7 @@ onUnmounted(() => {
   top: 18px;
   right: 18px;
   z-index: 999;
+  font-size: 0;
 }
 
 .bgm-open img {
@@ -1732,15 +1446,26 @@ p {
   }
 }
 .slide-wrapper {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+  }
   position: relative;
   overflow: hidden;
   .slide-content {
-    width: 100vw;
-    .slide-page {
+    width: 100%;
+    @media screen and (max-width: 768px) {
       width: 100vw;
-      height: 100vh;
+    }
+    .slide-page {
+      width: 100%;
+      height: 100%;
+      @media screen and (max-width: 768px) {
+        width: 100vw;
+        height: 100vh;
+      }
       overflow: hidden;
       background-size: cover;
     }
@@ -1838,7 +1563,10 @@ p {
         width: 327px;
         position: absolute;
         bottom: 410px;
-        left: calc(50vw - 163.5px);
+        left: 5%;
+        @media screen and (max-width: 768px) {
+          left: calc(50vw - 163.5px);
+        }
         animation-name: card;
         animation-duration: 2s;
         animation-iteration-count: infinite;
@@ -2591,405 +2319,6 @@ p {
     height: 100%;
     background-image: url('@/assets/bg#{$i + 1}.jpg');
     background-size: cover;
-  }
-}
-// pc端
-.pc-post {
-  height: 100vh;
-  padding: 50px 24px;
-
-  // transform: translate3d(0, 0, 0);
-  transform: translateZ(0);
-  will-change: transform;
-  p {
-    font-size: 12px;
-    line-height: 20px;
-  }
-
-  .pg-2 {
-    position: relative;
-    .ship-pc {
-      width: 296px;
-      height: 296px;
-      position: absolute;
-      left: -400px;
-      bottom: 0;
-      z-index: 9;
-    }
-    .star-1 {
-      width: 84px;
-      position: absolute;
-      top: -16px;
-      left: -16px;
-      opacity: 0;
-    }
-    .star-2 {
-      width: 156px;
-      position: absolute;
-      bottom: 358px;
-      right: -64px;
-      animation-name: star-rotate;
-      animation-timing-function: cubic-bezier(0.57, 0.53, 0.66, 0.66);
-      animation-duration: 2.5s;
-      animation-iteration-count: infinite;
-    }
-    .blue-halo {
-      width: 263px;
-      position: absolute;
-      right: -105px;
-      bottom: 377px;
-    }
-    .start-btn {
-      width: 173px;
-      opacity: 0;
-      position: absolute;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .ship-light-1 {
-      width: 176px;
-      opacity: 0;
-      position: absolute;
-      bottom: -10px;
-      left: -60px;
-    }
-    .ship-light-2 {
-      width: 60px;
-      opacity: 0;
-      position: absolute;
-      bottom: 140px;
-      left: 155px;
-    }
-
-    .pg2-main {
-      width: 100%;
-      position: absolute;
-      top: 49px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      padding: 0 16px;
-    }
-    .pg2-top,
-    .pg2-bottom {
-      opacity: 0;
-      p {
-        line-height: 24px;
-        font-size: 12px;
-        text-align: center;
-        color: #ffffff;
-      }
-    }
-    .pg2-bottom {
-      margin-top: 26px;
-    }
-  }
-
-  .pg-3 {
-    position: relative;
-    .earth-pc {
-      width: 390px;
-      position: absolute;
-      bottom: 200px;
-      right: -390px;
-      transform: rotateZ(90deg);
-    }
-    .earth-circle {
-      width: 510px;
-      position: absolute;
-      bottom: -200px;
-      left: -74px;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-    }
-    .point-1 {
-      width: 190px;
-      position: absolute;
-      bottom: 26px;
-      left: 92px;
-      opacity: 0;
-    }
-    .point-2 {
-      width: 297px;
-      position: absolute;
-      bottom: 62px;
-      left: 28px;
-      opacity: 0;
-    }
-    .point-3 {
-      width: 207px;
-      position: absolute;
-      bottom: 8px;
-      left: 118px;
-      opacity: 0;
-    }
-    .point-4 {
-      width: 297px;
-      position: absolute;
-      bottom: -48px;
-      left: 38px;
-      opacity: 0;
-    }
-    .pg3-main {
-      width: 100%;
-      position: absolute;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 0 16px;
-
-      &-top {
-        opacity: 0;
-      }
-      &-middle {
-        opacity: 0;
-        margin-top: 20px;
-      }
-      &-bottom {
-        opacity: 0;
-        margin-top: 20px;
-      }
-    }
-  }
-
-  .pg-4 {
-    position: relative;
-    .pg4-main {
-      width: 100%;
-      padding: 0 16px;
-      position: absolute;
-      top: 51px;
-      &-bottom {
-        margin-top: 24px;
-        opacity: 0;
-      }
-
-      &-top {
-        opacity: 0;
-      }
-    }
-
-    .pg4-architecture {
-      width: 360px;
-      position: absolute;
-      bottom: -118px;
-      opacity: 0;
-    }
-
-    .pg4-people {
-      width: 15px;
-      position: absolute;
-      bottom: 26px;
-      left: 104px;
-      opacity: 0;
-      z-index: 9;
-    }
-
-    .pg4-architecture-light {
-      width: 360px;
-      position: absolute;
-      bottom: 216px;
-      opacity: 0;
-    }
-    .pg4-door-light-1,
-    .pg4-door-light-2,
-    .pg4-door-num-1,
-    .pg4-door-num-2,
-    .pg4-track-left,
-    .pg4-track-right {
-      @media screen and (max-width: 1556px) {
-        display: none;
-      }
-    }
-
-    .pg4-door-light-1 {
-      width: 13px;
-      position: absolute;
-      bottom: 42px;
-      right: 66px;
-      opacity: 0;
-    }
-
-    .pg4-door-light-2 {
-      width: 54px;
-      position: absolute;
-      bottom: 22px;
-      right: 66px;
-      opacity: 0;
-    }
-
-    .pg4-door-num-1 {
-      width: 37px;
-      position: absolute;
-      bottom: 40px;
-      right: 66px;
-      opacity: 0;
-    }
-    .pg4-door-num-2 {
-      width: 24px;
-      position: absolute;
-      bottom: 50px;
-      right: 66px;
-      opacity: 0;
-    }
-
-    .pg4-people-bg2,
-    .pg4-people-bg1 {
-      width: 27px;
-      position: absolute;
-      left: 84px;
-      bottom: 45px;
-      opacity: 0;
-    }
-
-    .pg4-track-left {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      bottom: 112px;
-      left: 118px;
-      overflow: hidden;
-
-      &-1 {
-        width: 38px;
-        position: absolute;
-        left: -38px;
-        bottom: -16px;
-      }
-    }
-    .pg4-track-right {
-      position: absolute;
-      width: 56px;
-      height: 56px;
-      right: 96px;
-      bottom: 100px;
-      overflow: hidden;
-      opacity: 0;
-      &-1 {
-        width: 38px;
-        position: absolute;
-        left: 24px;
-        bottom: 0;
-      }
-    }
-  }
-
-  .pg-5 {
-    position: relative;
-    .pg5-main {
-      width: 100%;
-      padding: 0 16px;
-      position: absolute;
-      top: 51px;
-      z-index: 20;
-      &-bottom {
-        margin-top: 24px;
-        opacity: 0;
-      }
-      &-top {
-        opacity: 0;
-      }
-    }
-
-    .pg5-clock {
-      width: 450px;
-      position: absolute;
-      bottom: -268px;
-      right: -450px;
-    }
-
-    .pg5-sun-pc {
-      height: 128px;
-      position: absolute;
-      right: -240px;
-      bottom: -90px;
-    }
-
-    .pg5-sunshine {
-      width: 360px;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      z-index: 1;
-      opacity: 0;
-    }
-
-    .pg5-cloud-left {
-      height: 134px;
-      position: absolute;
-      left: -150px;
-      top: 260px;
-      opacity: 0;
-    }
-
-    .pg5-cloud-right {
-      height: 74px;
-      position: absolute;
-      right: -80px;
-      top: 68px;
-      opacity: 0;
-    }
-  }
-
-  .contribution,
-  .no-contribution {
-    display: flex;
-    margin: 0 auto;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-    gap: 24px;
-  }
-
-  .container {
-    position: relative;
-    max-width: 360px;
-    width: 100%;
-    max-height: 640px;
-    height: 100%;
-    overflow: hidden;
-    .bg-image {
-      width: 100%;
-      min-height: 642px;
-    }
-  }
-
-  .back {
-    transform: rotateY(180deg);
-    overflow: hidden;
-  }
-  .front {
-    background-color: #0d8dff;
-    z-index: 10;
-    background-position: -6px -2px;
-    background-repeat: no-repeat;
-  }
-  .front,
-  .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transition: transform 0.7s ease-in-out;
-  }
-
-  body {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: white;
-    background-color: white;
   }
 }
 </style>
