@@ -11,7 +11,7 @@ import { getPosterData, getUserData } from 'shared/api';
 const screenWidth = useWindowResize();
 const params = ref({
   community: 'opengauss',
-  user: 'ailoooong',
+  user: 'kaede10',
   year: '2023',
 });
 const datastat = {
@@ -290,16 +290,6 @@ async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
-      try {
-        const sensors = (window as any)['sensorsDataAnalytic201505'];
-        sensors?.setProfile({
-          user_logo: res.user,
-          community: 'opengauss',
-          created_at: new Date(),
-        });
-      } catch (error) {
-        console.log(error);
-      }
     }
   });
 }
@@ -402,7 +392,7 @@ onUnmounted(() => {
             :class="`fade-time-${index + 1}`"
           >
             <!-- v-if="item.key"  调试去掉的 -->
-            <span v-html="item.value"></span>
+            <span v-dompurify-html="item.value"></span>
           </p>
         </div>
       </div>
@@ -414,7 +404,7 @@ onUnmounted(() => {
           v-for="(item, index) in posterContent.page2"
           :class="`fade-time-${index + 1}`"
           :key="item"
-          v-html="item"
+          v-dompurify-html="item"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">
@@ -438,7 +428,7 @@ onUnmounted(() => {
           :class="`fade-time-${index + 1}`"
         >
           <!-- v-if="item.key"  调试去掉的 -->
-          <span v-html="item.value"></span>
+          <span v-dompurify-html="item.value"></span>
         </p>
       </div>
       <div
@@ -451,7 +441,7 @@ onUnmounted(() => {
           :class="`fade-time-${index + 1}`"
         >
           <!--  v-if="item.key" 调试去掉的 -->
-          <span v-html="item.value"></span>
+          <span v-dompurify-html="item.value"></span>
         </p>
       </div>
       <div
@@ -464,7 +454,7 @@ onUnmounted(() => {
           <div
             class="info"
             :class="getRank(posterData.count_rank) === 0 ? 'one' : ''"
-            v-html="rankMap[getRank(posterData.count_rank)]"
+            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
           ></div>
           <!-- <img src="@/assets/img3.png" class="img3" /> -->
           <img src="@/assets/img4.png" class="img4" />
@@ -523,7 +513,7 @@ onUnmounted(() => {
           v-for="(item, index) in posterContent.page2"
           :class="`fade-time-${index + 1}`"
           :key="item"
-          v-html="item"
+          v-dompurify-html="item"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">

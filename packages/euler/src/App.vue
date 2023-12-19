@@ -24,7 +24,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'ailoooong',
+  user: 'kaede10',
   year: '2023',
 });
 
@@ -40,16 +40,6 @@ async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
-      try {
-        const sensors = (window as any)['sensorsDataAnalytic201505'];
-        sensors?.setProfile({
-          user_logo: res.user,
-          community: 'openeuler',
-          created_at: new Date(),
-        });
-      } catch (error) {
-        console.log(error);
-      }
     }
   });
 }
@@ -291,25 +281,7 @@ const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(true);
-const posterData: any = ref({
-  comment_num: '4288',
-  user_login_with_most_contact: 'panxh_purple',
-  first_time_of_enter: '2020/1/2 17:37',
-  first_user_of_comment: 'lyn1001',
-  issue_num: '2424',
-  sig_num: '70',
-  star_num: '0',
-  fork_num: '12',
-  code_lines_delete: '7088',
-  count_rank: '0.0001',
-  first_time_of_comment: '2022/1/4 11:30',
-  user_login: 'licihua',
-  code_lines_add: '8062',
-  pr_num: '53',
-  first_time_of_be_comment: '2022/1/4 17:31',
-  first_user_of_be_comment: 'zzm_567',
-  watch_num: '717',
-});
+const posterData: any = ref({});
 
 posterData.value.code_lines_add =
   Number(posterData.value.code_lines_add) +
@@ -340,10 +312,10 @@ function getZero(time: number) {
 }
 function changeTime(time: string) {
   if (time) {
-    const EndTime = new Date(time);
-    const y = EndTime.getFullYear();
-    const m = EndTime.getMonth() + 1;
-    const d = EndTime.getDate();
+    const endTime = new Date(time);
+    const y = endTime.getFullYear();
+    const m = endTime.getMonth() + 1;
+    const d = endTime.getDate();
     let all = '';
     if (lang.value === 'zh') {
       all = `${y}年${getZero(m)}月${getZero(d)}日`;
@@ -353,9 +325,9 @@ function changeTime(time: string) {
     return all;
   }
 }
-function getRank(per: any) {
+function getRank(per: string | number) {
   if (per) {
-    const percentage = per;
+    const percentage = Number(per);
     let rank = 0;
     if (percentage <= 20) {
       rank = 0;
@@ -371,7 +343,7 @@ function getRank(per: any) {
     return rank;
   }
 }
-function getYear(time: any) {
+function getYear(time: string) {
   if (time) {
     const today = new Date().getTime();
     const endTime = new Date(time).getTime();
@@ -379,11 +351,7 @@ function getYear(time: any) {
     return year > 3 ? 3 : year;
   }
 }
-function getPercentage(per: any) {
-  if (per) {
-    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
-  }
-}
+
 const rankMap: any = ref({
   zh: ['初出茅庐', '牛刀小试', '崭露头角', '达人现身', '百炼成师'],
   en: [
@@ -397,7 +365,7 @@ const rankMap: any = ref({
 onMounted(async () => {
   // 必须先确定是否为贡献者
   // await getUserDataFun();
-  // await getPosterDataFun();
+  await getPosterDataFun();
 
   currentPage.value = 0;
   if (wrapper.value) {
@@ -488,7 +456,7 @@ onUnmounted(() => {
                 v-for="(item, index) in pageCentent[lang].page2"
                 :key="item"
                 :class="`fade-time-${index + 1}`"
-                v-html="item"
+                v-dompurify-html="item"
               ></p>
             </div>
           </div>
@@ -550,7 +518,7 @@ onUnmounted(() => {
                 :class="`fade-time-${index + 1}`"
               >
                 <!-- v-if="item.key"  调试去掉的 -->
-                <span v-html="item.value"></span>
+                <span v-dompurify-html="item.value"></span>
               </p>
             </div>
           </div>
@@ -572,7 +540,7 @@ onUnmounted(() => {
               >
                 <span
                   v-if="item.key && item.key !== '0'"
-                  v-html="item.value"
+                  v-dompurify-html="item.value"
                 ></span>
               </p>
             </div>
@@ -646,7 +614,7 @@ onUnmounted(() => {
                 v-for="(item, index) in pageCentent[lang].page2"
                 :key="item"
                 :class="`fade-time-${index + 1}`"
-                v-html="item"
+                v-dompurify-html="item"
               ></p>
             </div>
           </div>
@@ -673,7 +641,7 @@ onUnmounted(() => {
               v-for="(item, index) in pageCentent[lang].page7"
               :class="`fade-time-${index}`"
               :key="item"
-              v-html="item"
+              v-dompurify-html="item"
             ></p>
           </div>
           <div class="img-box">
