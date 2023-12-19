@@ -2,21 +2,16 @@
 import { onMounted, ref, onUnmounted, computed, watch } from 'vue';
 import useWindowResize from 'shared/hooks/useWindowResize';
 
+import Stars from './Stars.vue';
+
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData, getUserData } from 'shared/api';
 
-import database from '@/assets/database.png';
-import mobile from '@/assets/mobile .png';
-import notebook from '@/assets/notebook.png';
-import desktop from '@/assets/desktop.png';
 import QRcode_zh from '@/assets/QRcode_zh.png';
 import QRcode_en from '@/assets/QRcode_en.png';
-import handAi from '@/assets/hand-ai.png';
-import handMan from '@/assets/hand-man.png';
-import hexagon from '@/assets/hexagon.png';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -29,298 +24,255 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: '',
-  year: '2022',
+  user: 'kaede10',
+  year: '2023',
 });
+
+const datastat = {
+  user: '212w',
+  contributor: '168k',
+  pr: '146.1K',
+  osv: '22',
+  member: '1.3K',
+};
+
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       params.value.user = res.user;
-      try {
-        const sensors = (window as any)['sensorsDataAnalytic201505'];
-        sensors?.setProfile({
-          user_logo: res.user,
-          community: 'openeuler',
-          created_at: new Date(),
-        });
-      } catch (error) {
-        console.log(error);
-      }
     }
   });
 }
 
+const codeInfo = {
+  bottomText:
+    lang.value === 'en'
+      ? 'Scan the QR code to see your own openEuler milestones.'
+      : '扫码查看openEuler与你的独家记忆',
+  img: lang.value === 'en' ? QRcode_en : QRcode_zh,
+};
+
 const pageCentent: any = computed(() => {
   return {
     zh: {
-      page2: {
-        text: [
-          `今天是openEuler的三周年庆典！`,
-          `感谢你的一路相陪，`,
-          `在这三年的时光里，`,
-          `openEuler在茁壮地成长：`,
-          `社区用户<span class="active">1003000+</span>`,
-          `社区PR数<span class="active">88200+</span>`,
-          `社区贡献者<span class="active">12700+</span>`,
-          `商用OSV<span class="active">18家</span>`,
-          `企业成员<span class="active">710家+</span>`,
-          '......',
-        ],
-      },
-      page3: {
-        text: [
-          `正是因为有许多像您这样的优秀贡献者不断参加贡献`,
-          `openEuler社区才能发展得这么快`,
-          `在今天这个特殊的日子里`,
-          `请跟openEuler一起启动时光机`,
-          `回望过去一年在openEuler社区的点滴`,
-          `解锁一场时空穿越之旅`,
-        ],
-        bottomText: ['扫码查看', 'openEuler与你的独家记忆'],
-        img: QRcode_zh,
-      },
-      page4: {
-        text: [
-          {
-            value: `Hi ${params.value.user}，我们在一起${getYear(
-              posterData.value?.first_time_of_enter
-            )}年啦！ `,
-            key: posterData.value.first_time_of_enter,
-          },
-          {
-            value: ` <span class="active">${changeTime(
-              posterData.value.first_time_of_enter
-            )}，</span> <br>你第一次来到openEuler社区； `,
-            key: posterData.value.first_time_of_enter,
-          },
-          {
-            value: `<span class="active">${changeTime(
-              posterData.value.first_time_of_comment
-            )}，</span> <br>今年你第一次在社区中评论了 <span class="active">${
-              posterData.value.first_user_of_comment
-            }</span>；  `,
-            key: posterData.value.first_time_of_comment,
-          },
-          {
-            value: `初来乍到， <span class="active">${posterData.value.first_user_of_be_comment}</span> 第一个解决了你的问题；`,
-            key: posterData.value.first_user_of_be_comment,
-          },
-          {
-            value: `回忆满满，你与<span class="active">${posterData.value.user_login_with_most_contact}</span>联系最多`,
-            key: posterData.value.user_login_with_most_contact,
-          },
-          {
-            value: '时光悄然流逝，',
-            key: true,
-          },
-          {
-            value: '但这些流光溢彩的回忆，我铭记于心……',
-            key: true,
-          },
-        ],
-      },
-      page5: {
-        text: [
-          {
-            value: `回首2022， `,
-            key: true,
-          },
-          {
-            value: ` openEuler社区快速成长`,
-            key: true,
-          },
-          {
-            value: ` 而你在这一年中`,
-            key: true,
-          },
-          {
-            value: ` 提交了<span class="active">${posterData.value.pr_num}</span>个pr`,
-            key: posterData.value.pr_num,
-          },
-          {
-            value: ` 提交了<span class="active">${posterData.value.issue_num}</span>个issue`,
-            key: posterData.value.issue_num,
-          },
-          {
-            value: ` 提交了<span class="active">${posterData.value.comment_num}</span>条评论`,
-            key: posterData.value.comment_num,
-          },
-          {
-            value: ` 贡献了<span class="active">${posterData.value.code_lines_add}</span>行代码`,
-            key: posterData.value.code_lines_add,
-          },
-          {
-            value: ` 加入了<span class="active">${posterData.value.sig_num}</span>个sig组`,
-            key: posterData.value.sig_num,
-          },
-          {
-            value: ` 点亮了<span class="active">${posterData.value.star_num}</span>个仓库`,
-            key: posterData.value.star_num,
-          },
-        ],
-      },
-      page6: {
-        text: [
-          '在这一年里',
-          `你的贡献度击败了社区 <span class="active">${getPercentage(
-            posterData.value?.count_rank
-          )?.toFixed(2)}%</span>的开发者`,
-          `<span class="active pg-6-text">恭喜你获得</span>`,
-        ],
-      },
-      page7: {
-        text: [
-          '你们从不同途径来到我的开源世界',
-          '但却因相同的目的留了下来',
-          '谢谢你们的坚持与贡献',
-          '才打造出我更好的模样',
-          '期待你我携手并肩，继续坚定前行！',
-          '一起度过下一个周年庆！',
-          'openEuler 社区呈上',
-        ],
-      },
+      page2: [
+        `一年一度又到了这个时候，openEuler四岁啦！`,
+        `在这一年社区中发生了很多有意思的事情，openEuler也`,
+        `在惊喜地成长：`,
+        `社区用户<span class="active">${datastat.user}+</span>`,
+        `社区PR数<span class="active">${datastat.pr}+</span>`,
+        `社区贡献者<span class="active">${datastat.contributor}+</span>`,
+        `商用OSV<span class="active">${datastat.osv}</span>家`,
+        `企业成员<span class="active">${datastat.member}+</span>家`,
+        '......',
+      ],
+      page3: [
+        `openEuler成长的过程记录着你奋斗的岁月`,
+        `在今天这个特殊的日子里`,
+        `请跟openEuler 一起乘坐时光机`,
+        `回看你在openEuler 社区中熠熠生辉的瞬间……`,
+      ],
+      page4: [
+        {
+          value: `Hi ${params.value.user}，我们在一起${getYear(
+            posterData.value?.first_time_of_enter
+          )}年啦！ `,
+          key: posterData.value.first_time_of_enter,
+        },
+        {
+          value: ` <span class="active">${changeTime(
+            posterData.value.first_time_of_enter
+          )}，</span> <br>你第一次来到openEuler社区； `,
+          key: posterData.value.first_time_of_enter,
+        },
+        {
+          value: `<span class="active">${changeTime(
+            posterData.value.first_time_of_comment
+          )}，</span> <br>今年你第一次在社区中评论了 <span class="active">${
+            posterData.value.first_user_of_comment
+          }</span>；  `,
+          key: posterData.value.first_time_of_comment,
+        },
+        {
+          value: `初来乍到， <span class="active">${posterData.value.first_user_of_be_comment}</span> 第一个解决了你的问题；`,
+          key: posterData.value.first_user_of_be_comment,
+        },
+        {
+          value: `回忆满满，你与<span class="active">${posterData.value.user_login_with_most_contact}</span>联系最多`,
+          key: posterData.value.user_login_with_most_contact,
+        },
+        {
+          value: '时光悄然流逝，',
+          key: true,
+        },
+        {
+          value: '但这些流光溢彩的回忆，我铭记于心……',
+          key: true,
+        },
+      ],
+      page5: [
+        {
+          value: `回首2023， `,
+          key: true,
+        },
+        {
+          value: `迭代了22.03 LTS SP2和23.09两个版本 `,
+          key: true,
+        },
+        {
+          value: ` openEuler社区快速成长`,
+          key: true,
+        },
+        {
+          value: ` 而你在这一年中`,
+          key: true,
+        },
+        {
+          value: ` 提交了<span class="active">${posterData.value.pr_num}</span>个pr`,
+          key: posterData.value.pr_num,
+        },
+        {
+          value: ` 提交了<span class="active">${posterData.value.issue_num}</span>个issue`,
+          key: posterData.value.issue_num,
+        },
+        {
+          value: ` 提交了<span class="active">${posterData.value.comment_num}</span>条评论`,
+          key: posterData.value.comment_num,
+        },
+        {
+          value: ` 贡献了<span class="active">${posterData.value.code_lines_add}</span>行代码`,
+          key: posterData.value.code_lines_add,
+        },
+        {
+          value: ` 加入了<span class="active">${posterData.value.sig_num}</span>个sig组`,
+          key: posterData.value.sig_num,
+        },
+        {
+          value: ` 点亮了<span class="active">${posterData.value.star_num}</span>个仓库`,
+          key: posterData.value.star_num,
+        },
+      ],
+      page6: [
+        '2023的每个脚印，',
+        '都是开启新征途的序章！',
+        '正是因为大家的支持和热爱，',
+        '才打造出openEuler更好的模样',
+        '期待2024年你我携手并肩，继续坚定前行！',
+        '新年快乐！',
+        'openEuler 社区呈上',
+      ],
+      page7: [
+        `在这里有 <span class="active">16k+</span> 的社区 贡献者与你井肩同行`,
+        `在这里有 <span class="active">100+</span> 个SIG组`,
+        '相信总能找到和你志趣相投的人',
+        '在这里会有遍及全球 <span class="active">150+</span> 个国家',
+        '<span class="active">1900+</span> 城市的用户和你不期而遇......',
+        ' ',
+        '期待2024年，会有属于我们的故事发生……',
+        '新年快乐！',
+        'openEuler 社区呈上',
+      ],
     },
     en: {
-      page2: {
-        text: [
-          `Today marks my 3rd anniversary!`,
-          `I'm so grateful that you've joined me on this journey`,
-          `Over the past three years, we've accomplished so much:`,
-          `<span class="active">1003000+ users</span>`,
-          `<span class="active">88200+ PRs</span>`,
-          `<span class="active">12700+ contributors</span>`,
-          `<span class="active">18 commercial OSVs</span>`,
-          `<span class="active">710+ enterprise members</span>`,
-          'And more...',
-        ],
-      },
-      page3: {
-        text: [
-          `And it's only because of outstanding contributors `,
-          `like you that I've been able to grow and flourish. `,
-          `Let's take a trip down memory lane, `,
-          `as we look at some of the highlights from the past year.`,
-        ],
-        bottomText: [
-          'Scan the QR code',
-          'to see your own openEuler milestones.',
-        ],
-        img: QRcode_en,
-      },
-      page4: {
-        text: [
-          {
-            value: `Hi ${params.value.user},`,
-            key: posterData.value.user_login,
-          },
-          {
-            value: `Can you believe it's been ${getYear(
-              posterData.value?.first_time_of_enter
-            )} year${
-              getYear(posterData.value?.first_time_of_enter) || 1 > 1 ? 's' : ''
-            } since we first met?`,
-            key: posterData.value.first_time_of_enter,
-          },
-          {
-            value: `<span class="active">On ${changeTime(
-              posterData.value.first_time_of_enter
-            )},</span> <br> you took your first steps by visiting my homepage.`,
-            key: posterData.value.first_time_of_enter,
-          },
-          // {
-          //   value: `<span class="active">On ${changeTime(
-          //     posterData.value.first_time_of_enter
-          //   )},</span> <br> you made your first connection with ${
-          //     posterData.value.user_login_with_most_contact
-          //   } in the community.`,
-          //   key: posterData.value.first_time_of_enter,
-          // },
-          {
-            value: `<span class="active">On ${changeTime(
-              posterData.value.first_time_of_comment
-            )},</span> <br>this year you first commented on <span class="active"> ${
-              posterData.value.first_user_of_comment
-            }'s</span> post.`,
-            key: posterData.value.first_time_of_comment,
-          },
-          // {
-          //   value: `<span class="active">On ${changeTime(
-          //     posterData.value.first_time_of_enter
-          //   )},</span> <br> you received the first comment from ${
-          //     posterData.value.user_login_with_most_contact
-          //   }`,
-          //   key: posterData.value.first_commented_of_enter,
-          // },
-          {
-            value: `As a newcomer, you got your first issue reply from <span class="active">${posterData.value.first_user_of_be_comment}</span>`,
-            key: posterData.value.first_user_of_be_comment,
-          },
-          {
-            value:
-              'These are memories of our time together that will always be cherished.',
-            key: true,
-          },
-        ],
-      },
-      page5: {
-        text: [
-          {
-            value: `The openEuler community grew rapidly in 2022, `,
-            key: true,
-          },
-          {
-            value: `and you have been at the center of it all.`,
-            key: true,
-          },
-          {
-            value: `you submitted <span class="active">${
-              posterData.value?.pr_num
-            }</span> pr${posterData.value?.pr_num !== '1' ? 's' : ''}`,
-            key: posterData.value.pr_num,
-          },
-          {
-            value: `raised  <span class="active">${
-              posterData.value?.issue_num
-            }</span> issue${posterData.value?.issue_num !== '1' ? 's' : ''}`,
-            key: posterData.value.issue_num,
-          },
-          {
-            value: `left  <span class="active">${
-              posterData.value?.comment_num
-            }</span> comment${
-              posterData.value?.comment_num !== '1' ? 's' : ''
-            }`,
-            key: posterData.value.comment_num,
-          },
-          {
-            value: `contributed <span class="active">${posterData.value?.code_lines_add}</span> lines of code`,
-            key: posterData.value.code_lines_add,
-          },
-          {
-            value: `joined  <span class="active">${
-              posterData.value?.sig_num
-            }</span> SIG${posterData.value?.sig_num !== '1' ? 's' : ''}`,
-            key: posterData.value.sig_num,
-          },
-        ],
-      },
-      page6: {
-        text: [
-          `Your contributions place you ahead of <span class="active">${getPercentage(
-            posterData.value.count_rank
-          )?.toFixed(2)}%</span>`,
-          `<span class="active bold">Congratulations</span>`,
-        ],
-      },
-      page7: {
-        text: [
-          'Thank you for exploring and contributing to my open source world.',
-          'Your contributions have helped make me who I am today. ',
-          'I look forward to celebrating many more anniversaries together!',
-          'Best wishes,',
-          'openEuler',
-        ],
-      },
+      page2: [
+        `Today marks my 3rd anniversary!`,
+        `I'm so grateful that you've joined me on this journey`,
+        `Over the past three years, we've accomplished so much:`,
+        `<span class="active">${datastat.user}+ users</span>`,
+        `<span class="active">${datastat.pr}+ PRs</span>`,
+        `<span class="active">${datastat.contributor}+ contributors</span>`,
+        `<span class="active">${datastat.osv} commercial OSVs</span>`,
+        `<span class="active">${datastat.member}+ enterprise members</span>`,
+        'And more...',
+      ],
+      page3: [
+        `And it's only because of outstanding contributors `,
+        `like you that I've been able to grow and flourish. `,
+        `Let's take a trip down memory lane, `,
+        `as we look at some of the highlights from the past year.`,
+      ],
+      page4: [
+        {
+          value: `Hi ${params.value.user},`,
+          key: posterData.value.user_login,
+        },
+        {
+          value: `Can you believe it's been ${getYear(
+            posterData.value?.first_time_of_enter
+          )} year${
+            getYear(posterData.value?.first_time_of_enter) || 1 > 1 ? 's' : ''
+          } since we first met?`,
+          key: posterData.value.first_time_of_enter,
+        },
+        {
+          value: `<span class="active">On ${changeTime(
+            posterData.value.first_time_of_enter
+          )},</span> <br> you took your first steps by visiting my homepage.`,
+          key: posterData.value.first_time_of_enter,
+        },
+        {
+          value: `<span class="active">On ${changeTime(
+            posterData.value.first_time_of_comment
+          )},</span> <br>this year you first commented on <span class="active"> ${
+            posterData.value.first_user_of_comment
+          }'s</span> post.`,
+          key: posterData.value.first_time_of_comment,
+        },
+        {
+          value: `As a newcomer, you got your first issue reply from <span class="active">${posterData.value.first_user_of_be_comment}</span>`,
+          key: posterData.value.first_user_of_be_comment,
+        },
+        {
+          value:
+            'These are memories of our time together that will always be cherished.',
+          key: true,
+        },
+      ],
+      page5: [
+        {
+          value: `The openEuler community grew rapidly in 2023, `,
+          key: true,
+        },
+        {
+          value: `and you have been at the center of it all.`,
+          key: true,
+        },
+        {
+          value: `you submitted <span class="active">${
+            posterData.value?.pr_num
+          }</span> pr${posterData.value?.pr_num !== '1' ? 's' : ''}`,
+          key: posterData.value.pr_num,
+        },
+        {
+          value: `raised  <span class="active">${
+            posterData.value?.issue_num
+          }</span> issue${posterData.value?.issue_num !== '1' ? 's' : ''}`,
+          key: posterData.value.issue_num,
+        },
+        {
+          value: `left  <span class="active">${
+            posterData.value?.comment_num
+          }</span> comment${posterData.value?.comment_num !== '1' ? 's' : ''}`,
+          key: posterData.value.comment_num,
+        },
+        {
+          value: `contributed <span class="active">${posterData.value?.code_lines_add}</span> lines of code`,
+          key: posterData.value.code_lines_add,
+        },
+        {
+          value: `joined  <span class="active">${
+            posterData.value?.sig_num
+          }</span> SIG${posterData.value?.sig_num !== '1' ? 's' : ''}`,
+          key: posterData.value.sig_num,
+        },
+      ],
+      page6: [
+        'Thank you for exploring and contributing to my open source world.',
+        'Your contributions have helped make me who I am today. ',
+        'I look forward to celebrating many more anniversaries together!',
+        'Best wishes,',
+        'openEuler',
+      ],
     },
   };
 });
@@ -328,10 +280,12 @@ const pageCentent: any = computed(() => {
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
-const isContributor = ref(false);
-const posterData: any = ref({
-  test: 1,
-});
+const isContributor = ref(true);
+const posterData: any = ref({});
+
+posterData.value.code_lines_add =
+  Number(posterData.value.code_lines_add) +
+  Number(posterData.value.code_lines_delete);
 
 async function getPosterDataFun() {
   await getPosterData(params.value)
@@ -358,10 +312,10 @@ function getZero(time: number) {
 }
 function changeTime(time: string) {
   if (time) {
-    const EndTime = new Date(time);
-    const y = EndTime.getFullYear();
-    const m = EndTime.getMonth() + 1;
-    const d = EndTime.getDate();
+    const endTime = new Date(time);
+    const y = endTime.getFullYear();
+    const m = endTime.getMonth() + 1;
+    const d = endTime.getDate();
     let all = '';
     if (lang.value === 'zh') {
       all = `${y}年${getZero(m)}月${getZero(d)}日`;
@@ -371,9 +325,9 @@ function changeTime(time: string) {
     return all;
   }
 }
-function getRank(per: any) {
+function getRank(per: string | number) {
   if (per) {
-    const percentage = per;
+    const percentage = Number(per);
     let rank = 0;
     if (percentage <= 20) {
       rank = 0;
@@ -389,7 +343,7 @@ function getRank(per: any) {
     return rank;
   }
 }
-function getYear(time: any) {
+function getYear(time: string) {
   if (time) {
     const today = new Date().getTime();
     const endTime = new Date(time).getTime();
@@ -397,11 +351,7 @@ function getYear(time: any) {
     return year > 3 ? 3 : year;
   }
 }
-function getPercentage(per: any) {
-  if (per) {
-    return per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
-  }
-}
+
 const rankMap: any = ref({
   zh: ['初出茅庐', '牛刀小试', '崭露头角', '达人现身', '百炼成师'],
   en: [
@@ -414,9 +364,9 @@ const rankMap: any = ref({
 });
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  await getUserDataFun();
+  // await getUserDataFun();
   await getPosterDataFun();
-  pcClick();
+
   currentPage.value = 0;
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -446,24 +396,7 @@ onMounted(async () => {
     bgmOpen.value.classList.add('run-bgm');
   });
 });
-function pcClick() {
-  const front: any = document.querySelectorAll('.front');
-  const back: any = document.querySelectorAll('.back');
-  for (let i = 0; i < front.length; i++) {
-    front[i].addEventListener('click', function () {
-      for (let j = 0; j < front.length; j++) {
-        front[j].style = 'transform:rotateY(-180deg)';
-        back[j].style = 'transform:rotateY(0deg)';
-      }
-    });
-    back[i].addEventListener('click', function () {
-      for (let z = 0; z < back.length; z++) {
-        back[z].style = 'transform:rotateY(180deg)';
-        front[z].style = 'transform:rotateY(0deg)';
-      }
-    });
-  }
-}
+
 // 背景音乐
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
@@ -487,527 +420,252 @@ onUnmounted(() => {
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
   <div
-    v-if="screenWidth > 1200"
-    class="pc-post"
-    :class="lang === 'zh' ? 'pc-zh' : 'pc-en'"
-    @click="pcClick"
+    :class="[
+      lang === 'zh' ? 'pc-zh' : 'pc-en',
+      screenWidth > 768 ? 'pc' : 'mobile',
+    ]"
   >
-    <div v-if="isContributor" class="contribution none">
-      <div class="container box-1">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
+    <!-- H5 -->
+    <div ref="wrapper" class="slide-wrapper">
+      <div v-if="isContributor" class="slide-content contribution">
+        <div
+          class="slide-page pg-1"
+          :class="currentPage === 0 ? 'current' : ''"
+        >
+          <div class="pg1-top margin-top-h1">
+            <p class="title1">openEuler</p>
+            <p class="title2">开发者贡献报告</p>
+            <p class="title3">四周年 遇见开源世界的自己</p>
+          </div>
+          <div class="pg1-bottom">
+            <img src="@/assets/children.png" class="children" alt="" />
+            <img src="@/assets/clock.png" class="clock-img" alt="" />
           </div>
         </div>
-        <div class="back">
-          <div class="pg-2 contents current">
-            <div class="pg-2-main">
-              <p class="blod active celebrat">
-                Celebrating 3 years of openEuler
-              </p>
-
-              <div class="user margin-top-h6">
-                <p class="blod active user">
-                  Dear <br />
-                  {{ params.user }}
-                </p>
-              </div>
-              <div class="main-text margin-top-h7">
-                <p
-                  v-for="(item, index) in pageCentent[lang].page2.text"
-                  :key="item"
-                  :class="`fade-time-${index + 1}`"
-                  v-html="item"
-                ></p>
-              </div>
-              <div class="img-box">
-                <img :src="database" class="database" alt="" />
-                <img :src="mobile" class="mobile" alt="" />
-                <img :src="notebook" class="notebook" alt="" />
-                <img :src="desktop" class="desktop" alt="" />
-                <img src="@/assets/feather-1.png" class="feather-1" alt="" />
-                <img src="@/assets/feather-2.png" class="feather-2" alt="" />
-                <img src="@/assets/feather-3.png" class="feather-3" alt="" />
-                <img src="@/assets/feather-4.png" class="feather-4" alt="" />
-                <img src="@/assets/feather-5.png" class="feather-5" alt="" />
-                <img src="@/assets/feather-6.png" class="feather-6" alt="" />
-                <img src="@/assets/feather-7.png" class="feather-7" alt="" />
-              </div>
+        <div
+          class="slide-page pg-2"
+          :class="currentPage === 1 ? 'current' : ''"
+        >
+          <div class="pg-2-main">
+            <img src="@/assets/img5.png" class="img5" alt="" />
+            <div class="user">
+              <p class="blod active">Dear {{ params.user }}</p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="container box-2">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="back">
-          <div class="contents pg-3 current">
-            <div class="pg-3-main">
-              <div class="main-text">
-                <p v-for="item in pageCentent[lang].page3.text" :key="item">
-                  {{ item }}
-                </p>
-              </div>
-              <div class="bottom-scan margin-top-h5">
-                <p
-                  v-for="item in pageCentent[lang].page3.bottomText"
-                  :key="item"
-                >
-                  {{ item }}
-                </p>
-                <div class="qr-box margin-top-h6">
-                  <img :src="pageCentent[lang].page3.img" alt="" />
-                </div>
-              </div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container box-3">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="back">
-          <div class="contents pg-5 current">
-            <div class="pg-5-main">
+            <div class="main-text margin-top-h4">
               <p
-                v-for="(item, index) in pageCentent[lang].page4.text"
-                :key="item.value"
+                v-for="(item, index) in pageCentent[lang].page2"
+                :key="item"
+                :class="`fade-time-${index + 1}`"
+                v-dompurify-html="item"
+              ></p>
+            </div>
+          </div>
+          <div class="img-box">
+            <img src="@/assets/img2.png" class="img2 hand-man opacity" alt="" />
+            <img src="@/assets/img3.png" class="img3 hand-ai opacity" alt="" />
+            <img src="@/assets/img4.png" class="img4 hand-man opacity" alt="" />
+
+            <img src="@/assets/img1.png" class="img1 earth" alt="" />
+            <img
+              src="@/assets/img1-1.png"
+              class="img1-1 light-show1 opacity"
+              alt=""
+            />
+          </div>
+          <Stars />
+        </div>
+        <div
+          class="slide-page pg-3"
+          :class="currentPage === 2 ? 'current' : ''"
+        >
+          <div class="pg-3-main">
+            <div class="main-text">
+              <p
+                v-for="(item, index) in pageCentent[lang].page3"
+                :key="item"
                 :class="`fade-time-${index + 1}`"
               >
-                <span v-if="item.key" v-html="item.value"></span>
-              </p>
-              <div class="main-text">
-                <p
-                  v-for="(item, index) in pageCentent[lang].page5.text"
-                  :key="item.value"
-                  :class="`fade-time-${index}`"
-                >
-                  <span
-                    v-if="item.key && item.key !== '0'"
-                    v-html="item.value"
-                  ></span>
-                </p>
-              </div>
-            </div>
-            <div class="img-box"></div>
-          </div>
-        </div>
-      </div>
-      <div class="container box-4">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="back">
-          <div class="contents">
-            <div class="contents pg-6 current">
-              <div class="pg-6-main">
-                <div class="pg-6-top">
-                  <p
-                    v-for="item in pageCentent[lang].page6.text"
-                    :key="item"
-                    v-html="item"
-                  ></p>
-                  <p
-                    :class="[
-                      `color-${
-                        // @ts-ignore
-                        getRank(getPercentage(posterData?.count_rank)) + 1
-                      }`,
-                      lang !== 'zh' ? 'rank' : '',
-                    ]"
-                  >
-                    {{
-                      rankMap[lang][
-                        // @ts-ignore
-                        getRank(getPercentage(posterData?.count_rank))
-                      ]
-                    }}
-                  </p>
-                </div>
-                <div class="pg-6-main-text">
-                  <p v-for="item in pageCentent[lang].page7.text" :key="item">
-                    {{ item }}
-                  </p>
-                  <img src="@/assets/logo-w.png" alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-else class="no-contribution">
-      <div class="container box-1">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="back">
-          <div class="pg-2 contents current">
-            <div class="pg-2-main">
-              <p class="blod active celebrat">
-                Celebrating 3 years of openEuler
-              </p>
-
-              <div class="user margin-top-h6">
-                <p class="blod active user">
-                  Dear <br />
-                  {{ params.user }}
-                </p>
-              </div>
-              <div class="main-text margin-top-h7">
-                <p
-                  v-for="(item, index) in pageCentent[lang].page2.text"
-                  :key="item"
-                  :class="`fade-time-${index + 1}`"
-                  v-html="item"
-                ></p>
-              </div>
-              <div class="img-box">
-                <img :src="database" class="database" alt="" />
-                <img :src="mobile" class="mobile" alt="" />
-                <img :src="notebook" class="notebook" alt="" />
-                <img :src="desktop" class="desktop" alt="" />
-                <img src="@/assets/feather-1.png" class="feather-1" alt="" />
-                <img src="@/assets/feather-2.png" class="feather-2" alt="" />
-                <img src="@/assets/feather-3.png" class="feather-3" alt="" />
-                <img src="@/assets/feather-4.png" class="feather-4" alt="" />
-                <img src="@/assets/feather-5.png" class="feather-5" alt="" />
-                <img src="@/assets/feather-6.png" class="feather-6" alt="" />
-                <img src="@/assets/feather-7.png" class="feather-7" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container box-2">
-        <div class="front">
-          <div class="slide-page pg-3 current">
-            <div class="pc-top">
-              <div class="text"></div>
-            </div>
-            <div class="img-box">
-              <img :src="handAi" class="hand-ai" alt="" />
-              <img :src="handMan" class="hand-man" alt="" />
-              <img :src="hexagon" class="hexagon" alt="" />
-              <div class="hexagon-box">
-                <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-                <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-                <img src="@/assets/glow.png" class="glow" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="back">
-          <div class="contents pg-7 current">
-            <div class="pg-7-top">
-              <p v-for="item in pageCentent[lang].page7.text" :key="item">
                 {{ item }}
               </p>
             </div>
-            <div class="pg-7-logo">
-              <img src="@/assets/logo.png" alt="" />
+            <div class="bottom-scan">
+              <div class="qr-box margin-top-h5">
+                <img :src="codeInfo.img" alt="" />
+              </div>
+              <p class="fade-time-6">
+                {{ codeInfo.bottomText }}
+              </p>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-else ref="wrapper" class="slide-wrapper">
-    <div v-if="isContributor" class="slide-content contribution">
-      <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
-        <div class="pg1-top margin-top-h1">
-          Celebrating 3 years of openEuler
-        </div>
-        <div class="pg1-bottom">
-          <img :src="database" class="database" alt="" />
-          <img :src="mobile" class="mobile" alt="" />
-          <img :src="notebook" class="notebook" alt="" />
-          <img :src="desktop" class="desktop" alt="" />
-          <img src="@/assets/pg-1-mo.png" class="pg-1-mo" alt="" />
-          <img src="@/assets/fire-1.png" class="fire-1" alt="" />
-          <img src="@/assets/fire-2.png" class="fire-2" alt="" />
-          <img src="@/assets/fire-3.png" class="fire-3" alt="" />
-        </div>
-      </div>
-      <div class="slide-page pg-2" :class="currentPage === 1 ? 'current' : ''">
-        <div class="pg-2-main">
-          <div class="user">
-            <p class="blod active user">
-              Dear <br />
-              {{ params.user }}
-            </p>
-          </div>
-          <div class="main-text margin-top-h4">
-            <p
-              v-for="(item, index) in pageCentent[lang].page2.text"
-              :key="item"
-              :class="`fade-time-${index + 1}`"
-              v-html="item"
-            ></p>
-          </div>
-        </div>
-        <div class="img-box">
-          <img :src="database" class="database" alt="" />
-          <img :src="mobile" class="mobile" alt="" />
-          <img :src="notebook" class="notebook" alt="" />
-          <img :src="desktop" class="desktop" alt="" />
-          <img src="@/assets/feather-1.png" class="feather-1" alt="" />
-          <img src="@/assets/feather-2.png" class="feather-2" alt="" />
-          <img src="@/assets/feather-3.png" class="feather-3" alt="" />
-          <img src="@/assets/feather-4.png" class="feather-4" alt="" />
-          <img src="@/assets/feather-5.png" class="feather-5" alt="" />
-          <img src="@/assets/feather-6.png" class="feather-6" alt="" />
-          <img src="@/assets/feather-7.png" class="feather-7" alt="" />
-        </div>
-      </div>
-      <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
-        <div class="pg-3-main">
-          <div class="main-text">
-            <p v-for="item in pageCentent[lang].page3.text" :key="item">
-              {{ item }}
-            </p>
-          </div>
-          <div class="bottom-scan margin-top-h4">
-            <p v-for="item in pageCentent[lang].page3.bottomText" :key="item">
-              {{ item }}
-            </p>
-            <div class="qr-box margin-top-h5">
-              <img :src="pageCentent[lang].page3.img" alt="" />
+          <Stars />
+          <div class="pg-3-bg">
+            <div class="loader">
+              <div class="face">
+                <div class="circle"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="img-box">
-          <img :src="handAi" class="hand-ai" alt="" />
-          <img :src="handMan" class="hand-man" alt="" />
-          <img :src="hexagon" class="hexagon" alt="" />
-          <div class="hexagon-box">
-            <img src="@/assets/hexagon-2.png" class="hexagon-2" alt="" />
-            <img src="@/assets/hexagon-3.png" class="hexagon-3" alt="" />
-            <img src="@/assets/glow.png" class="glow" alt="" />
-          </div>
-        </div>
-      </div>
-      <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
-        <div class="pg-4-main">
-          <div class="main-text">
-            <p
-              v-for="(item, index) in pageCentent[lang].page4.text"
-              :key="item.value"
-              :class="`fade-time-${index + 1}`"
-            >
-              <span v-if="item.key" v-html="item.value"></span>
-            </p>
-          </div>
-        </div>
-        <div class="img-box"></div>
-      </div>
-      <div class="slide-page pg-5" :class="currentPage === 4 ? 'current' : ''">
-        <div class="pg-5-main">
-          <div class="main-text">
-            <p
-              v-for="(item, index) in pageCentent[lang].page5.text"
-              :key="item.value"
-              :class="`fade-time-${index}`"
-            >
-              <span
-                v-if="item.key && item.key !== '0'"
-                v-html="item.value"
-              ></span>
-            </p>
-          </div>
-        </div>
-        <div class="img-box"></div>
-      </div>
-      <div class="slide-page pg-6" :class="currentPage === 5 ? 'current' : ''">
-        <div class="pg-6-top">
-          <p
-            v-for="item in pageCentent[lang].page6.text"
-            :key="item"
-            v-html="item"
-          ></p>
-
-          <p
-            :class="[
-              `color-${
-                // @ts-ignore
-                getRank(getPercentage(posterData?.count_rank)) + 1
-              }`,
-              lang !== 'zh' ? 'rank' : '',
-            ]"
-          >
-            {{
-              rankMap[lang][
-                // @ts-ignore
-                getRank(getPercentage(posterData?.count_rank))
-              ]
-            }}
-          </p>
-        </div>
-        <div class="pg-6-main">
-          <img class="round" src="@/assets/bg-6.png" alt="" />
-          <img class="light" src="@/assets/pg-6-light.png" alt="" />
-          <div class="circle"></div>
-        </div>
-        <div class="pg-6-bottom"></div>
-      </div>
-      <div class="slide-page pg-7" :class="currentPage === 6 ? 'current' : ''">
-        <div class="pg-7-top">
-          <p
-            v-for="(item, index) in pageCentent[lang].page7.text"
-            :class="`fade-time-${index}`"
-            :key="item"
-          >
-            {{ item }}
-          </p>
-        </div>
-        <div class="pg-7-logo">
-          <img src="@/assets/logo.png" alt="" />
-        </div>
-      </div>
-    </div>
-    <div v-else class="slide-content no-contribution">
-      <div class="slide-page pg-1" :class="currentPage === 0 ? 'current' : ''">
-        <div class="pg1-top margin-top-h1">
-          Celebrating 3 years of openEuler
-        </div>
-        <div class="pg1-bottom">
-          <img :src="database" class="database" alt="" />
-          <img :src="mobile" class="mobile" alt="" />
-          <img :src="notebook" class="notebook" alt="" />
-          <img :src="desktop" class="desktop" alt="" />
-          <img src="@/assets/pg-1-mo.png" class="pg-1-mo" alt="" />
-          <img src="@/assets/fire-1.png" class="fire-1" alt="" />
-          <img src="@/assets/fire-2.png" class="fire-2" alt="" />
-          <img src="@/assets/fire-3.png" class="fire-3" alt="" />
-        </div>
-      </div>
-      <div class="slide-page pg-2" :class="currentPage === 1 ? 'current' : ''">
-        <div class="pg-2-main">
-          <div class="user">
-            <p class="blod active user">
-              Dear <br />
-              {{ params.user }}
-            </p>
-          </div>
-          <div class="main-text margin-top-h4">
-            <p
-              v-for="(item, index) in pageCentent[lang].page2.text"
-              :key="item"
-              :class="`fade-time-${index + 1}`"
-              v-html="item"
-            ></p>
-          </div>
-        </div>
-        <div class="img-box">
-          <img :src="database" class="database" alt="" />
-          <img :src="mobile" class="mobile" alt="" />
-          <img :src="notebook" class="notebook" alt="" />
-          <img :src="desktop" class="desktop" alt="" />
-          <img src="@/assets/feather-1.png" class="feather-1" alt="" />
-          <img src="@/assets/feather-2.png" class="feather-2" alt="" />
-          <img src="@/assets/feather-3.png" class="feather-3" alt="" />
-          <img src="@/assets/feather-4.png" class="feather-4" alt="" />
-          <img src="@/assets/feather-5.png" class="feather-5" alt="" />
-          <img src="@/assets/feather-6.png" class="feather-6" alt="" />
-          <img src="@/assets/feather-7.png" class="feather-7" alt="" />
-        </div>
-      </div>
-      <div class="slide-page pg-7" :class="currentPage === 2 ? 'current' : ''">
-        <div class="pg-7-top">
-          <p
-            v-for="(item, index) in pageCentent[lang].page7.text"
-            :class="`fade-time-${index}`"
-            :key="item"
-          >
-            {{ item }}
-          </p>
         </div>
         <div
-          class="pg-7-logo"
-          :class="`fade-time-${pageCentent[lang].page7.text.length + 1}`"
+          class="slide-page pg-4"
+          :class="currentPage === 3 ? 'current' : ''"
         >
-          <img src="@/assets/logo.png" alt="" />
+          <div class="pg-4-main">
+            <div class="main-text">
+              <p
+                v-for="(item, index) in pageCentent[lang].page4"
+                :key="item.value"
+                :class="`fade-time-${index + 1}`"
+              >
+                <!-- v-if="item.key"  调试去掉的 -->
+                <span v-dompurify-html="item.value"></span>
+              </p>
+            </div>
+          </div>
+          <div class="img-box">
+            <img src="@/assets/img6.png" class="img6 light-show" alt="" />
+            <img src="@/assets/img7.png" class="img7 light-show1" alt="" />
+          </div>
+        </div>
+        <div
+          class="slide-page pg-5"
+          :class="currentPage === 4 ? 'current' : ''"
+        >
+          <div class="pg-5-main">
+            <div class="main-text">
+              <p
+                v-for="(item, index) in pageCentent[lang].page5"
+                :key="item.value"
+                :class="`fade-time-${index}`"
+              >
+                <span
+                  v-if="item.key && item.key !== '0'"
+                  v-dompurify-html="item.value"
+                ></span>
+              </p>
+            </div>
+          </div>
+          <div class="img-box"></div>
+        </div>
+        <div
+          class="slide-page pg-6"
+          :class="currentPage === 5 ? 'current' : ''"
+        >
+          <div class="pg-6-top">
+            <p
+              v-for="(item, index) in pageCentent[lang].page6"
+              :class="`fade-time-${index}`"
+              :key="item"
+            >
+              {{ item }}
+            </p>
+          </div>
+          <div class="img-box">
+            <img
+              src="@/assets/footprint1.png"
+              class="footprint1 fire-4"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint2.png"
+              class="footprint2 fire-3"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint3.png"
+              class="footprint3 fire-2"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint4.png"
+              class="footprint4 fire-1"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <!-- 无贡献 -->
+      <div v-else class="slide-content no-contribution">
+        <div
+          class="slide-page pg-1"
+          :class="currentPage === 0 ? 'current' : ''"
+        >
+          <div class="pg1-top margin-top-h1">
+            <p class="title1">openEuler</p>
+            <p class="title2">开发者贡献报告</p>
+            <p class="title3">四周年 遇见开源世界的自己</p>
+          </div>
+          <div class="pg1-bottom">
+            <img src="@/assets/children.png" class="children" alt="" />
+            <img src="@/assets/clock.png" class="clock-img" alt="" />
+          </div>
+        </div>
+        <div
+          class="slide-page pg-2"
+          :class="currentPage === 1 ? 'current' : ''"
+        >
+          <div class="pg-2-main">
+            <img src="@/assets/img5.png" class="img5" alt="" />
+            <div class="user">
+              <p class="blod active">Dear {{ params.user }}</p>
+            </div>
+            <div class="main-text margin-top-h4">
+              <p
+                v-for="(item, index) in pageCentent[lang].page2"
+                :key="item"
+                :class="`fade-time-${index + 1}`"
+                v-dompurify-html="item"
+              ></p>
+            </div>
+          </div>
+          <div class="img-box">
+            <img src="@/assets/img2.png" class="img2 hand-man opacity" alt="" />
+            <img src="@/assets/img3.png" class="img3 hand-ai opacity" alt="" />
+            <img src="@/assets/img4.png" class="img4 hand-man opacity" alt="" />
+
+            <img src="@/assets/img1.png" class="img1 earth" alt="" />
+            <img
+              src="@/assets/img1-1.png"
+              class="img1-1 light-show1 opacity"
+              alt=""
+            />
+          </div>
+          <Stars />
+        </div>
+        <div
+          class="slide-page pg-6"
+          :class="currentPage === 2 ? 'current' : ''"
+        >
+          <div class="pg-7-top">
+            <p
+              v-for="(item, index) in pageCentent[lang].page7"
+              :class="`fade-time-${index}`"
+              :key="item"
+              v-dompurify-html="item"
+            ></p>
+          </div>
+          <div class="img-box">
+            <img
+              src="@/assets/footprint1.png"
+              class="footprint1 fire-4"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint2.png"
+              class="footprint2 fire-3"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint3.png"
+              class="footprint3 fire-2"
+              alt=""
+            />
+            <img
+              src="@/assets/footprint4.png"
+              class="footprint4 fire-1"
+              alt=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -1015,26 +673,25 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
-$active: #002fa7;
+$active: #fdb329;
 $lang: v-bind('lang');
-$spacings: 62 40 32 24 16 12 10 8 6 4;
+// $spacings: 62 10 32 24 16 12 10 8 6 4;
 $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
 .active {
   display: inline-block;
   opacity: 0;
   color: $active;
-  font-family: PangMenZhengDao;
 }
 .bold {
   font-weight: 700;
 }
 
-@each $spacing in $spacings {
-  $i: index($spacings, $spacing);
-  .margin-top-h#{$i} {
-    margin-top: #{$spacing}px;
-  }
-}
+// @each $spacing in $spacings {
+//   $i: index($spacings, $spacing);
+//   .margin-top-h#{$i} {
+//     margin-top: #{$spacing}px;
+//   }
+// }
 @each $color in $rankColors {
   $i: index($rankColors, $color);
   .color-#{$i} {
@@ -1047,8 +704,17 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   }
 }
 #app {
-  width: 100vw;
-  height: 100vh;
+  width: 390px;
+  height: 844px;
+  margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+.pc {
+  width: 390px;
+  height: 844px;
 }
 .bgm-open {
   position: absolute;
@@ -1056,9 +722,6 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   top: 18px;
   right: 18px;
   z-index: 999;
-  @media screen and (min-width: 1200px) {
-    display: none;
-  }
 }
 
 .bgm-open img {
@@ -1067,6 +730,7 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
 
 .run-bgm {
   animation: runBgm 4s infinite;
+  font-size: 0;
 }
 
 @keyframes runBgm {
@@ -1075,220 +739,191 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
   }
 }
 .slide-wrapper {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+  }
   position: relative;
   overflow: hidden;
   .slide-content {
-    width: 100vw;
-    background-color: $active;
+    width: 100%;
+    @media screen and (max-width: 768px) {
+      width: 100vw;
+    }
     color: #fff;
-    font-family: FZLTHJW--GB1-0;
     .slide-page {
       display: flex;
-      padding: 0 12px;
+      padding: 3rem 12px;
       flex-direction: column;
       align-items: center;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      @media screen and (max-width: 768px) {
+        padding: 72px 12px;
+        width: 100vw;
+        height: 100vh;
+      }
       overflow: hidden;
       text-align: center;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
+      position: relative;
     }
     .pg-1 {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 32px;
+      background: url('@/assets/bg1.jpg') top center/cover;
+      position: relative;
+      background-position: 100px center;
       .pg1-top {
-        width: 230px;
-        font-size: 20px;
-        font-family: Milky-Han-Term-CN-Heavy-Italic, Milky-Han-Term-CN-Heavy;
+        font-size: 24px;
         line-height: 32px;
         text-align: center;
+        .title2 {
+          font-size: 36px;
+          margin: 10px 0 32px;
+        }
+        .title3 {
+          font-size: 16px;
+        }
       }
       .pg1-bottom {
-        position: relative;
+        position: absolute;
+        bottom: 0;
         width: 100%;
-        height: 100%;
-        > img {
+        left: 0;
+        .children {
+          width: 8.16rem;
           position: absolute;
-        }
-        .desktop {
-          left: 80px;
-          top: 20px;
-          width: 48px;
-          animation: slide-top1 2s infinite linear alternate;
-          z-index: 10;
-        }
-        .mobile {
-          top: 85px;
-          right: 12px;
-          width: 82px;
-          animation: slide-top1 3s infinite linear alternate;
-          z-index: 10;
-        }
-        .notebook {
-          top: 144px;
-          left: 38px;
-          width: 86px;
-          animation: slide-top1 4s infinite linear alternate;
-          z-index: 10;
-        }
-        .database {
-          top: 212px;
-          right: 20px;
-          width: 90px;
-          animation: slide-top1 5s infinite linear alternate;
-          z-index: 10;
-        }
-        .pg-1-mo {
-          left: calc(50% + 30px);
-          transform: translateX(-50%);
-          bottom: 24px;
-          width: 254px;
-        }
-        .fire-1 {
-          opacity: 0;
-          left: calc(50%);
-          transform: translateX(-50%);
-          width: 266px;
-          bottom: 60px;
-          z-index: 3;
-        }
-        .fire-2 {
-          opacity: 0;
-          left: calc(50%);
-          transform: translateX(-50%);
-          width: 266px;
-          bottom: 60px;
+          left: 10%;
+          bottom: 2.87rem;
           z-index: 2;
+          animation-name: card;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+          @media screen and (min-width: 768px) {
+            // left: -1.4rem;
+          }
         }
-        .fire-3 {
-          opacity: 0;
-          left: calc(50%);
-          transform: translateX(-50%);
-          width: 266px;
-          bottom: 60px;
-          z-index: 1;
+        .clock-img {
+          width: 12.8rem;
+          position: absolute;
+          bottom: 0;
+          left: -0.5rem;
+          transform: translateY(7.8rem);
+          @media screen and (max-width: 768px) {
+            left: -1.4rem;
+          }
+        }
+        .clock {
+          // left: 80px;
+          // top: 20px;
+          // width: 48px;
+          // animation: slide-top1 2s infinite linear alternate;
+          // z-index: 10;
         }
       }
     }
     .pg-2 {
       position: relative;
       display: flex;
-      padding: 90px 80px;
       align-items: center;
       flex-direction: column;
+      background: url('@/assets/bg2.jpg') no-repeat top center/cover;
       .pg-2-main {
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 210px;
         width: 100%;
         text-align: center;
         padding: 0 12px;
         color: #000;
         z-index: 10;
         .active {
-          padding: 0 2px;
-          font-size: 16px;
           font-weight: 700;
-          color: #406ef7;
+          color: $active;
+          margin: 0 3px;
         }
         .user {
-          color: #002fa7;
-          font-size: 20px;
+          color: $active;
+          font-size: 16px;
+          margin: 16px 0 10px;
           line-height: 24px;
-          font-family: PangMenZhengDao;
         }
         .main-text {
-          line-height: 32px;
+          line-height: 20px;
           font-size: 12px;
+          color: #fff;
+        }
+        .img5 {
+          width: 2.2rem;
+          animation-name: card;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+
+        .fade-time-4 {
+          margin-top: 10px;
+        }
+
+        .fade-time-5,
+        .fade-time-6,
+        .fade-time-7,
+        .fade-time-8,
+        .fade-time-9 {
+          margin: 3px 0;
         }
       }
-      .img-box > img {
-        position: absolute;
-      }
-      .desktop {
-        left: 80px;
-        bottom: 100px;
-        width: 74px;
-        z-index: 1;
-        animation: slide-top1 2s infinite linear alternate;
-      }
-      .mobile {
-        bottom: 240px;
-        right: 12px;
-        width: 82px;
-        z-index: 1;
-        animation: slide-top1 3s infinite linear alternate;
-      }
-      .notebook {
-        top: 144px;
-        left: 12px;
-        width: 80px;
-        z-index: 1;
-        animation: slide-top1 5s infinite linear alternate;
-      }
-      .database {
-        top: 100px;
-        right: 15px;
-        width: 90px;
-        z-index: 1;
-        animation: slide-top1 4s infinite linear alternate;
-      }
-      .feather-1,
-      .feather-2,
-      .feather-3,
-      .feather-4,
-      .feather-5,
-      .feather-6,
-      .feather-7 {
-        opacity: 0;
-        z-index: 0;
-      }
-      .feather-1 {
-        left: 0;
-        top: 0;
-        width: 120px;
-      }
-      .feather-2 {
-        right: 0;
-        top: 0;
-        width: 126px;
-      }
-      .feather-3 {
-        right: 0;
-        top: 140px;
-        width: 103px;
-      }
-      .feather-4 {
-        right: 0;
-        bottom: 133px;
-        width: 103px;
-      }
-      .feather-5 {
-        right: 0;
-        bottom: 60px;
-        width: 145px;
-      }
-      .feather-6 {
-        left: 0;
-        bottom: 45px;
-        width: 193px;
-      }
-      .feather-7 {
-        left: 0;
-        bottom: 55px;
-        width: 138px;
+      .img-box {
+        img {
+          position: absolute;
+          z-index: 2;
+        }
+        .img1 {
+          width: 27.8rem;
+          z-index: 3;
+        }
+        .img1-1 {
+          width: 19.9rem;
+          bottom: -9.5rem;
+          right: -8rem;
+          z-index: 3;
+        }
+        .img2 {
+          top: 4rem;
+          left: -0.4rem;
+          width: 2rem;
+        }
+        .img3 {
+          top: 8rem;
+          right: -1.1rem;
+          width: 3rem;
+        }
+        .img4 {
+          top: 10rem;
+          left: -1.35rem;
+          width: 3.5rem;
+        }
       }
     }
     .pg-3 {
-      position: relative;
-      padding: 40px 12px 0;
-      background-size: 100% 460px;
+      background: url('@/assets/bg3.jpg') no-repeat top center/cover;
+      .pg-3-bg {
+        background: url('@/assets/bg3.png') no-repeat top center/cover;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2;
+      }
+      .pg-3-main {
+        display: flex;
+        flex-direction: column;
+      }
       .main-text {
         font-size: 12px;
         line-height: 24px;
@@ -1296,8 +931,8 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
       }
       .bottom-scan {
         line-height: 24px;
-        font-size: 14px;
-        font-family: 'PangMenZhengDao';
+        font-size: 12px;
+        margin-top: 5rem;
         .qr-box {
           position: relative;
           display: inline-block;
@@ -1305,204 +940,105 @@ $rankColors: #ffff83 #0d8dff #6e1be8 #0d7567 #b54f00;
           border: 1px solid rgba($color: #fff, $alpha: 0.7);
           background-color: rgba(0, 47, 167, 0.7);
           z-index: 99;
+          margin-bottom: 5px;
           img {
-            width: 95px;
+            width: 2.5rem;
           }
-        }
-      }
-      .img-box {
-        img {
-          bottom: 0;
-          position: absolute;
-        }
-        .hand-ai {
-          opacity: 0;
-          right: 0;
-          width: calc(50% - 3px);
-          z-index: -1;
-        }
-        .hand-man {
-          opacity: 0;
-          display: inline-block;
-          left: 0;
-          width: calc(50% - 3px);
-        }
-        .hexagon-box {
-          position: absolute;
-          height: 188px;
-          left: 50%;
-          bottom: 50px;
-          transform: translateX(-50%);
-          width: 163px;
-          z-index: -1;
-          > img {
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-          }
-          .glow {
-            transform: translate(-50%, -50%) scale(0);
-          }
-        }
-        .hexagon {
-          left: 50%;
-          bottom: 50px;
-          transform: translateX(-50%);
-          width: 163px;
-          z-index: -1;
-        }
-        .hexagon-2 {
-          width: 80px;
-        }
-        .hexagon-3 {
-          width: 33px;
         }
       }
     }
     .pg-4 {
-      padding: 60px 44px;
-      background-position: bottom;
-      background-size: cover;
+      background: url('@/assets/bg4.jpg') no-repeat top center/cover;
       .pg-4-main {
         font-size: 12px;
         line-height: 24px;
         .active {
           font-weight: 700;
           font-size: 14px;
-          color: #feb32a;
+          color: $active;
+        }
+      }
+      .img6 {
+        position: absolute;
+        width: 9.8rem;
+        bottom: 2.9rem;
+        left: 0.5rem;
+        opacity: 0;
+        @media screen and (max-width: 768px) {
+          bottom: 2.6rem;
+          left: 0.2rem;
+        }
+      }
+      .img7 {
+        position: absolute;
+        width: 6.6rem;
+        bottom: 6.6rem;
+        left: 2.1rem;
+        opacity: 0;
+        @media screen and (max-width: 768px) {
+          bottom: 6.48rem;
+          left: 1.8rem;
         }
       }
     }
     .pg-5 {
-      background-position: top;
-      background-size: cover;
-      justify-content: center;
+      background: url('@/assets/bg5.jpg') no-repeat top center/cover;
       .pg-5-main {
-        padding: 24px 75px;
-        border: 1px solid #fff;
-        font-size: 12px;
+        font-size: 0.3rem;
         line-height: 24px;
         .active {
           padding: 0 2px;
           font-size: 14px;
           font-weight: 700;
-          color: #feb32a;
+          color: $active;
         }
       }
     }
+
     .pg-6 {
-      position: relative;
-      background-image: none;
-      background-size: 200px;
-      background-position: center 245px;
-      background-color: rgb(0, 62, 214);
-      .pg-6-top {
-        position: relative;
-        padding: 50px 0 0;
-        line-height: 24px;
-        font-weight: 700;
-        color: #000;
-        font-size: 14px;
-        width: 100%;
-        max-width: 360px;
-        height: 100%;
-        max-height: 444px;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        background-image: url('@/assets/bg-6-light.png');
-        z-index: 9;
-        .active {
-          color: #406ef7;
-        }
-        p:last-child {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-          bottom: 150px;
-          margin-top: 24px;
-          font-family: PangMenZhengDao;
-          font-size: 40px;
-          line-height: 46px;
-        }
-        .rank {
-          bottom: 120px !important;
-        }
-      }
-      .pg-6-main {
-        position: relative;
-        margin-top: -170px;
-        width: 360px;
-        .round {
-          position: relative;
-          width: 100%;
-          z-index: 0;
-        }
-        .light {
-          width: 30px;
-          left: 50%;
-          top: calc(50% + 5px);
-          transform: translate(-50%, -50%);
-          bottom: 0;
-          position: absolute;
-          z-index: 10;
-        }
-        .circle {
-          position: absolute;
-          left: 50%;
-          top: calc(50% + 30px);
-          transform: translate(-50%, -50%);
-          width: 102px;
-          height: 102px;
-          border-radius: 50%;
-          background-color: rgba($color: #a6cbfe, $alpha: 0.6);
-          animation: halo2 1.5s 0.5s ease-in-out infinite alternate;
-          &::before {
-            position: absolute;
-            content: '';
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 50%;
-            border-radius: 50%;
-            animation: halo3 1.5s 0.5s ease-in-out infinite alternate;
-            background-color: #a6cbfe;
-          }
-        }
-      }
-      .pg-6-bottom {
-        top: 500px;
-        height: 120px;
-        position: absolute;
-        width: 100%;
-        background-position: center;
-        background-size: 360px 100%;
-        background-repeat: no-repeat;
-        background-image: url('@/assets/bg-6-bottom.png');
-      }
-    }
-    .pg-7 {
-      padding-top: 52px;
-      font-size: 12px;
+      background: url('@/assets/bg6.jpg') no-repeat top center/cover;
+      font-size: 0.3rem;
       line-height: 24px;
-      color: #000;
-      background-repeat: no-repeat;
-      .pg-7-logo {
-        opacity: 0;
-        margin-top: 40px;
-        width: 82px;
-        animation-duration: 0.8s;
-        animation-name: fade;
-        animation-fill-mode: forwards;
-        img {
-          width: 100%;
+      color: #fff;
+      .pg-7-top {
+        .fade-time-5 {
+          height: 20px;
         }
+      }
+      .footprint1 {
+        position: absolute;
+        width: 4.1rem;
+        bottom: -2rem;
+        right: 0rem;
+        opacity: 0;
+      }
+      .footprint2 {
+        position: absolute;
+        width: 2.9rem;
+        bottom: 2rem;
+        left: 2.9rem;
+        opacity: 0;
+      }
+      .footprint3 {
+        position: absolute;
+        width: 1.2rem;
+        bottom: 4.4rem;
+        left: 6.5rem;
+        opacity: 0;
+      }
+      .footprint4 {
+        position: absolute;
+        width: 0.84rem;
+        bottom: 5.3rem;
+        left: 4.6rem;
+        opacity: 0;
       }
     }
   }
 }
 
-p {
+p,
+.opacity {
   opacity: 0;
 }
 .current {
@@ -1511,6 +1047,9 @@ p {
     .active {
       animation: slide-top 0.8s ease-in-out forwards;
     }
+  }
+  &.pg-1 {
+    animation: zoomin 5s linear forwards;
   }
 
   @for $i from 0 through 22 {
@@ -1521,23 +1060,18 @@ p {
       }
     }
   }
-  .feather-1,
-  .feather-2,
-  .feather-3,
-  .feather-4,
-  .feather-5,
-  .feather-6,
-  .feather-7 {
-    animation: fade 0.8s 0.5s ease-in-out forwards;
-  }
+
   .fire-1 {
-    animation: fade 0.8s 1.5s ease-in-out forwards;
+    animation: fade 4s 4s ease-in-out forwards;
   }
   .fire-2 {
-    animation: fade 0.8s 1s ease-in-out forwards;
+    animation: fade 3s 3s ease-in-out forwards;
   }
   .fire-3 {
-    animation: fade 0.8s 0.5s ease-in-out forwards;
+    animation: fade 2s 2s ease-in-out forwards;
+  }
+  .fire-4 {
+    animation: fade 1s 1s ease-in-out forwards;
   }
   .hand-ai {
     animation: left-hand 1.2s 0.5s ease-in-out forwards;
@@ -1548,72 +1082,46 @@ p {
   .glow {
     animation: halo1 2s 1.7s ease-in-out infinite alternate;
   }
+  .earth {
+    animation: erath-x 1s 0.4s 1 ease-in, erath-y 1s 0.4s 1 linear;
+    animation-fill-mode: forwards;
+  }
+  .light-show {
+    animation: lightShow 1s 1s 1 ease-in-out;
+    animation-fill-mode: forwards;
+  }
+  .light-show1 {
+    animation: fade 2.5s 2s ease-in-out forwards;
+  }
+  .light-show2 {
+    animation: card 2s ease-in-out infinite;
+  }
 }
 // ipad 适配
-@media screen and (min-width: 768px) {
-  html {
+
+html {
+  @media screen and (min-width: 768px) {
     font-size: 110px !important;
   }
 }
-@keyframes desktop {
-  20% {
-    transform: translate(-20px, -10px);
-  }
 
+@keyframes card {
+  0% {
+    transform: translateY(0px);
+  }
   50% {
-    transform: translate(-50px, -30px);
+    transform: translateY(16px);
   }
-
-  70% {
-    transform: translate(-70px, -10px);
-  }
-
   100% {
-    transform: translate(-20px, -10px);
+    transform: translateY(0px);
   }
 }
+
 @keyframes fade {
   100% {
     opacity: 1;
   }
 }
-@keyframes halo {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0.81);
-  }
-}
-@keyframes halo1 {
-  0% {
-    transform: translate(-50%, -50%) scale(0.1);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-@keyframes halo2 {
-  0% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-}
-@keyframes halo3 {
-  0% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-}
-
 @keyframes slide-top {
   0% {
     opacity: 0;
@@ -1652,465 +1160,121 @@ p {
     transform: translateX(0px);
   }
 }
-
-/* 开始编写CSS */
-.pc-zh.pc-post {
-  @for $i from 1 through 4 {
-    .box-#{ $i} {
-      .pc-top {
-        .text {
-          background-image: url('@/assets/pc-bg-#{$i}.png');
-        }
-      }
-    }
+@keyframes erath-x {
+  0% {
+    right: -20rem;
+    transform: rotateZ(90deg);
+    opacity: 0;
   }
-  .no-contribution {
-    @for $i from 1 through 2 {
-      .box-#{ $i} {
-        .pc-top {
-          .text {
-            width: 180px;
-            height: 93px;
-            background-size: 180px auto;
-            background-repeat: no-repeat;
-            background-image: url('@/assets/pc-bg-no-#{$i}.png');
-          }
-        }
-      }
-    }
+  100% {
+    right: -9.3rem;
+    transform: rotateZ(-0deg);
+    opacity: 1;
   }
 }
-.pc-en.pc-post {
-  p {
-    line-height: 24px;
+@keyframes erath-y {
+  0% {
+    bottom: 10rem;
   }
-  @for $i from 1 through 4 {
-    .box-#{ $i} {
-      .pc-top {
-        .text {
-          width: 74px;
-          background-size: 74px auto;
-          background-repeat: no-repeat;
-          background-image: url('@/assets/pc-bg-#{$i}-en.png');
-        }
-      }
-    }
-  }
-  .no-contribution {
-    @for $i from 1 through 2 {
-      .box-#{ $i} {
-        .pc-top {
-          .text {
-            width: 180px;
-            height: 94px;
-            background-size: 180px auto;
-            background-repeat: no-repeat;
-            background-image: url('@/assets/pc-bg-no-#{$i}-en.png');
-          }
-        }
-      }
-    }
+  100% {
+    bottom: -12.8rem;
   }
 }
 
-.pc-post {
-  display: flex;
-  margin: 0 auto;
-  justify-content: center;
-  overflow: hidden;
-  height: 100vh;
-  padding: 50px;
-  max-width: 1920px;
-  @media screen and (max-width: 1620px) {
-    padding: 24px;
+@keyframes lightShow {
+  0% {
+    opacity: 0;
   }
-  .contribution,
-  .no-contribution {
-    display: flex;
-    margin: 0 auto;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
+  35% {
+    opacity: 1;
   }
-  .pg-3 {
-    width: 100%;
-    height: 100%;
-    background-size: 100% 460px !important;
-    background-repeat: no-repeat;
-    .pc-top {
-      max-height: 320px;
-      height: 100%;
-      background-position: 0 -50px;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      background-image: url('@/assets/pc-bg.png');
-    }
-    .pg-3-main {
-      padding: 40px 40px;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .main-text {
-      font-size: 12px;
-      line-height: 24px;
-      text-align: center;
-    }
-    .bottom-scan {
-      line-height: 24px;
-      font-size: 14px;
-      font-family: 'PangMenZhengDao';
-      .qr-box {
-        display: inline-block;
-        padding: 8px;
-        border: 1px solid rgba($color: #fff, $alpha: 0.7);
-        position: relative;
-        z-index: 99;
-        background-color: rgba(0, 47, 167, 0.7);
-        img {
-          width: 95px;
-        }
-      }
-    }
-    .img-box {
-      img {
-        bottom: 0;
-        position: absolute;
-      }
-      .hand-ai {
-        opacity: 0;
-        right: 0;
-        width: calc(50% - 3px);
-        z-index: -1;
-      }
-      .hand-man {
-        opacity: 0;
-        display: inline-block;
-        left: 0;
-        width: calc(50% - 3px);
-        z-index: 1;
-      }
-      .hexagon-box {
-        position: absolute;
-        height: 188px;
-        left: 50%;
-        bottom: 50px;
-        transform: translateX(-50%);
-        width: 163px;
-        z-index: -1;
-        > img {
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .glow {
-          transform: translate(-50%, -50%) scale(0);
-        }
-      }
-      .hexagon {
-        left: 50%;
-        bottom: 50px;
-        transform: translateX(-50%);
-        width: 163px;
-        z-index: -1;
-      }
-      .hexagon-2 {
-        width: 80px;
-      }
-      .hexagon-3 {
-        width: 33px;
-      }
-    }
+  70% {
+    opacity: 0.5;
   }
-  .pg-2 {
-    position: relative;
-    display: flex;
-    padding: 80px 80px;
-    align-items: center;
-    flex-direction: column;
-    z-index: 5;
-    .pg-2-main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 210px;
-      width: 100%;
-      text-align: center;
-      padding: 0 12px;
-      color: #000;
-      p {
-        position: relative;
-        z-index: 10;
-      }
-      .active {
-        padding: 0 2px;
-        font-size: 16px;
-        font-weight: 700;
-        color: #406ef7;
-      }
-      .user {
-        color: #002fa7;
-        font-size: 20px;
-        line-height: 24px;
-        font-family: PangMenZhengDao;
-      }
-      .celebrat {
-        color: #000;
-        font-size: 20px;
-        font-family: Milky-Han-Term-CN-Heavy-Italic, Milky-Han-Term-CN-Heavy;
-      }
-      .main-text {
-        line-height: 32px;
-        font-size: 12px;
-      }
-    }
-    .img-box > img {
-      position: absolute;
-    }
-    .desktop {
-      left: 40px;
-      bottom: 100px;
-      width: 74px;
-      z-index: 1;
-      animation: slide-top1 2s infinite linear alternate;
-    }
-    .mobile {
-      bottom: 240px;
-      right: 12px;
-      width: 82px;
-      z-index: 1;
-      animation: slide-top1 3s infinite linear alternate;
-    }
-    .notebook {
-      top: 144px;
-      left: 12px;
-      width: 80px;
-      z-index: 1;
-      animation: slide-top1 5s infinite linear alternate;
-    }
-    .database {
-      top: 100px;
-      right: 15px;
-      width: 90px;
-      z-index: 1;
-      animation: slide-top1 4s infinite linear alternate;
-    }
-    .feather-1,
-    .feather-2,
-    .feather-3,
-    .feather-4,
-    .feather-5,
-    .feather-6,
-    .feather-7 {
-      opacity: 0;
-      z-index: 0;
-    }
-    .feather-1 {
-      left: 0;
-      top: 0;
-      width: 120px;
-    }
-    .feather-2 {
-      right: 0;
-      top: 0;
-      width: 126px;
-    }
-    .feather-3 {
-      right: 0;
-      top: 140px;
-      width: 103px;
-    }
-    .feather-4 {
-      right: 0;
-      bottom: 133px;
-      width: 103px;
-    }
-    .feather-5 {
-      right: 0;
-      bottom: 60px;
-      width: 145px;
-    }
-    .feather-6 {
-      left: 0;
-      bottom: 45px;
-      width: 193px;
-    }
-    .feather-7 {
-      left: 0;
-      bottom: 55px;
-      width: 138px;
-    }
+  100% {
+    opacity: 1;
   }
-  .pg-5 {
-    padding: 40px;
-    background-position: bottom;
-    background-size: cover !important;
-    .pg-5-main {
-      color: #fff;
-      padding: 14px 24px;
-      border: 1px solid #fff;
-      font-size: 12px;
-      text-align: center;
-      line-height: 24px;
-      background-color: rgba($color: #002fa7, $alpha: 0.8);
-      .active {
-        font-weight: 500;
-        padding: 0 2px;
-        font-size: 14px;
-        color: #feb32a;
-        font-family: PangMenZhengDao;
-      }
-    }
-  }
-  .pg-6 {
-    padding: 40px;
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    filter: blur(2px);
     color: #fff;
-    position: relative;
-    background-image: url('@/assets/bg-4.png');
-    background-position: top;
-    background-size: cover !important;
-    .pg-6-main {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 30px 24px;
-      height: 100%;
-      border: 1px solid #fff;
-      font-size: 12px;
-      text-align: center;
-      line-height: 24px;
-      background-color: rgba($color: #002fa7, $alpha: 0.8);
-      .pg-6-top {
-        font-size: 14px;
-        font-family: PangMenZhengDao;
-        .active {
-          color: #feb32a;
-        }
-        .pg-6-text {
-          margin-top: 24px;
-          font-size: 24px;
-          color: #feb32a;
-        }
-        p:last-child {
-          margin: 40px 0;
-          font-size: 40px;
-        }
-        .rank {
-          margin: 24px 0 0 0 !important;
-          line-height: 46px;
-        }
-      }
-      .pg-6-main-text {
-        font-size: 12px;
-        img {
-          margin-top: 40px;
-          width: 82px;
-        }
-      }
-    }
+    text-shadow: 0 0 10px #1e90ff, 0 0 20px #1e90ff, 0 0 30px #1e90ff,
+      0 0 40px #1e90ff, 0 0 100px #1e90ff, 0 0 200px #1e90ff, 0 0 300px #1e90ff,
+      0 0 400px #1e90ff;
   }
-  .no-contribution {
-    .pg-7 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 52px;
-      font-size: 12px;
-      line-height: 24px;
-      color: #000;
-      text-align: center;
-      background-position: 0 0;
-      border: 1px solid #e5e5e5;
-      .pg-7-logo {
-        margin-top: 40px;
-        width: 82px;
-        img {
-          width: 100%;
-        }
-      }
-    }
+  5%,
+  95% {
+    filter: blur(0px);
+    color: #666;
+    text-shadow: none;
   }
-  .container {
-    position: relative;
-    max-width: 360px;
-    width: 100%;
-    max-height: 640px;
-    height: 100%;
-    overflow: hidden;
-  }
-  .no-contribution {
-    justify-content: space-around;
-  }
-  .front,
-  .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transition: transform 0.7s ease-in-out;
-  }
-  .front {
-    background-color: rgb(0, 47, 156);
-    z-index: 10;
-    background-position: -6px -2px;
-    background-repeat: no-repeat;
-  }
+}
 
-  .no-contribution .qr-code {
-    padding-top: 50px;
+.loader {
+  width: 1.8rem;
+  height: 1.8rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 5.15rem;
+  left: 4.52rem;
+  transform: rotateX(40deg);
+  @media screen and (max-width: 768px) {
+    width: 1.6rem;
+    height: 1.6rem;
+    bottom: 4.78rem;
+    left: 4.2rem;
   }
-  .noContribution .qr-code img {
-    border: 1px solid black;
+}
+.loader .face {
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  animation: animate 10s linear infinite;
+}
+.loader .face:nth-child(1) {
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 215, 0, 0.4);
+  border-color: currentColor transparent transparent currentColor;
+  border-width: 0.9rem 0.9rem 0.9rem 0em;
+  --deg: -45deg;
+  animation-direction: normal;
+}
+.loader .face .circle {
+  position: absolute;
+  width: 50%;
+  height: 0.1em;
+  top: 50%;
+  left: 50%;
+  background-color: transparent;
+  transform: rotate(var(--deg));
+  transform-origin: left;
+}
+.loader .face .circle::before {
+  position: absolute;
+  top: -0.1rem;
+  right: -0.15rem;
+  content: '';
+  width: 0.15rem;
+  height: 0.15rem;
+  background-color: currentColor;
+  border-radius: 50%;
+}
+@keyframes animate {
+  to {
+    transform: rotate(1turn);
   }
-  .no-contribution .qr-code img {
-    border: 1px solid black;
-  }
-  .no-contribution .qr-code p {
-    padding-top: 20px;
-  }
-  .back {
-    transform: rotateY(180deg);
-  }
+}
 
-  .pc-top {
-    display: flex;
-    justify-content: center;
-    .text {
-      margin-top: 62px;
-      width: 106px;
-      height: 87px;
-      background-position: center center;
-      background-size: 106px 87px;
-    }
-  }
-
-  .pc-post .euler-title2 {
-    padding: 10px 0;
-  }
-  .pc-post .euler-title3 {
-    padding: 0 0 10px;
-  }
-  .contents {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(0, 47, 156);
-    transform: translateZ(60px);
-    background-size: 100% 100%;
-  }
-  .contents .page {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+@keyframes zoomin {
+  100% {
+    background-position: 0% center;
   }
 }
 </style>

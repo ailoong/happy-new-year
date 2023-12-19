@@ -26,7 +26,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/query/': {
-        target: 'https://omapi.test.osinfra.cn/',
+        target: 'https://dsapi.osinfra.cn/',
         changeOrigin: true,
       },
     },
