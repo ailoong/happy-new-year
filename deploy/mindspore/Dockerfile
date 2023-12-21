@@ -88,7 +88,7 @@ RUN touch /var/run/nginx.pid \
     && rm -rf /usr/share/gdb \
     && rm -rf /usr/share/gcc-10.3.1
 
-COPY ./deploy/monitor.sh ./deploy/entrypoint.sh /etc/nginx
+COPY ../deploy/monitor.sh ../deploy/entrypoint.sh /etc/nginx
 RUN chmod 500 /etc/nginx/monitor.sh \
     && chmod 500 /etc/nginx/entrypoint.sh \
     && chown nginx:nginx /etc/nginx/monitor.sh \
