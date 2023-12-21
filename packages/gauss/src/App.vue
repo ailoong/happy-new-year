@@ -42,7 +42,7 @@ const posterData: any = ref({
   star_num: '0',
   fork_num: '12',
   code_lines_delete: '7088',
-  count_rank: '0.003',
+  count_rank: '0.9',
   first_time_of_comment: '2022/1/4 11:30',
   user_login: 'licihua',
   code_lines_add: '8062',
@@ -262,8 +262,8 @@ const rankMap: any = computed(() => {
     `<p class="level fade-time-3">Level3</p><p class="title  fade-time-4">「新知青年」</p>
     <p class="text  fade-time-5">你探索真理，分享智慧，<br />openGauss因为有你更有力量</p>`,
 
-    `<p class="title fade-time-3">「openGauss的萌新好友」</p>
-    <p class="text  fade-time-5">你因好奇来到openGauss世界留下点点痕迹<br />openGauss未来欢迎你</p>`,
+    `<p class="level fade-time-3">openGauss</p><p class="title fade-time-3">「萌新好友」</p>
+    <p class="text  fade-time-5">你因好奇来到openGauss世界<br />留下点点痕迹<br />openGauss未来欢迎你</p>`,
   ];
 });
 async function getPosterDataFun() {
@@ -749,6 +749,10 @@ $bgTime: 0;
           top: 0.1rem;
           left: -0.2rem;
           z-index: 2;
+          animation-name: fade-toggle;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
         }
       }
     }
@@ -871,6 +875,17 @@ p {
 @keyframes fade {
   100% {
     opacity: 1;
+  }
+}
+@keyframes fade-toggle {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 

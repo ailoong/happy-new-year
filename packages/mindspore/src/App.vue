@@ -66,7 +66,7 @@ async function getUserDataFun() {
   });
 }
 
-const isContributor = ref(false);
+const isContributor = ref(true);
 
 const registerTime: any = ref([]);
 
@@ -364,10 +364,6 @@ onMounted(async () => {
   }
 });
 
-function goStart() {
-  slide.scrollToElement('.pg-3', 500, 0, 0);
-}
-
 // 背景音乐
 const bgm: any = ref('bgm');
 const bgmOpen: any = ref('bgmOpen');
@@ -663,6 +659,11 @@ onUnmounted(() => {
         top: 9rem;
         left: 1.32rem;
         z-index: 3;
+
+        animation-name: move;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
       }
 
       .slide-top {
@@ -727,6 +728,10 @@ onUnmounted(() => {
           top: 0;
           left: 0;
           z-index: 2;
+          animation-name: move;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
         }
       }
     }
@@ -774,7 +779,7 @@ onUnmounted(() => {
       transform: scale(1) translateY(0px);
     }
     50% {
-      transform: scale(1.1) translateY(-2px);
+      transform: scale(1.06) translateY(-2px);
     }
     100% {
       transform: scale(1) translateY(0px);
