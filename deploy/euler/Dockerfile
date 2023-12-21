@@ -30,7 +30,7 @@ COPY --from=NginxBuilder /usr/share/nginx/sbin/nginx /usr/share/nginx/sbin/nginx
 COPY --from=NginxBuilder /etc/nginx/modules /etc/nginx/modules
 COPY --from=NginxBuilder /etc/nginx/geoip  /etc/nginx/geoip
 COPY --from=NginxBuilder /etc/nginx/mime.types  /etc/nginx/mime.types
-COPY --from=Builder /home/happy-new-year/web/dist/euler /usr/share/nginx/html/
+COPY --from=Builder /home/happy-new-year/web/dist/euler /usr/share/nginx/www/
 
 
 RUN sed -i "s|repo.openeuler.org|mirrors.pku.edu.cn/openeuler|g" /etc/yum.repos.d/openEuler.repo \
