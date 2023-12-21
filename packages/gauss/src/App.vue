@@ -546,7 +546,6 @@ onUnmounted(() => {
 
 <style lang="scss">
 $active: #bd72ff;
-$spacings: 62 40 32 24 16 12 10 8 6 4;
 $bgTime: 0;
 
 .active {
@@ -559,14 +558,6 @@ $bgTime: 0;
 
 .bold {
   font-weight: 500;
-}
-
-@each $spacing in $spacings {
-  $i: index($spacings, $spacing);
-
-  .margin-top-h#{$i} {
-    margin-top: #{$spacing}px;
-  }
 }
 
 .font-size-tip {

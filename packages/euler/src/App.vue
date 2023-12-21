@@ -697,11 +697,6 @@ $lang: v-bind('lang');
   color: $active;
 }
 
-@for $i from 2 through 7 {
-  .pg-#{ $i} {
-    background-image: url('@/assets/bg-#{$i}.png');
-  }
-}
 #app {
   width: 390px;
   height: 844px;
