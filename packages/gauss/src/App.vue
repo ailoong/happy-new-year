@@ -547,7 +547,13 @@ onUnmounted(() => {
 <style lang="scss">
 $active: #bd72ff;
 $bgTime: 0;
-
+body {
+  background: #7d32ea url('@/assets/bg.jpg') no-repeat bottom center/cover;
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    background: none;
+  }
+}
 .active {
   display: inline-block;
   opacity: 0;

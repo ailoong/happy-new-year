@@ -549,6 +549,13 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
+body {
+  background: #3366ff url('@/assets/bg.jpg') no-repeat top center/cover;
+  @media screen and (max-width: 768px) {
+    background: none;
+  }
+}
+
 #app {
   width: 390px;
   height: 844px;

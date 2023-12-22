@@ -345,7 +345,7 @@ function changeTime(time: string) {
 }
 function getRank(per: string | number) {
   if (per) {
-    const percentage = Number(per);
+    const percentage = per === '1' ? 1 : Number(per) * 100;
     let rank = 0;
     if (percentage <= 20) {
       rank = 0;
@@ -358,6 +358,8 @@ function getRank(per: string | number) {
     } else if (70 < percentage) {
       rank = 4;
     }
+
+    console.log('rank :>> ', percentage);
     return rank;
   }
 }
@@ -450,7 +452,7 @@ onUnmounted(() => {
           class="slide-page pg-1"
           :class="currentPage === 0 ? 'current' : ''"
         >
-          <div class="pg1-top margin-top-h1">
+          <div class="pg1-top">
             <p class="title1">
               <img :src="pageTitle.img" class="title-img" alt="" />
             </p>
@@ -508,7 +510,7 @@ onUnmounted(() => {
               </p>
             </div>
             <div class="bottom-scan">
-              <div class="qr-box margin-top-h5">
+              <div class="qr-box">
                 <img :src="codeInfo.img" alt="" />
               </div>
               <p class="fade-time-6">
@@ -560,11 +562,24 @@ onUnmounted(() => {
               ></span>
             </p>
           </div>
-          <div class="img-box"></div>
+        </div>
+        <div
+          class="slide-page pg-5"
+          :class="currentPage === 5 ? 'current' : ''"
+        >
+          <div class="img-box">
+            <p class="title">2023</p>
+            <p>
+              在这一年里 你的贡献度击败了社区
+              {{ getRank(posterData.count_rank) }}% 的开发者
+            </p>
+            <img src="@/assets/img9.png" class="img9" alt="" />
+            <p>感谢你对openEuler社区的支持 期待未来与你的一路同行</p>
+          </div>
         </div>
         <div
           class="slide-page pg-6"
-          :class="currentPage === 5 ? 'current' : ''"
+          :class="currentPage === 6 ? 'current' : ''"
         >
           <div class="main-text">
             <p
@@ -605,7 +620,7 @@ onUnmounted(() => {
           class="slide-page pg-1"
           :class="currentPage === 0 ? 'current' : ''"
         >
-          <div class="pg1-top margin-top-h1">
+          <div class="pg1-top">
             <p class="title1">
               <img :src="pageTitle.img" class="title-img" alt="" />
             </p>
@@ -696,11 +711,17 @@ $lang: v-bind('lang');
   opacity: 0;
   color: $active;
 }
-
+body {
+  background: #002fa7 url('@/assets/bg.jpg') no-repeat top center/cover;
+  @media screen and (max-width: 768px) {
+    background: none;
+  }
+}
 #app {
   width: 390px;
   height: 844px;
   margin: 0 auto;
+
   @media screen and (max-width: 768px) {
     width: 100vw;
     height: 100vh;
@@ -979,12 +1000,27 @@ $lang: v-bind('lang');
     }
     .pg-5 {
       background: url('@/assets/bg5.jpg') no-repeat top center/cover;
-      .pg-5-main {
-        .active {
-          padding: 0 2px;
-          font-size: 14px;
-          font-weight: 700;
-          color: $active;
+
+      .active {
+        padding: 0 2px;
+        font-size: 14px;
+        font-weight: 700;
+        color: $active;
+      }
+      .img-box {
+        background: url('@/assets/img8.png') no-repeat center/cover;
+        width: 7.28rem;
+        height: 9.34rem;
+        padding: 0 0.71rem;
+        .title {
+          padding: 0.88rem 0;
+          text-align: center;
+          color: #fff;
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .img9 {
+          width: 3.5rem;
         }
       }
     }
