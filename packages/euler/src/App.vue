@@ -359,7 +359,6 @@ function getRank(per: string | number) {
       rank = 4;
     }
 
-    console.log('rank :>> ', percentage);
     return rank;
   }
 }
@@ -372,16 +371,6 @@ function getYear(time: string) {
   }
 }
 
-const rankMap: any = ref({
-  zh: ['初出茅庐', '牛刀小试', '崭露头角', '达人现身', '百炼成师'],
-  en: [
-    'Emerging Talent',
-    'Novice Contributor',
-    'Rising Star',
-    'Expert Developer',
-    'openEuler Guru',
-  ],
-});
 onMounted(async () => {
   // 必须先确定是否为贡献者
   // await getUserDataFun();
