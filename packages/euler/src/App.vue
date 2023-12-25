@@ -556,14 +556,18 @@ onUnmounted(() => {
           class="slide-page pg-5"
           :class="currentPage === 5 ? 'current' : ''"
         >
-          <div class="img-box">
-            <p class="title">2023</p>
-            <p>
+          <div class="img-box main-text">
+            <p class="title fade-time-0">2023</p>
+            <p class="fade-time-1">
               在这一年里 你的贡献度击败了社区
               {{ getRank(posterData.count_rank) }}% 的开发者
             </p>
-            <img src="@/assets/img9.png" class="img9" alt="" />
-            <p>感谢你对openEuler社区的支持 期待未来与你的一路同行</p>
+            <p class="fade-time-2">
+              <img src="@/assets/img9.png" class="img9" alt="" />
+            </p>
+            <p class="fade-time-3">
+              感谢你对openEuler社区的支持 期待未来与你的一路同行
+            </p>
           </div>
         </div>
         <div
