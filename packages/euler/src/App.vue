@@ -373,7 +373,7 @@ function getYear(time: string) {
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  // await getUserDataFun();
+  await getUserDataFun();
   await getPosterDataFun();
 
   currentPage.value = 0;
