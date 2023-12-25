@@ -14,6 +14,7 @@ import QRcode_zh from '@/assets/QRcode_zh.png';
 import QRcode_en from '@/assets/QRcode_en.png';
 import titleEn from '@/assets/title-en.png';
 import titleZh from '@/assets/title-zh.png';
+import arrowIcon from '@/assets/arrow.png';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -451,6 +452,9 @@ onUnmounted(() => {
             <img src="@/assets/children.png" class="children" alt="" />
             <img src="@/assets/clock.png" class="clock-img" alt="" />
           </div>
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
+          </div>
         </div>
         <div
           class="slide-page pg-2"
@@ -483,6 +487,9 @@ onUnmounted(() => {
             />
           </div>
           <Stars />
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
+          </div>
         </div>
         <div
           class="slide-page pg-3"
@@ -515,6 +522,9 @@ onUnmounted(() => {
               </div>
             </div>
           </div>
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
+          </div>
         </div>
         <div
           class="slide-page pg-4"
@@ -534,6 +544,9 @@ onUnmounted(() => {
             <img src="@/assets/img6.png" class="img6 light-show" alt="" />
             <img src="@/assets/img7.png" class="img7 light-show1" alt="" />
           </div>
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
+          </div>
         </div>
         <div
           class="slide-page pg-5"
@@ -550,6 +563,9 @@ onUnmounted(() => {
                 v-dompurify-html="item.value"
               ></span>
             </p>
+          </div>
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
           </div>
         </div>
         <div
@@ -568,6 +584,9 @@ onUnmounted(() => {
             <p class="fade-time-3">
               感谢你对openEuler社区的支持 期待未来与你的一路同行
             </p>
+          </div>
+          <div class="slide-top">
+            <img :src="arrowIcon" alt="" />
           </div>
         </div>
         <div
@@ -783,6 +802,27 @@ body {
       overflow: hidden;
       text-align: center;
       position: relative;
+      .slide-top {
+        position: absolute;
+        bottom: 0.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        animation-name: slide-up;
+        animation-duration: 1.5s;
+        animation-delay: 2s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        z-index: 8;
+        img {
+          width: 1rem;
+          animation-name: move;
+          animation-delay: 3.5s;
+          animation-duration: 1.5s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+      }
     }
     .main-text {
       line-height: 20px;
@@ -1315,6 +1355,25 @@ html {
 @keyframes zoomin {
   100% {
     background-position: 0% center;
+  }
+}
+@keyframes move {
+  0% {
+    transform: scale(1) translateY(0px);
+  }
+  50% {
+    transform: scale(1.06) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+  }
+}
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>
