@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 import 'amfe-flexible';
 import { router } from './routers';
-import '@/shared/style/_font.scss';
 import 'shared/styles/index.scss';
 import App from './App.vue';
 
