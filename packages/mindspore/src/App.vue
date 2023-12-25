@@ -6,6 +6,7 @@ import Slide from '@better-scroll/slide';
 
 import useWindowResize from 'shared/hooks/useWindowResize';
 import { getPosterData, getMonthcount, getUserData } from 'shared/api';
+import arrowIcon from '@/assets/arrow.png';
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -411,7 +412,7 @@ onUnmounted(() => {
 
         <img class="img3" src="@/assets/img3.png" alt="" />
         <div class="slide-top">
-          <img src="@/assets/arrow.png" alt="" />
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
 
@@ -423,6 +424,9 @@ onUnmounted(() => {
         >
           {{ item }}
         </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
@@ -443,6 +447,9 @@ onUnmounted(() => {
             <img src="@/assets/img6.png" class="img6" />
           </p>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
@@ -452,6 +459,9 @@ onUnmounted(() => {
           :class="`fade-time-${index + 1}`"
           v-dompurify-html="item"
         ></p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-5" :class="currentPage === 4 ? 'current' : ''">
@@ -461,6 +471,9 @@ onUnmounted(() => {
           :class="`fade-time-${index + 1}`"
           v-dompurify-html="item.value"
         ></p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-6" :class="currentPage === 5 ? 'current' : ''">
@@ -492,7 +505,7 @@ onUnmounted(() => {
 
         <img class="img3" src="@/assets/img3.png" alt="" />
         <div class="slide-top">
-          <img src="@/assets/arrow.png" alt="" />
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
 
@@ -504,6 +517,9 @@ onUnmounted(() => {
         >
           {{ item }}
         </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
@@ -524,6 +540,9 @@ onUnmounted(() => {
             <img src="@/assets/img6.png" class="img6" />
           </p>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
@@ -533,6 +552,9 @@ onUnmounted(() => {
           :class="`fade-time-${index + 1}`"
           v-dompurify-html="item"
         ></p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-6" :class="currentPage === 4 ? 'current' : ''">
@@ -633,6 +655,26 @@ body {
       overflow: hidden;
       position: relative;
       background-size: cover;
+      .slide-top {
+        position: absolute;
+        bottom: 0.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        animation-name: slide-up;
+        animation-duration: 1.5s;
+        animation-delay: 2s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        img {
+          width: 1rem;
+          animation-name: move;
+          animation-delay: 3.5s;
+          animation-duration: 1.5s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+      }
     }
     @for $i from 1 through 6 {
       .pg-#{ $i} {
@@ -674,27 +716,6 @@ body {
         animation-timing-function: ease-in-out;
         @media screen and (max-width: 768px) {
           top: 9.5rem;
-        }
-      }
-
-      .slide-top {
-        position: absolute;
-        bottom: 0.8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        animation-name: slide-up;
-        animation-duration: 1.5s;
-        animation-delay: 2s;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: forwards;
-        img {
-          width: 1rem;
-          animation-name: move;
-          animation-delay: 3.5s;
-          animation-duration: 1.5s;
-          animation-iteration-count: infinite;
-          animation-timing-function: ease-in-out;
         }
       }
     }

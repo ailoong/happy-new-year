@@ -7,6 +7,7 @@ import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData, getUserData } from 'shared/api';
+import arrowIcon from '@/assets/arrow.png';
 
 const screenWidth = useWindowResize();
 const params = ref({
@@ -380,6 +381,9 @@ onUnmounted(() => {
             <input type="checkbox" /> 我已阅读并同意用户授权协议
           </label>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-2"
@@ -394,6 +398,9 @@ onUnmounted(() => {
             <!-- v-if="item.key"  调试去掉的 -->
             <span v-dompurify-html="item.value"></span>
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -417,6 +424,9 @@ onUnmounted(() => {
             <img src="@/assets/img2.png" class="img2" />
           </p>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-4"
@@ -430,6 +440,9 @@ onUnmounted(() => {
           <!-- v-if="item.key"  调试去掉的 -->
           <span v-dompurify-html="item.value"></span>
         </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-5"
@@ -443,6 +456,9 @@ onUnmounted(() => {
           <!--  v-if="item.key" 调试去掉的 -->
           <span v-dompurify-html="item.value"></span>
         </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-6"
@@ -490,6 +506,9 @@ onUnmounted(() => {
             <input type="checkbox" /> 我已阅读并同意用户授权协议
           </label>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-2"
@@ -503,6 +522,9 @@ onUnmounted(() => {
           >
             {{ item }}
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -525,6 +547,9 @@ onUnmounted(() => {
           <p class="fade-time-3">
             <img src="@/assets/img2.png" class="img2" />
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -639,6 +664,7 @@ body {
         width: 100vw;
         height: 100vh;
       }
+      position: relative;
       overflow: hidden;
       background-size: cover;
       text-align: center;
@@ -769,7 +795,27 @@ body {
         margin-top: 16px;
       }
     }
-
+    .slide-top {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation-name: slide-up;
+      animation-duration: 1.5s;
+      animation-delay: 2s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
+      z-index: 8;
+      img {
+        width: 1rem;
+        animation-name: move;
+        animation-delay: 3.5s;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+    }
     .pg-6 {
       position: relative;
 
@@ -928,6 +974,26 @@ p {
 @keyframes zoomin {
   100% {
     background-position: 0% center;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: scale(1) translateY(0px);
+  }
+  50% {
+    transform: scale(1.06) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+  }
+}
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>
