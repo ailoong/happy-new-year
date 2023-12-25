@@ -711,9 +711,10 @@ body {
   }
 }
 #app {
-  width: 390px;
-  height: 844px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 
   @media screen and (max-width: 768px) {
     width: 100vw;
@@ -961,32 +962,32 @@ body {
     }
     .pg-4 {
       background: url('@/assets/bg4.jpg') no-repeat top center/cover;
-      .pg-4-main {
-        .active {
-          font-weight: 700;
-          font-size: 14px;
-          color: $active;
+
+      .img-box {
+        position: absolute;
+        top: 10.5rem;
+        left: 0;
+        @media screen and (max-width: 768px) {
+          top: 8.98rem;
         }
       }
       .img6 {
         position: absolute;
         width: 9.8rem;
-        bottom: 2.9rem;
+        top: 3.2rem;
         left: 0.5rem;
         opacity: 0;
         @media screen and (max-width: 768px) {
-          bottom: 2.6rem;
           left: 0.2rem;
         }
       }
       .img7 {
         position: absolute;
         width: 6.6rem;
-        bottom: 6.6rem;
+        top: 2.6rem;
         left: 2.1rem;
         opacity: 0;
         @media screen and (max-width: 768px) {
-          bottom: 6.48rem;
           left: 1.8rem;
         }
       }
@@ -1025,32 +1026,41 @@ body {
           height: 20px;
         }
       }
+      .img-box {
+        position: absolute;
+        top: 9.3rem;
+        left: 0;
+        width: 100%;
+        @media screen and (max-width: 768px) {
+          top: 8rem;
+        }
+      }
       .footprint1 {
         position: absolute;
         width: 4.1rem;
-        bottom: -2rem;
-        right: 0rem;
+        top: 11rem;
+        right: -0.3rem;
         opacity: 0;
       }
       .footprint2 {
         position: absolute;
         width: 2.9rem;
-        bottom: 2rem;
+        top: 9.2rem;
         left: 2.9rem;
         opacity: 0;
       }
       .footprint3 {
         position: absolute;
         width: 1.2rem;
-        bottom: 4.4rem;
-        left: 6.5rem;
+        top: 8.4rem;
+        left: 5.6rem;
         opacity: 0;
       }
       .footprint4 {
         position: absolute;
         width: 0.84rem;
-        bottom: 5.3rem;
-        left: 4.6rem;
+        top: 8.1rem;
+        left: 4.2rem;
         opacity: 0;
       }
     }
@@ -1251,13 +1261,13 @@ html {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 5.15rem;
+  top: 16.5rem;
   left: 4.52rem;
   transform: rotateX(40deg);
   @media screen and (max-width: 768px) {
     width: 1.6rem;
     height: 1.6rem;
-    bottom: 4.78rem;
+    top: 15.26rem;
     left: 4.2rem;
   }
 }

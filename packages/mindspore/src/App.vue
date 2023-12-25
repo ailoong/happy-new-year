@@ -557,15 +557,16 @@ body {
 }
 
 #app {
-  width: 390px;
-  height: 844px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   @media screen and (max-width: 768px) {
     width: 100vw;
     height: 100vh;
   }
 }
-.pc {
+.slide-wrapper.pc {
   width: 390px;
   height: 844px;
 }
@@ -663,14 +664,17 @@ body {
       .img3 {
         width: 9.8rem;
         position: absolute;
-        top: 9rem;
+        top: 11.2rem;
         left: 1.32rem;
         z-index: 3;
 
-        animation-name: move;
+        animation-name: move1;
         animation-duration: 2s;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
+        @media screen and (max-width: 768px) {
+          top: 9.5rem;
+        }
       }
 
       .slide-top {
@@ -708,13 +712,13 @@ body {
       }
       .img-box {
         position: absolute;
-        bottom: 2.4rem;
+        top: 15rem;
         left: 50%;
         width: 4.64rem;
         height: 4.64rem;
         transform: translate(-50%);
         @media screen and (max-width: 768px) {
-          bottom: 2.4rem;
+          top: 15rem;
         }
         .img4 {
           width: 3.97rem;
@@ -790,6 +794,17 @@ body {
     }
     100% {
       transform: scale(1) translateY(0px);
+    }
+  }
+  @keyframes move1 {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
     }
   }
 

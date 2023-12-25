@@ -571,15 +571,16 @@ body {
 }
 
 #app {
-  width: 390px;
-  height: 844px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   @media screen and (max-width: 768px) {
     width: 100vw;
     height: 100vh;
   }
 }
-.pc {
+.slide-wrapper.pc {
   width: 390px;
   height: 844px;
 }
@@ -719,13 +720,13 @@ body {
       }
       .img-box {
         position: absolute;
-        bottom: 4.6rem;
+        top: 13.6rem;
         left: 50%;
         width: 4.92rem;
         height: 4.92rem;
         transform: translate(-50%);
         @media screen and (max-width: 768px) {
-          bottom: 4.25rem;
+          top: 12.3rem;
         }
         .img1 {
           width: 4.92rem;
