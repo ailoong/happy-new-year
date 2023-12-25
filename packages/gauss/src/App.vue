@@ -7,11 +7,12 @@ import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import { getPosterData, getUserData } from 'shared/api';
+import arrowIcon from '@/assets/arrow.png';
 
 const screenWidth = useWindowResize();
 const params = ref({
   community: 'opengauss',
-  user: 'kaede10',
+  user: 'ailoooong',
   year: '2023',
 });
 const datastat = {
@@ -21,10 +22,9 @@ const datastat = {
   issue: '15.2K',
   member: '563K',
   version: '2',
-  line: 'xxx',
   comment: '248.5k',
   enterprise: '500',
-  achievement: ['114', '1517'],
+  achievement: ['114', '1,517'],
   groups: ['16', '72'],
 };
 
@@ -32,25 +32,8 @@ const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(true);
-const posterData: any = ref({
-  comment_num: '4288',
-  user_login_with_most_contact: 'panxh_purple',
-  first_time_of_enter: '2020/1/2 17:37',
-  first_user_of_comment: 'lyn1001',
-  issue_num: '2424',
-  sig_num: '70',
-  star_num: '0',
-  fork_num: '12',
-  code_lines_delete: '7088',
-  count_rank: '0.9',
-  first_time_of_comment: '2022/1/4 11:30',
-  user_login: 'licihua',
-  code_lines_add: '8062',
-  pr_num: '53',
-  first_time_of_be_comment: '2022/1/4 17:31',
-  first_user_of_be_comment: 'zzm_567',
-  watch_num: '717',
-});
+
+const posterData: any = ref({});
 function changeTime(time: string) {
   if (time) {
     const EndTime = new Date(time);
@@ -61,6 +44,19 @@ function changeTime(time: string) {
     return all;
   }
 }
+function getZero(time: number) {
+  return time < 9 ? '0' + time : time;
+}
+function formatTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const h = EndTime.getHours();
+    const m = EndTime.getMinutes();
+    const all = `${getZero(h)}:${getZero(m)} ${h < 12 ? 'AM' : ''}`;
+    return changeTime(time) + ' ' + all;
+  }
+}
+
 function dayTime(time: string) {
   if (time) {
     const today = new Date().getTime();
@@ -80,14 +76,14 @@ const posterContent = computed(() => {
         key: true,
       },
       {
-        value: `那是<span class="active">${changeTime(
+        value: `<span class="active">${changeTime(
           posterData.value?.first_time_of_enter
         )}</span>`,
         key: posterData.value?.first_time_of_enter,
       },
       {
-        value: `我第一次遇见你`,
-        key: true,
+        value: `那是我第一次遇见你`,
+        key: posterData.value?.first_time_of_enter,
       },
       {
         value: `至今，我们已经走过了<span class="active">${dayTime(
@@ -96,7 +92,11 @@ const posterContent = computed(() => {
         key: posterData.value.first_time_of_enter,
       },
       {
-        value: `<span class='active'>${params.value.user}</span>，感谢你创造了我们的故事`,
+        value: `<span class='active'>${params.value.user}</span>`,
+        key: params.value.user,
+      },
+      {
+        value: `感谢你创造了我们的故事`,
         key: params.value.user,
       },
       {
@@ -111,7 +111,6 @@ const posterContent = computed(() => {
     page2: [
       `因为有<span class="active">${datastat.contributor}</span>个并肩同行的小伙伴一起战斗`,
       `openGauss如期在2023年发布<span class="active">${datastat.version}</span>个版本`,
-      `累计贡献代码<span class="active">${datastat.line}</span>行`,
       `合并请求PR<span class="active">${datastat.pr}</span>`,
       `累计产生Issue<span class="active">${datastat.issue}</span>`,
       `评审<span class="active">${datastat.comment}</span>Comment`,
@@ -149,6 +148,14 @@ const posterContent = computed(() => {
         key: posterData.value.issue_num,
       },
       {
+        value: `今年你第一次在社区中评论了<span class='active'>${posterData.value.first_user_of_comment}</span>`,
+        key: posterData.value.first_user_of_comment,
+      },
+      {
+        value: `贡献了<span class='active'>${posterData.value.comment_num}</span>条评论`,
+        key: posterData.value.comment_num,
+      },
+      {
         value: `Star了<span class='active'>${posterData.value.star_num}</span>个代码仓库`,
         key: posterData.value.star_num,
       },
@@ -183,28 +190,26 @@ const posterContent = computed(() => {
         key: posterData.value.user_login_with_most_contact,
       },
       {
-        value: `这一年，你参与了<span class='active'>XXX</span>次会议`,
-        key: posterData.value.user_login_with_most_contact,
+        value: `<span class='active'>${posterData.value.sig_name}</span>SIG因你的每一次参与而变得不一样`,
+        key: posterData.value.sig_name,
       },
       {
-        value: `<span class='active'>XXXX（SIG组名称）</span>因你的每一次参与而变得不一样`,
-        key: posterData.value.user_login_with_most_contact,
-      },
-      {
-        value: `<span class='active'>XX月XX日（最晚时间）</span>`,
-        key: posterData.value.user_login_with_most_contact,
+        value: `<span class='active'>${formatTime(
+          posterData.value.latest_controibute_at
+        )}</span>`,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `你睡得很晚整个世界都休息了`,
-        key: true,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `你和openGauss还在继续`,
-        key: true,
+        key: posterData.value.latest_controibute_at,
       },
       {
-        value: `你也曾连续<span class='active'>XXX（连续贡献）</span>天都在`,
-        key: posterData.value.user_login_with_most_contact,
+        value: `你也曾连续<span class='active'>${posterData.value.consecutive_days}</span>天都在`,
+        key: posterData.value.consecutive_days,
       },
       {
         value: `只为了心中热爱`,
@@ -236,15 +241,14 @@ const posterContent = computed(() => {
 function getRank(per: string) {
   let rank = 3;
   if (per) {
-    const num = per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
-    const percentage = 100 - num;
-    if (percentage <= 25) {
+    const percentage = Number(per);
+    if (percentage <= 100) {
       rank = 0;
-    } else if (25 < percentage && percentage <= 50) {
+    } else if (percentage > 100 && percentage < 200) {
       rank = 1;
-    } else if (50 < percentage && percentage <= 75) {
+    } else if (percentage > 200 && percentage < 400) {
       rank = 2;
-    } else if (75 < percentage) {
+    } else {
       rank = 3;
     }
   }
@@ -283,7 +287,6 @@ async function getPosterDataFun() {
       isContributor.value = false;
     });
 }
-
 let slide: BScrollInstance;
 const currentPage = ref(-1);
 async function getUserDataFun() {
@@ -293,11 +296,20 @@ async function getUserDataFun() {
     }
   });
 }
+
+const setVhHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  // await getUserDataFun();
-  // await getPosterDataFun();
+  await getUserDataFun();
+  await getPosterDataFun();
   currentPage.value = 0;
+
+  setVhHeight();
+  window.addEventListener('resize', setVhHeight);
 
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -314,6 +326,7 @@ onMounted(async () => {
       },
       stopPropagation: true,
     });
+
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
@@ -327,15 +340,12 @@ onMounted(async () => {
   });
 });
 
-function goStart() {
-  const nextPage = isContributor.value ? '.pg-2' : '.pg-3';
-  slide.scrollToElement(nextPage, 500, 0, 0);
+function onchange() {
+  slide.scrollToElement('.pg-2', 500, 0, 0);
   try {
     bgmOpen.value.classList.add('run-bgm');
     bgm.value?.play();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 // 背景音乐
@@ -347,6 +357,8 @@ onUnmounted(() => {
     slide.destroy();
   }
 });
+
+const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
 </script>
 
 <template>
@@ -373,12 +385,9 @@ onUnmounted(() => {
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start" @click.stop="goStart">
+          <div class="go-start" @click="onchange">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize">
-            <input type="checkbox" /> 我已阅读并同意用户授权协议
-          </label>
         </div>
       </div>
       <div
@@ -391,9 +400,11 @@ onUnmounted(() => {
             :key="item.value"
             :class="`fade-time-${index + 1}`"
           >
-            <!-- v-if="item.key"  调试去掉的 -->
-            <span v-dompurify-html="item.value"></span>
+            <span v-if="item.key" v-dompurify-html="item.value"></span>
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -402,9 +413,9 @@ onUnmounted(() => {
       >
         <p
           v-for="(item, index) in posterContent.page2"
-          :class="`fade-time-${index + 1}`"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">
@@ -417,19 +428,27 @@ onUnmounted(() => {
             <img src="@/assets/img2.png" class="img2" />
           </p>
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-4"
         :class="currentPage === 3 ? 'current' : ''"
       >
-        <p
+        <template
           v-for="(item, index) in posterContent.page3"
           :key="item.value"
-          :class="`fade-time-${index + 1}`"
         >
-          <!-- v-if="item.key"  调试去掉的 -->
-          <span v-dompurify-html="item.value"></span>
-        </p>
+          <p
+            v-if="item.key && item.key !== '0'"
+            v-dompurify-html="item.value"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </template>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-5"
@@ -440,9 +459,14 @@ onUnmounted(() => {
           :key="item.value"
           :class="`fade-time-${index + 1}`"
         >
-          <!--  v-if="item.key" 调试去掉的 -->
-          <span v-dompurify-html="item.value"></span>
+          <span
+            v-if="item.key && item.key !== '0'"
+            v-dompurify-html="item.value"
+          ></span>
         </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
       <div
         class="slide-page wrapper-l pg-6"
@@ -452,14 +476,14 @@ onUnmounted(() => {
         <p class="title fade-time-2">请点击生成你的2023年度标签</p>
         <div class="img-box">
           <div
+            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
             class="info"
             :class="getRank(posterData.count_rank) === 0 ? 'one' : ''"
-            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
           ></div>
           <!-- <img src="@/assets/img3.png" class="img3" /> -->
           <img src="@/assets/img4.png" class="img4" />
           <p v-if="getRank(posterData.count_rank) === 0" class="fade-time-7">
-            <a href="https://www.wjx.top/vm/ecgh5fs.aspx#" target="_blank"
+            <a :href="wjxHref" target="_blank"
               ><img src="@/assets/img5.png" class="img5"
             /></a>
           </p>
@@ -483,12 +507,9 @@ onUnmounted(() => {
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start" @click.stop="goStart">
+          <div class="go-start" @click="onchange">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize">
-            <input type="checkbox" /> 我已阅读并同意用户授权协议
-          </label>
         </div>
       </div>
       <div
@@ -498,11 +519,14 @@ onUnmounted(() => {
         <div class="pg-2-main">
           <p
             v-for="(item, index) in posterContent.page5"
-            :class="`fade-time-${index + 1}`"
             :key="item"
+            :class="`fade-time-${index + 1}`"
           >
             {{ item }}
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -511,9 +535,9 @@ onUnmounted(() => {
       >
         <p
           v-for="(item, index) in posterContent.page2"
-          :class="`fade-time-${index + 1}`"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">
@@ -525,6 +549,9 @@ onUnmounted(() => {
           <p class="fade-time-3">
             <img src="@/assets/img2.png" class="img2" />
           </p>
+        </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -546,7 +573,6 @@ onUnmounted(() => {
 
 <style lang="scss">
 $active: #bd72ff;
-$bgTime: 0;
 body {
   background: #7d32ea url('@/assets/bg.jpg') no-repeat bottom center/cover;
   height: 100%;
@@ -562,14 +588,6 @@ body {
   padding: 0 3px;
 }
 
-.bold {
-  font-weight: 500;
-}
-
-.font-size-tip {
-  font-size: 12px;
-}
-
 #app {
   display: flex;
   align-items: center;
@@ -581,8 +599,8 @@ body {
   }
 }
 .slide-wrapper.pc {
-  width: 390px;
-  height: 844px;
+  width: calc(var(--vh, 1vh) * 46.18);
+  height: calc(var(--vh, 1vh) * 100);
 }
 .bgm-open {
   position: absolute;
@@ -616,7 +634,7 @@ body {
   height: 100%;
   @media screen and (max-width: 768px) {
     width: 100vw;
-    height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
   }
   position: relative;
   overflow: hidden;
@@ -626,6 +644,7 @@ body {
 
   .slide-content {
     width: 100%;
+    height: 100%;
     @media screen and (max-width: 768px) {
       width: 100vw;
     }
@@ -634,11 +653,17 @@ body {
     .slide-page {
       width: 100%;
       height: 100%;
+      padding: 60px 12px;
       @media screen and (max-width: 768px) {
-        padding: 72px 12px;
+        padding: 60px 12px;
         width: 100vw;
         height: 100vh;
+        max-height: calc(var(--vh, 1vh) * 100);
       }
+      @media screen and (max-width: 376px) {
+        padding: 48px 12px;
+      }
+      position: relative;
       overflow: hidden;
       background-size: cover;
       text-align: center;
@@ -698,6 +723,9 @@ body {
             height: 0.42rem;
             margin-right: 0.04rem;
           }
+          a {
+            color: $active;
+          }
         }
       }
     }
@@ -710,42 +738,29 @@ body {
 
     .pg-3 {
       position: relative;
-      .fade-time-10 {
+      .fade-time-9 {
         margin-top: 16px;
       }
       p {
-        position: relative;
-        z-index: 2;
         line-height: 20px;
       }
       .img-box {
-        position: absolute;
-        top: 13.6rem;
-        left: 50%;
-        width: 4.92rem;
-        height: 4.92rem;
-        transform: translate(-50%);
-        @media screen and (max-width: 768px) {
-          top: 12.3rem;
+        width: 100%;
+        img {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 57%;
         }
         .img1 {
-          width: 4.92rem;
-          position: absolute;
-          top: 0;
-          left: 0;
+          width: 49.2%;
         }
         .img2 {
-          width: 4.6rem;
-          position: absolute;
-          top: 0.1rem;
-          left: 0.1rem;
+          width: 46%;
           z-index: 3;
         }
         .img7 {
-          width: 5.4rem;
-          position: absolute;
-          top: 0.1rem;
-          left: -0.2rem;
+          width: 54%;
           z-index: 2;
           animation-name: fade-toggle;
           animation-duration: 2s;
@@ -769,17 +784,37 @@ body {
         margin-top: 16px;
       }
     }
-
+    .slide-top {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation-name: slide-up;
+      animation-duration: 1.5s;
+      animation-delay: 2s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
+      z-index: 8;
+      img {
+        width: 1rem;
+        animation-name: move;
+        animation-delay: 3.5s;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+    }
     .pg-6 {
       position: relative;
 
       .img-box {
         position: absolute;
-        top: 7.8rem;
-        height: 8.5rem;
+        top: 32.2%;
         text-align: center;
         left: 0;
         width: 100%;
+        height: 38%;
         img {
           left: 50%;
           transform: translate(-50%);
@@ -790,15 +825,15 @@ body {
           height: 8.2rem;
         }
         .img3 {
-          width: 5.92rem;
+          width: 59.2%;
           top: 0;
         }
         .img4 {
-          width: 6.77rem;
+          width: 67.7%;
           bottom: 0;
         }
         .img5 {
-          width: 3.81rem;
+          width: 38.1%;
           bottom: 0;
         }
         .qrCode {
@@ -827,12 +862,11 @@ body {
 }
 
 // ipad 适配
-@media screen and (min-width: 768px) {
-  html {
+html {
+  @media screen and (min-width: 768px) {
     font-size: 110px !important;
   }
 }
-
 p {
   opacity: 0;
 }
@@ -862,13 +896,6 @@ p {
     animation-fill-mode: forwards;
   }
 }
-
-// .current.slide-page {
-//   animation: zoomin 5s linear forwards;
-// }
-// .slide-page {
-//   background-position: 100% center;
-// }
 
 @keyframes fade {
   100% {
@@ -916,18 +943,38 @@ p {
   width: 100%;
   text-align: center;
   .img6 {
-    width: 5.95rem;
+    width: 59.5%;
     display: block;
     margin: 0 auto 0.3rem;
   }
   .qrCode {
-    width: 3.2rem;
+    width: 32%;
   }
 }
 
 @keyframes zoomin {
   100% {
     background-position: 0% center;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: scale(1) translateY(0px);
+  }
+  50% {
+    transform: scale(1.06) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+  }
+}
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>
