@@ -20,24 +20,24 @@ watch(
 );
 
 const params = ref({
-  // community: 'mindspore',
-  community: 'openeuler',
-  user: 'licihua',
+  community: 'mindspore',
+  user: 'ailoooong',
   year: '2023',
 });
 
 const posterData: any = ref({});
 
 const datastat = {
-  user: '650w',
-  contributor: '249k',
-  pr: '85K',
-  issue: '35.9K',
+  user: '654w',
+  contributor: '5,012',
+  pr: '23.1K',
+  issue: '7,932',
   comment: '1814K',
   member: '325',
   features: '325',
   version: '3',
-  groups: ['16', '72'],
+  groups: ['155', '2,800'],
+  xihe: ['28,765', '2,287'],
 };
 const msData = {
   city: 'xx',
@@ -70,47 +70,42 @@ const mindsporeData = computed(() => {
       `关于你的开源贡献记忆`,
     ],
     page2: [
-      `眨眼间，头孢又陪您走过一年`,
-      `何其幸运能在开源世界里遇到众多可爱的小孢子`,
+      `眨眼间，昇思又陪您走过一年`,
+      `何其幸运能在开源世界里遇到众多可爱的开发者`,
       `一起做喜欢的事`,
-      `2023年，你我共同见证昇思MindSpore AI开源框架又迈上新一高阶`,
-      `是小孢子们无私的开源贡献使得昇思框架建设迅猛发展`,
+      `2023年，人工智能的发展给世界带来太多惊喜`,
+      `这一年，你我也共同见证昇思MindSpore AI开源框架又迈上新一高阶`,
+      `是开发者们无私的贡献使得昇思框架建设迅猛发展`,
       `也是开放、共享、协同的开源精神`,
-      `让有趣、热爱开源的开发者汇聚在社区共同探索开源魅力`,
-      `接下来和头孢一起打开脑洞`,
+      `让有趣、热爱开源的开发者汇聚在社区共同探索人工智能的无穷可能`,
+      `接下来和昇思一起打开脑洞`,
       `出发去看看，属于你和我的MindSpore2023`,
     ],
     page3: [
       `这一年，在您的见证下`,
-      `MindSpore`,
+      `昇思MindSpore`,
       `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
       `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
       `社区下载量突破<span class="active">${datastat.user}</span>，`,
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
-      `转眼间昇思大模型平台也一岁喽！`,
-      `目前平台已有<span class="active">${datastat.contributor}</span>用户注册使用`,
-      `其中<span class="active">${datastat.contributor}</span>人为核心贡献者`,
-      `今年新上线的AI实验室，支持在线训练和推理可视化`,
+      `转眼间昇思大模型平台也一岁半喽！`,
+      `作为首个基于国产AI算力和框架、服务全球开发者的一站式大模型平台`,
+      `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用`,
+      `其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
+      `今年新上线的AI实验室，支持在线训练和推理可视化，让开发者们体验全流程开发！`,
       `让小孢子们体验全流程开发`,
       `产业专区更是联合知名企业及广大开发者共同打造多领域行业案例，推动各行业与AI技术融通发展`,
-      `最热门的大模型模块，已上线<span class="active">${datastat.contributor}</span>个业界知名大模型，支持预训练超大模型任务，欢迎在线体验`,
+      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型，支持预训练超大模型任务，欢迎在线体验！`,
     ],
     page4: [
-      `您作为小孢子们的一份子`,
-      `见证了昇思MindSpore首届人工智能峰会`,
-      `我们在<span class="active">${msData.city}</span>个城市，共同经历了<span class="active">${msData.msg}</span>场MSG系列活动`,
-      `我们与<span class="active">${msData.enterprise_developers[0]}</span>个企业开发者一起`,
-      `共同交流了<span class="active">${msData.enterprise_developers[1]}</span>个技术话题`,
-      `我们通过MindSpore TechDay`,
-      `AI大赛、开源实习与开发者交流协作汇聚智慧`,
-      `我们与<span class="active">${msData.university_developers}</span>位高校开发者`,
-      `共同开展了<span class="active">${msData.activities}</span>场有趣硬核的开源活动`,
-      `我们通过全新的昇思创新训练营活动为<span class="active">${msData.universities[0]}</span>所高校带来最热门的大模型赋能课程`,
-      `<span class="active">${msData.universities[1]}</span>名同学贡献<span class="active">${msData.universities[2]}</span>份昇思项目案例`,
-      `上千名高校开发者参与开源实习`,
-      `<span class="active">${msData.internship}</span>名优秀高校开发者荣获社区开源实习offer，收获满满荣誉及奖励`,
-      `2023每一位新孢子的加入，都是对社区的又一次充能`,
+      `这一年`,
+      `MSG · 企业行全新升级，昇思开发者创享日从杭州出发，联合各地创新中心，打造<span class="active">300+</span>企业案例，构建繁荣的人工智能产业生态圈`,
+      `MSG · 高校行开拓创新，通过MSG·暴走校园以及全新的昇思创新训练营为<span class="active">35</span>所高校，超<span class="active">1500</span>名高校开发者带来最热门的大模型赋能课程，并吸引上百名高校开发者参与开源实习，收获满满荣誉及奖励`,
+      `这一年`,
+      `昇思大模型平台共开展<span class="active">8</span>场AI赛事，其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
+      `这一年`,
+      `我们共与<span class="active">10000+</span>开发者一起，共同开展了超<span class="active">200</span>场有趣硬核的开源活动，交流了<span class="active">500+</span>个技术话题`,
     ],
     page5: [
       {
@@ -132,7 +127,7 @@ const mindsporeData = computed(() => {
         key: posterData.value.first_time_of_enter,
       },
       {
-        value: `是你第一次在昇思MindSpore Gite仓做贡献`,
+        value: `是你第一次在昇思MindSpore Gitee仓做贡献`,
         key: posterData.value.first_time_of_enter,
       },
       {
@@ -142,7 +137,11 @@ const mindsporeData = computed(() => {
         key: posterData.value.first_time_of_enter,
       },
       {
-        value: `今年您一共点亮了<span class="active">${posterData.value.fork_num}</span>个仓库`,
+        value: `今年您一共`,
+        key: true,
+      },
+      {
+        value: `点亮了<span class="active">${posterData.value.fork_num}</span>个仓库`,
         key: posterData.value.fork_num,
       },
       {
@@ -185,12 +184,14 @@ const mindsporeData = computed(() => {
       },
     ],
     page6: [
-      `2023年小孢子的每一次贡献`,
+      `2023年`,
+      `大家的每一次贡献`,
       `昇思MindSpore都被赋予了更深层的意义`,
       `在新的一年里`,
-      `昇思MindSpore社区将积极探索对外开源合作，开展更多更有趣的开源活动、赛事`,
-      `与小孢子们共成长`,
-      `昇思MindSpore也将继续推出更强大的版本、特性，让深度学习技术的创新与应用更简单！`,
+      `昇思MindSpore开源社区将`,
+      `积极探索对外开源合作，开展更多更有趣的开源活动、赛事，与开发者们共成长`,
+      `昇思MindSpore也将`,
+      `继续推出更强大的版本、特性，让深度学习技术的创新与应用更简单！`,
       `2023年的昇思之旅感恩有您的参与，陪伴和支持`,
       `祝您在2024年龙腾万里，乘势而为！`,
     ],
@@ -198,8 +199,8 @@ const mindsporeData = computed(() => {
     page7: [
       `满脑创意无处落地？`,
       `满身技术无人看到？`,
-      `昇思MindSpore开源社区邀你加入2024开源贡献之旅`,
-      `寻找开源贡献路上的partner`,
+      `昇思MindSpore开源社区邀您加入2024开源贡献之旅`,
+      `寻找开源贡献路上的伙伴`,
       `Hi~新朋友，相信你也是一位深度学习爱好者`,
       `虽然你我相识不久，但一定因为有着共同理想才能在这里相遇`,
       `请点击这份惊喜`,
@@ -208,19 +209,19 @@ const mindsporeData = computed(() => {
     page8: [
       `2020年3月28日，昇思MindSpore正式开源`,
       `短短三年的时光里我们已经结识了一群好朋友`,
-      `2023年昇思MindSpore`,
+      `2023年里昇思MindSpore共`,
       `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
       `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
       `社区下载量突破<span class="active">${datastat.user}</span>，`,
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
-      `转眼间昇思大模型平台也一岁喽！`,
-      `目前平台已有<span class="active">${datastat.contributor}</span>用户注册使用`,
-      `其中<span class="active">${datastat.contributor}</span>人为核心贡献者`,
+      `转眼间昇思大模型平台也一岁半喽！`,
+      `作为首个基于国产AI算力和框架、服务全球开发者的一站式大模型平台`,
+      `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用，其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
       `今年新上线的AI实验室，支持在线训练和推理可视化`,
-      `让小孢子们体验全流程开发`,
+      `让开发者们体验全流程开发`,
       `产业专区更是联合知名企业及广大开发者共同打造多领域行业案例，推动各行业与AI技术融通发展`,
-      `最热门的大模型模块，已上线<span class="active">${datastat.contributor}个业界知名大模型，支持预训练超大模型任务，欢迎在线体验`,
+      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型，支持预训练超大模型任务，欢迎在线体验！`,
     ],
     page9: [
       `龙腾盛世，瑞气盈门`,
@@ -295,7 +296,7 @@ function formatTime(time: string) {
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  // await getUserDataFun();
+  await getUserDataFun();
   await getPosterDataFun();
   await getMonthountFun();
 
@@ -419,12 +420,17 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+        <p class="fade-time-0">作为昇思的一份子</p>
+        <p class="fade-time-1">今年您见证了昇思MindSpore首届人工智能峰会</p>
         <p
           v-for="(item, index) in mindsporeData.page4"
           :key="item"
           v-dompurify-html="item"
-          :class="`fade-time-${index + 1}`"
+          :class="`fade-time-${index + 2}`"
         ></p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 2}`">
+          2023每一位新开发者的加入，都是对社区的又一次充能
+        </p>
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
@@ -516,12 +522,19 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+        <p class="fade-time-0">今年我们举办了昇思MindSpore首届人工智能峰会</p>
         <p
           v-for="(item, index) in mindsporeData.page4"
           :key="item"
           v-dompurify-html="item"
           :class="`fade-time-${index + 1}`"
         ></p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 1}`">
+          2024年希望凝聚更多开发者力量共建社区
+        </p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 2}`">
+          期待未来可以与你共同成长
+        </p>
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
@@ -698,7 +711,7 @@ body {
     }
 
     .pg-3 {
-      .fade-time-9 {
+      .fade-time-8 {
         margin-top: 16px;
       }
       .img-box {
@@ -739,8 +752,11 @@ body {
     }
 
     .pg-4 {
+      padding-top: 1.2rem !important;
+      .fade-time-3,
+      .fade-time-6,
       .fade-time-8 {
-        margin-top: 16px;
+        margin-top: 8px;
       }
     }
 

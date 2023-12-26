@@ -108,7 +108,6 @@ const posterContent = computed(() => {
     page2: [
       `因为有<span class="active">${datastat.contributor}</span>个并肩同行的小伙伴一起战斗`,
       `openGauss如期在2023年发布<span class="active">${datastat.version}</span>个版本`,
-      `累计贡献代码<span class="active">${datastat.line}</span>行`,
       `合并请求PR<span class="active">${datastat.pr}</span>`,
       `累计产生Issue<span class="active">${datastat.issue}</span>`,
       `评审<span class="active">${datastat.comment}</span>Comment`,
@@ -289,7 +288,7 @@ async function getUserDataFun() {
 }
 onMounted(async () => {
   // 必须先确定是否为贡献者
-  // await getUserDataFun();
+  await getUserDataFun();
   await getPosterDataFun();
   currentPage.value = 0;
 
@@ -756,7 +755,7 @@ body {
 
     .pg-3 {
       position: relative;
-      .fade-time-10 {
+      .fade-time-9 {
         margin-top: 16px;
       }
       p {

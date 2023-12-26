@@ -87,7 +87,9 @@ const pageCentent: any = computed(() => {
           key: posterData.value.first_time_of_enter,
         },
         {
-          value: ` <span class="active">${posterData.value.first_time_of_enter}，</span> <br>你第一次来到openEuler社区； `,
+          value: ` <span class="active">${changeTime(
+            posterData.value.first_time_of_enter
+          )}，</span> <br>你第一次来到openEuler社区； `,
           key: posterData.value.first_time_of_enter,
         },
         {
@@ -158,11 +160,11 @@ const pageCentent: any = computed(() => {
         },
       ],
       page6: [
-        '2023的每个脚印，',
-        '都是开启新征途的序章！',
-        '正是因为大家的支持和热爱，',
+        '2023的每个脚印',
+        '都是开启新征途的序章',
+        '正是因为大家的支持和热爱',
         '才打造出openEuler更好的模样',
-        '期待2024年你我携手并肩，继续坚定前行！',
+        '期待2024年你我携手并肩，继续坚定前行',
         '新年快乐！',
         'openEuler 社区呈上',
       ],
@@ -172,15 +174,14 @@ const pageCentent: any = computed(() => {
         '相信总能找到和你志趣相投的人',
         `在这里会有遍及全球 <span class="active">${datastat.groups[0]}+</span> 个国家`,
         `<span class="active">${datastat.groups[1]}+</span> 城市的用户和你不期而遇......`,
-        ' ',
         '期待2024年，会有属于我们的故事发生……',
         '新年快乐！',
         'openEuler 社区呈上',
       ],
       page8: [
-        `在这一年里 你的贡献度击败了社区${getRank(
+        `在这一年里 <br />你的贡献度击败了社区 <span class="active">${getRank(
           posterData.value.beat_percent
-        )} % 的开发者`,
+        )}%</span> 的开发者`,
         `感谢你对openEuler社区的支持 期待未来与你的一路同行`,
       ],
     },
@@ -203,25 +204,27 @@ const pageCentent: any = computed(() => {
       ],
       page4: [
         {
-          value: `Hi @${params.value.user},`,
-          key: posterData.value.user,
+          value: `Dear ${posterData.value.user_login}`,
+          key: posterData.value.user_login,
         },
         {
-          value: `Can you believe it's been ${getYear(
+          value: `Can you believe it's been <span class="active">${getYear(
             posterData.value?.first_time_of_enter
-          )} year${
+          )}</span> year${
             getYear(posterData.value?.first_time_of_enter) || 1 > 1 ? 's' : ''
           } since we first met?`,
           key: posterData.value.first_time_of_enter,
         },
         {
-          value: `On <span class="active">${posterData.value.first_time_of_enter},</span> <br> you first visited our homepage`,
+          value: `On <span class="active">${changeTime(
+            posterData.value.first_time_of_enter
+          )}</span> <br> you first visited our homepage`,
           key: posterData.value.first_time_of_enter,
         },
         {
           value: `On <span class="active">${changeTime(
             posterData.value.first_time_of_comment
-          )},</span> <br>you first said hello to <span class="active"> ${
+          )}</span> <br>you first said hello to <span class="active"> ${
             posterData.value.first_user_of_comment
           }'s</span>`,
           key: posterData.value.first_time_of_comment,
@@ -285,8 +288,9 @@ const pageCentent: any = computed(() => {
         'Every step in 2023',
         'Moved us closer to our goals!',
         'We appreciate your support and passion',
-        'To make openEuler what it is today,',
-        'Keep working with us to build a better openEuler in 2024',
+        'To make openEuler what it is today',
+        'Keep working with us to build a better',
+        'openEuler in 2024',
         'Happy New Year!',
         'From the openEuler community',
       ],
@@ -300,9 +304,9 @@ const pageCentent: any = computed(() => {
         'From the openEuler community',
       ],
       page8: [
-        `Your contributions exceeded those of${getRank(
+        `Your contributions exceeded those of <span class="active">${getRank(
           posterData.value.beat_percent
-        )} % of developers in 2023`,
+        )}%</span> of developers in 2023`,
         `A community legend! Your contributions to the openEuler community are the fuel we need to light the way to our future.`,
       ],
     },
@@ -441,7 +445,11 @@ onUnmounted(() => {
       screenWidth > 768 ? 'pc' : 'mobile',
     ]"
   >
-    <div ref="wrapper" class="slide-wrapper" :class="lang === 'zh' ? '' : 'en'">
+    <div
+      ref="wrapper"
+      class="slide-wrapper"
+      :class="lang === 'zh' ? 'zh' : 'en'"
+    >
       <div v-if="isContributor" class="slide-content contribution">
         <div
           class="slide-page pg-1"
@@ -578,9 +586,10 @@ onUnmounted(() => {
         >
           <div class="img-box main-text">
             <p class="title fade-time-0">2023</p>
-            <p class="fade-time-1">
-              {{ pageCentent[lang].page8[0] }}
-            </p>
+            <p
+              v-dompurify-html="pageCentent[lang].page8[0]"
+              class="fade-time-1"
+            ></p>
             <p class="fade-time-2">
               <img src="@/assets/img9.png" class="img9" alt="" />
             </p>
@@ -784,7 +793,32 @@ body {
       margin-bottom: 0.75rem !important;
     }
     .main-text {
-      line-height: 18px !important;
+      font-size: 13px !important;
+    }
+    .img9 {
+      width: 2.8rem !important;
+    }
+    .pg-6 {
+      .fade-time-2,
+      :last-child {
+        margin-top: 16px;
+      }
+    }
+    .pg-2 {
+      .fade-time-4 {
+        margin-top: 0 !important;
+      }
+      .fade-time-3 {
+        margin-top: 16px;
+      }
+    }
+  }
+  &.zh {
+    .pg-6 {
+      .fade-time-2,
+      :last-child {
+        margin-top: 16px;
+      }
     }
   }
   .slide-content {
