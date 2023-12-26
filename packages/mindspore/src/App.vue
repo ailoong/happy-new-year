@@ -22,7 +22,7 @@ watch(
 const params = ref({
   // community: 'mindspore',
   community: 'openeuler',
-  user: 'ailoooong',
+  user: 'licihua',
   year: '2023',
 });
 
@@ -126,7 +126,9 @@ const mindsporeData = computed(() => {
         key: true,
       },
       {
-        value: `<span class="active">${posterData.value.first_time_of_enter}</span>这一天`,
+        value: `<span class="active">${changeTime(
+          posterData.value.first_time_of_enter
+        )}</span>这一天`,
         key: posterData.value.first_time_of_enter,
       },
       {
@@ -164,7 +166,9 @@ const mindsporeData = computed(() => {
         key: monthData.value.month,
       },
       {
-        value: `深夜<span class="active">${posterData.value.latest_controibute_at}</span>时`,
+        value: `<span class="active">${formatTime(
+          posterData.value.latest_controibute_at
+        )}</span>时`,
         key: posterData.value.latest_controibute_at,
       },
       {
@@ -275,13 +279,17 @@ function changeTime(time: string) {
     const y = EndTime.getFullYear();
     const m = EndTime.getMonth() + 1;
     const d = EndTime.getDate();
-    let all = '';
-    if (lang.value === 'zh') {
-      all = `${y}年${getZero(m)}月${getZero(d)}日`;
-    } else {
-      all = `${getZero(d)}/${getZero(m)}/${y}`;
-    }
-    return all;
+    return `${y}年${getZero(m)}月${getZero(d)}日`;
+  }
+}
+
+function formatTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const h = EndTime.getHours();
+    const m = EndTime.getMinutes();
+    const all = `${getZero(h)}:${getZero(m)} ${h < 12 ? 'AM' : ''}`;
+    return changeTime(time) + ' ' + all;
   }
 }
 
