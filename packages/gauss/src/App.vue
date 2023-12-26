@@ -11,8 +11,9 @@ import arrowIcon from '@/assets/arrow.png';
 
 const screenWidth = useWindowResize();
 const params = ref({
-  community: 'opengauss',
-  user: 'kaede10',
+  community: 'openeuler',
+  // community: 'opengauss',
+  user: 'ailoooong',
   year: '2023',
 });
 const datastat = {
@@ -33,25 +34,7 @@ const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(true);
-const posterData: any = ref({
-  comment_num: '4288',
-  user_login_with_most_contact: 'panxh_purple',
-  first_time_of_enter: '2020/1/2 17:37',
-  first_user_of_comment: 'lyn1001',
-  issue_num: '2424',
-  sig_num: '70',
-  star_num: '0',
-  fork_num: '12',
-  code_lines_delete: '7088',
-  count_rank: '0.9',
-  first_time_of_comment: '2022/1/4 11:30',
-  user_login: 'licihua',
-  code_lines_add: '8062',
-  pr_num: '53',
-  first_time_of_be_comment: '2022/1/4 17:31',
-  first_user_of_be_comment: 'zzm_567',
-  watch_num: '717',
-});
+const posterData: any = ref({});
 function changeTime(time: string) {
   if (time) {
     const EndTime = new Date(time);
@@ -192,7 +175,7 @@ const posterContent = computed(() => {
         key: posterData.value.user_login_with_most_contact,
       },
       {
-        value: `<span class='active'>XX月XX日（最晚时间）</span>`,
+        value: `<span class='active'>${posterData.value.latest_controibute_at}</span>`,
         key: posterData.value.user_login_with_most_contact,
       },
       {
@@ -204,7 +187,7 @@ const posterContent = computed(() => {
         key: true,
       },
       {
-        value: `你也曾连续<span class='active'>XXX（连续贡献）</span>天都在`,
+        value: `你也曾连续<span class='active'>${posterData.value.consecutive_days}</span>天都在`,
         key: posterData.value.user_login_with_most_contact,
       },
       {
@@ -297,7 +280,7 @@ async function getUserDataFun() {
 onMounted(async () => {
   // 必须先确定是否为贡献者
   // await getUserDataFun();
-  // await getPosterDataFun();
+  await getPosterDataFun();
   currentPage.value = 0;
 
   if (wrapper.value) {
@@ -395,8 +378,7 @@ onUnmounted(() => {
             :key="item.value"
             :class="`fade-time-${index + 1}`"
           >
-            <!-- v-if="item.key"  调试去掉的 -->
-            <span v-dompurify-html="item.value"></span>
+            <span v-if="item.key" v-dompurify-html="item.value"></span>
           </p>
         </div>
         <div class="slide-top">
@@ -409,9 +391,9 @@ onUnmounted(() => {
       >
         <p
           v-for="(item, index) in posterContent.page2"
-          :class="`fade-time-${index + 1}`"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">
@@ -437,8 +419,10 @@ onUnmounted(() => {
           :key="item.value"
           :class="`fade-time-${index + 1}`"
         >
-          <!-- v-if="item.key"  调试去掉的 -->
-          <span v-dompurify-html="item.value"></span>
+          <span
+            v-if="item.key && item.key !== '0'"
+            v-dompurify-html="item.value"
+          ></span>
         </p>
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
@@ -453,8 +437,10 @@ onUnmounted(() => {
           :key="item.value"
           :class="`fade-time-${index + 1}`"
         >
-          <!--  v-if="item.key" 调试去掉的 -->
-          <span v-dompurify-html="item.value"></span>
+          <span
+            v-if="item.key && item.key !== '0'"
+            v-dompurify-html="item.value"
+          ></span>
         </p>
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
@@ -468,9 +454,9 @@ onUnmounted(() => {
         <p class="title fade-time-2">请点击生成你的2023年度标签</p>
         <div class="img-box">
           <div
+            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
             class="info"
             :class="getRank(posterData.count_rank) === 0 ? 'one' : ''"
-            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
           ></div>
           <!-- <img src="@/assets/img3.png" class="img3" /> -->
           <img src="@/assets/img4.png" class="img4" />
@@ -517,8 +503,8 @@ onUnmounted(() => {
         <div class="pg-2-main">
           <p
             v-for="(item, index) in posterContent.page5"
-            :class="`fade-time-${index + 1}`"
             :key="item"
+            :class="`fade-time-${index + 1}`"
           >
             {{ item }}
           </p>
@@ -533,9 +519,9 @@ onUnmounted(() => {
       >
         <p
           v-for="(item, index) in posterContent.page2"
-          :class="`fade-time-${index + 1}`"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
         ></p>
         <div class="img-box">
           <p class="fade-time-1">
