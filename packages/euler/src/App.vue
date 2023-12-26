@@ -37,6 +37,8 @@ const datastat = {
   pr: '146.1K',
   osv: '22',
   member: '1.3K',
+  sig_groups: '100',
+  groups: ['150', '1900'],
 };
 
 async function getUserDataFun() {
@@ -83,9 +85,7 @@ const pageCentent: any = computed(() => {
           key: posterData.value.first_time_of_enter,
         },
         {
-          value: ` <span class="active">${changeTime(
-            posterData.value.first_time_of_enter
-          )}，</span> <br>你第一次来到openEuler社区； `,
+          value: ` <span class="active">${posterData.value.first_time_of_enter}，</span> <br>你第一次来到openEuler社区； `,
           key: posterData.value.first_time_of_enter,
         },
         {
@@ -165,15 +165,21 @@ const pageCentent: any = computed(() => {
         'openEuler 社区呈上',
       ],
       page7: [
-        `在这里有 <span class="active">16k+</span> 的社区 贡献者与你井肩同行`,
-        `在这里有 <span class="active">100+</span> 个SIG组`,
+        `在这里有 <span class="active">${datastat.contributor}+</span> 的社区 贡献者与你井肩同行`,
+        `在这里有 <span class="active">${datastat.sig_groups}+</span> 个SIG组`,
         '相信总能找到和你志趣相投的人',
-        '在这里会有遍及全球 <span class="active">150+</span> 个国家',
-        '<span class="active">1900+</span> 城市的用户和你不期而遇......',
+        `在这里会有遍及全球 <span class="active">${datastat.groups[0]}+</span> 个国家`,
+        `<span class="active">${datastat.groups[1]}+</span> 城市的用户和你不期而遇......`,
         ' ',
         '期待2024年，会有属于我们的故事发生……',
         '新年快乐！',
         'openEuler 社区呈上',
+      ],
+      page8: [
+        `在这一年里 你的贡献度击败了社区${getRank(
+          posterData.value.count_rank
+        )} % 的开发者`,
+        `感谢你对openEuler社区的支持 期待未来与你的一路同行`,
       ],
     },
     en: {
@@ -196,7 +202,7 @@ const pageCentent: any = computed(() => {
       page4: [
         {
           value: `Hi @${params.value.user},`,
-          key: posterData.value.user_login,
+          key: posterData.value.user,
         },
         {
           value: `Can you believe it's been ${getYear(
@@ -207,9 +213,7 @@ const pageCentent: any = computed(() => {
           key: posterData.value.first_time_of_enter,
         },
         {
-          value: `On <span class="active">${changeTime(
-            posterData.value.first_time_of_enter
-          )},</span> <br> you first visited our homepage`,
+          value: `On <span class="active">${posterData.value.first_time_of_enter},</span> <br> you first visited our homepage`,
           key: posterData.value.first_time_of_enter,
         },
         {
@@ -272,7 +276,7 @@ const pageCentent: any = computed(() => {
         },
         {
           value: `Forked <span class="active">${posterData.value?.star_num}</span> repositories`,
-          key: posterData.value.sig_num,
+          key: posterData.value.star_num,
         },
       ],
       page6: [
@@ -283,6 +287,21 @@ const pageCentent: any = computed(() => {
         'Keep working with us to build a better openEuler in 2024',
         'Happy New Year!',
         'From the openEuler community',
+      ],
+      page7: [
+        `Come and collaborate with <span class="active">${datastat.contributor}+</span> contributors`,
+        `<span class="active">${datastat.sig_groups}+</span> SIGs`,
+        `Users in <span class="active">${datastat.groups[0]}+</span> countries and regions and`,
+        `<span class="active">${datastat.groups[1]}+</span> cities around the world`,
+        'We look forward to enjoying 2024 with you',
+        'Happy New Year',
+        'From the openEuler community',
+      ],
+      page8: [
+        `Your contributions exceeded those of${getRank(
+          posterData.value.count_rank
+        )} % of developers in 2023`,
+        `A community legend! Your contributions to the openEuler community are the fuel we need to light the way to our future.`,
       ],
     },
   };
@@ -469,8 +488,8 @@ onUnmounted(() => {
               <p
                 v-for="(item, index) in pageCentent[lang].page2"
                 :key="item"
-                :class="`fade-time-${index + 1}`"
                 v-dompurify-html="item"
+                :class="`fade-time-${index + 1}`"
               ></p>
             </div>
           </div>
@@ -536,8 +555,7 @@ onUnmounted(() => {
               :key="item.value"
               :class="`fade-time-${index + 1}`"
             >
-              <!-- v-if="item.key"  调试去掉的 -->
-              <span v-dompurify-html="item.value"></span>
+              <span v-if="item.key" v-dompurify-html="item.value"></span>
             </p>
           </div>
           <div class="img-box">
@@ -575,14 +593,13 @@ onUnmounted(() => {
           <div class="img-box main-text">
             <p class="title fade-time-0">2023</p>
             <p class="fade-time-1">
-              在这一年里 你的贡献度击败了社区
-              {{ getRank(posterData.count_rank) }}% 的开发者
+              {{ pageCentent[lang].page8[0] }}
             </p>
             <p class="fade-time-2">
               <img src="@/assets/img9.png" class="img9" alt="" />
             </p>
             <p class="fade-time-3">
-              感谢你对openEuler社区的支持 期待未来与你的一路同行
+              {{ pageCentent[lang].page8[1] }}
             </p>
           </div>
           <div class="slide-top">
@@ -596,8 +613,8 @@ onUnmounted(() => {
           <div class="main-text">
             <p
               v-for="(item, index) in pageCentent[lang].page6"
-              :class="`fade-time-${index}`"
               :key="item"
+              :class="`fade-time-${index}`"
             >
               {{ item }}
             </p>
@@ -656,8 +673,8 @@ onUnmounted(() => {
               <p
                 v-for="(item, index) in pageCentent[lang].page2"
                 :key="item"
-                :class="`fade-time-${index + 1}`"
                 v-dompurify-html="item"
+                :class="`fade-time-${index + 1}`"
               ></p>
             </div>
           </div>
@@ -682,9 +699,9 @@ onUnmounted(() => {
           <div class="pg-7-top">
             <p
               v-for="(item, index) in pageCentent[lang].page7"
-              :class="`fade-time-${index}`"
               :key="item"
               v-dompurify-html="item"
+              :class="`fade-time-${index}`"
             ></p>
           </div>
           <div class="img-box">
@@ -780,6 +797,9 @@ body {
       width: 8.37rem !important;
       margin-bottom: 0.75rem !important;
     }
+    .main-text {
+      line-height: 18px !important;
+    }
   }
   .slide-content {
     width: 100%;
@@ -866,9 +886,6 @@ body {
           animation-duration: 2s;
           animation-iteration-count: infinite;
           animation-timing-function: ease-in-out;
-          @media screen and (min-width: 768px) {
-            // left: -1.4rem;
-          }
         }
         .clock-img {
           width: 12.8rem;
@@ -879,13 +896,6 @@ body {
           @media screen and (max-width: 768px) {
             left: -1.4rem;
           }
-        }
-        .clock {
-          // left: 80px;
-          // top: 20px;
-          // width: 48px;
-          // animation: slide-top1 2s infinite linear alternate;
-          // z-index: 10;
         }
       }
     }
@@ -1046,15 +1056,18 @@ body {
         width: 7.28rem;
         height: 9.34rem;
         padding: 0 0.71rem;
+
         .title {
-          padding: 0.88rem 0;
+          padding: 0.8rem 0 0.6rem;
           text-align: center;
           color: #fff;
           font-size: 16px;
           font-weight: bold;
         }
         .img9 {
-          width: 3.5rem;
+          width: 3.3rem;
+          display: block;
+          margin: 0 auto;
         }
       }
     }
