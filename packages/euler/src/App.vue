@@ -27,7 +27,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'kaede10',
+  user: 'ailoooong',
   year: '2023',
 });
 
@@ -79,9 +79,11 @@ const pageCentent: any = computed(() => {
       ],
       page4: [
         {
-          value: `Hi @${params.value.user}，我们在一起${getYear(
+          value: `Hi @${
+            params.value.user
+          }，我们在一起<span class="active">${getYear(
             posterData.value?.first_time_of_enter
-          )}年啦！ `,
+          )}年</span>啦！ `,
           key: posterData.value.first_time_of_enter,
         },
         {
@@ -123,35 +125,35 @@ const pageCentent: any = computed(() => {
           key: true,
         },
         {
-          value: ` openEuler社区快速成长`,
+          value: `openEuler社区快速成长`,
           key: true,
         },
         {
-          value: ` 而你在这一年中`,
+          value: `而你在这一年中`,
           key: true,
         },
         {
-          value: ` 提交了<span class="active">${posterData.value.pr_num}</span>个pr`,
+          value: `提交了<span class="active">${posterData.value.pr_num}</span>个pr`,
           key: posterData.value.pr_num,
         },
         {
-          value: ` 提交了<span class="active">${posterData.value.issue_num}</span>个issue`,
+          value: `提交了<span class="active">${posterData.value.issue_num}</span>个issue`,
           key: posterData.value.issue_num,
         },
         {
-          value: ` 提交了<span class="active">${posterData.value.comment_num}</span>条评论`,
+          value: `提交了<span class="active">${posterData.value.comment_num}</span>条评论`,
           key: posterData.value.comment_num,
         },
         {
-          value: ` 贡献了<span class="active">${posterData.value.code_lines_add}</span>行代码`,
+          value: `贡献了<span class="active">${posterData.value.code_lines_add}</span>行代码`,
           key: posterData.value.code_lines_add,
         },
         {
-          value: ` 加入了<span class="active">${posterData.value.sig_num}</span>个sig组`,
+          value: `加入了<span class="active">${posterData.value.sig_num}</span>个sig组`,
           key: posterData.value.sig_num,
         },
         {
-          value: ` 点亮了<span class="active">${posterData.value.star_num}</span>个仓库`,
+          value: `点亮了<span class="active">${posterData.value.star_num}</span>个仓库`,
           key: posterData.value.star_num,
         },
       ],
@@ -177,7 +179,7 @@ const pageCentent: any = computed(() => {
       ],
       page8: [
         `在这一年里 你的贡献度击败了社区${getRank(
-          posterData.value.count_rank
+          posterData.value.beat_percent
         )} % 的开发者`,
         `感谢你对openEuler社区的支持 期待未来与你的一路同行`,
       ],
@@ -275,7 +277,7 @@ const pageCentent: any = computed(() => {
           key: posterData.value.sig_num,
         },
         {
-          value: `Forked <span class="active">${posterData.value?.star_num}</span> repositories`,
+          value: `Star <span class="active">${posterData.value?.star_num}</span> repositories`,
           key: posterData.value.star_num,
         },
       ],
@@ -299,7 +301,7 @@ const pageCentent: any = computed(() => {
       ],
       page8: [
         `Your contributions exceeded those of${getRank(
-          posterData.value.count_rank
+          posterData.value.beat_percent
         )} % of developers in 2023`,
         `A community legend! Your contributions to the openEuler community are the fuel we need to light the way to our future.`,
       ],
@@ -364,23 +366,8 @@ function changeTime(time: string) {
   }
 }
 function getRank(per: string | number) {
-  if (per) {
-    const percentage = per === '1' ? 1 : Number(per) * 100;
-    let rank = 0;
-    if (percentage <= 20) {
-      rank = 0;
-    } else if (20 < percentage && percentage <= 40) {
-      rank = 1;
-    } else if (40 < percentage && percentage <= 60) {
-      rank = 2;
-    } else if (60 < percentage && percentage <= 70) {
-      rank = 3;
-    } else if (70 < percentage) {
-      rank = 4;
-    }
-
-    return rank;
-  }
+  const percentage = per === '1' ? 100 : Number(per) * 100;
+  return percentage;
 }
 function getYear(time: string) {
   if (time) {
@@ -454,7 +441,6 @@ onUnmounted(() => {
       screenWidth > 768 ? 'pc' : 'mobile',
     ]"
   >
-    <!-- H5 -->
     <div ref="wrapper" class="slide-wrapper" :class="lang === 'zh' ? '' : 'en'">
       <div v-if="isContributor" class="slide-content contribution">
         <div
@@ -696,7 +682,7 @@ onUnmounted(() => {
           class="slide-page pg-6"
           :class="currentPage === 2 ? 'current' : ''"
         >
-          <div class="pg-7-top">
+          <div class="main-text">
             <p
               v-for="(item, index) in pageCentent[lang].page7"
               :key="item"
@@ -1074,11 +1060,11 @@ body {
 
     .pg-6 {
       background: url('@/assets/bg6.jpg') no-repeat top center/cover;
-      .pg-7-top {
-        .fade-time-5 {
-          height: 20px;
-        }
+
+      .fade-time-5 {
+        height: 20px;
       }
+
       .img-box {
         position: absolute;
         top: 9.3rem;

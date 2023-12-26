@@ -11,8 +11,7 @@ import arrowIcon from '@/assets/arrow.png';
 
 const screenWidth = useWindowResize();
 const params = ref({
-  community: 'openeuler',
-  // community: 'opengauss',
+  community: 'opengauss',
   user: 'ailoooong',
   year: '2023',
 });
@@ -34,6 +33,7 @@ const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(true);
+const isAuth = ref(false);
 const posterData: any = ref({});
 function changeTime(time: string) {
   if (time) {
@@ -45,6 +45,19 @@ function changeTime(time: string) {
     return all;
   }
 }
+function getZero(time: number) {
+  return time < 9 ? '0' + time : time;
+}
+function formatTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const h = EndTime.getHours();
+    const m = EndTime.getMinutes();
+    const all = `${getZero(h)}:${getZero(m)} ${h < 12 ? 'AM' : ''}`;
+    return changeTime(time) + ' ' + all;
+  }
+}
+
 function dayTime(time: string) {
   if (time) {
     const today = new Date().getTime();
@@ -167,28 +180,26 @@ const posterContent = computed(() => {
         key: posterData.value.user_login_with_most_contact,
       },
       {
-        value: `这一年，你参与了<span class='active'>XXX</span>次会议`,
-        key: posterData.value.user_login_with_most_contact,
-      },
-      {
         value: `<span class='active'>XXXX（SIG组名称）</span>因你的每一次参与而变得不一样`,
         key: posterData.value.user_login_with_most_contact,
       },
       {
-        value: `<span class='active'>${posterData.value.latest_controibute_at}</span>`,
-        key: posterData.value.user_login_with_most_contact,
+        value: `<span class='active'>${formatTime(
+          posterData.value.latest_controibute_at
+        )}</span>`,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `你睡得很晚整个世界都休息了`,
-        key: true,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `你和openGauss还在继续`,
-        key: true,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `你也曾连续<span class='active'>${posterData.value.consecutive_days}</span>天都在`,
-        key: posterData.value.user_login_with_most_contact,
+        key: posterData.value.consecutive_days,
       },
       {
         value: `只为了心中热爱`,
@@ -218,18 +229,17 @@ const posterContent = computed(() => {
 });
 
 function getRank(per: string) {
-  let rank = 3;
+  let rank = 4;
   if (per) {
-    const num = per === '1' ? 1 : (1 - Number(per?.replace('%', ''))) * 100;
-    const percentage = 100 - num;
-    if (percentage <= 25) {
+    const percentage = Number(per);
+    if (percentage <= 100) {
       rank = 0;
-    } else if (25 < percentage && percentage <= 50) {
+    } else if (percentage > 100 && percentage < 1000) {
       rank = 1;
-    } else if (50 < percentage && percentage <= 75) {
-      rank = 2;
-    } else if (75 < percentage) {
-      rank = 3;
+    } else if (percentage > 1000 && percentage < 2000) {
+      rank = 1;
+    } else {
+      rank = 4;
     }
   }
   return rank;
@@ -267,7 +277,7 @@ async function getPosterDataFun() {
       isContributor.value = false;
     });
 }
-
+const agreementHref = ref('');
 let slide: BScrollInstance;
 const currentPage = ref(-1);
 async function getUserDataFun() {
@@ -298,9 +308,12 @@ onMounted(async () => {
       },
       stopPropagation: true,
     });
+
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
+    slide.disable();
+    agreementHref.value = window.location.origin + '/agreement_ch.html';
   }
   bgm.value?.addEventListener('pause', function () {
     bgmOpen.value?.classList.remove('run-bgm');
@@ -311,9 +324,13 @@ onMounted(async () => {
   });
 });
 
-function goStart() {
-  const nextPage = isContributor.value ? '.pg-2' : '.pg-3';
-  slide.scrollToElement(nextPage, 500, 0, 0);
+function onchange() {
+  isAuth.value = !isAuth.value;
+  if (isAuth.value) {
+    slide.enable();
+  } else {
+    slide.disable();
+  }
   try {
     bgmOpen.value.classList.add('run-bgm');
     bgm.value?.play();
@@ -331,6 +348,8 @@ onUnmounted(() => {
     slide.destroy();
   }
 });
+
+const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
 </script>
 
 <template>
@@ -357,14 +376,20 @@ onUnmounted(() => {
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start" @click.stop="goStart">
+          <div class="go-start">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize">
-            <input type="checkbox" /> 我已阅读并同意用户授权协议
+          <label class="authorize" @click="onchange">
+            <input type="checkbox" /> 我已阅读并同意<a :href="agreementHref"
+              >用户授权</a
+            >和社区<a
+              href="https://opengauss.org/zh/privacyPolicy/"
+              target="_blank"
+              >隐私声明</a
+            >
           </label>
         </div>
-        <div class="slide-top">
+        <div v-if="isAuth" class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
       </div>
@@ -461,7 +486,7 @@ onUnmounted(() => {
           <!-- <img src="@/assets/img3.png" class="img3" /> -->
           <img src="@/assets/img4.png" class="img4" />
           <p v-if="getRank(posterData.count_rank) === 0" class="fade-time-7">
-            <a href="https://www.wjx.top/vm/ecgh5fs.aspx#" target="_blank"
+            <a :href="wjxHref" target="_blank"
               ><img src="@/assets/img5.png" class="img5"
             /></a>
           </p>
@@ -485,14 +510,20 @@ onUnmounted(() => {
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start" @click.stop="goStart">
+          <div class="go-start">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize">
-            <input type="checkbox" /> 我已阅读并同意用户授权协议
+          <label class="authorize" @click="onchange">
+            <input type="checkbox" /> 我已阅读并同意<a :href="agreementHref"
+              >用户授权</a
+            >和社区<a
+              href="https://opengauss.org/zh/privacyPolicy/"
+              target="_blank"
+              >隐私声明</a
+            >
           </label>
         </div>
-        <div class="slide-top">
+        <div v-if="isAuth" class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
       </div>
@@ -709,6 +740,9 @@ body {
             width: 0.42rem;
             height: 0.42rem;
             margin-right: 0.04rem;
+          }
+          a {
+            color: $active;
           }
         }
       }
