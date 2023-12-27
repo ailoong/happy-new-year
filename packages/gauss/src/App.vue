@@ -22,7 +22,6 @@ const datastat = {
   issue: '15.2K',
   member: '563K',
   version: '2',
-  line: 'xxx',
   comment: '248.5k',
   enterprise: '500',
   achievement: ['114', '1517'],
@@ -33,7 +32,7 @@ const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
 const isContributor = ref(true);
-const isAuth = ref(false);
+
 const posterData: any = ref({});
 function changeTime(time: string) {
   if (time) {
@@ -77,14 +76,14 @@ const posterContent = computed(() => {
         key: true,
       },
       {
-        value: `那是<span class="active">${changeTime(
+        value: `<span class="active">${changeTime(
           posterData.value?.first_time_of_enter
         )}</span>`,
         key: posterData.value?.first_time_of_enter,
       },
       {
-        value: `我第一次遇见你`,
-        key: true,
+        value: `那是我第一次遇见你`,
+        key: posterData.value?.first_time_of_enter,
       },
       {
         value: `至今，我们已经走过了<span class="active">${dayTime(
@@ -93,7 +92,11 @@ const posterContent = computed(() => {
         key: posterData.value.first_time_of_enter,
       },
       {
-        value: `<span class='active'>${params.value.user}</span>，感谢你创造了我们的故事`,
+        value: `<span class='active'>${params.value.user}</span>`,
+        key: params.value.user,
+      },
+      {
+        value: `感谢你创造了我们的故事`,
         key: params.value.user,
       },
       {
@@ -145,6 +148,14 @@ const posterContent = computed(() => {
         key: posterData.value.issue_num,
       },
       {
+        value: `今年你第一次在社区中评论了<span class='active'>${posterData.value.first_user_of_comment}</span>`,
+        key: posterData.value.first_user_of_comment,
+      },
+      {
+        value: `贡献了<span class='active'>${posterData.value.comment_num}</span>条评论`,
+        key: posterData.value.comment_num,
+      },
+      {
         value: `Star了<span class='active'>${posterData.value.star_num}</span>个代码仓库`,
         key: posterData.value.star_num,
       },
@@ -179,8 +190,8 @@ const posterContent = computed(() => {
         key: posterData.value.user_login_with_most_contact,
       },
       {
-        value: `<span class='active'>XXXX（SIG组名称）</span>因你的每一次参与而变得不一样`,
-        key: posterData.value.user_login_with_most_contact,
+        value: `<span class='active'>${posterData.value.sig_name}</span>SIG因你的每一次参与而变得不一样`,
+        key: posterData.value.sig_name,
       },
       {
         value: `<span class='active'>${formatTime(
@@ -228,17 +239,17 @@ const posterContent = computed(() => {
 });
 
 function getRank(per: string) {
-  let rank = 4;
+  let rank = 3;
   if (per) {
     const percentage = Number(per);
     if (percentage <= 100) {
       rank = 0;
-    } else if (percentage > 100 && percentage < 1000) {
+    } else if (percentage > 100 && percentage < 200) {
       rank = 1;
-    } else if (percentage > 1000 && percentage < 2000) {
-      rank = 1;
+    } else if (percentage > 200 && percentage < 400) {
+      rank = 2;
     } else {
-      rank = 4;
+      rank = 3;
     }
   }
   return rank;
@@ -276,7 +287,6 @@ async function getPosterDataFun() {
       isContributor.value = false;
     });
 }
-const agreementHref = ref('');
 let slide: BScrollInstance;
 const currentPage = ref(-1);
 async function getUserDataFun() {
@@ -286,11 +296,20 @@ async function getUserDataFun() {
     }
   });
 }
+
+const setVhHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
   await getPosterDataFun();
   currentPage.value = 0;
+
+  setVhHeight();
+  window.addEventListener('resize', setVhHeight);
 
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -311,8 +330,6 @@ onMounted(async () => {
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
-    slide.disable();
-    agreementHref.value = window.location.origin + '/agreement_ch.html';
   }
   bgm.value?.addEventListener('pause', function () {
     bgmOpen.value?.classList.remove('run-bgm');
@@ -324,18 +341,11 @@ onMounted(async () => {
 });
 
 function onchange() {
-  isAuth.value = !isAuth.value;
-  if (isAuth.value) {
-    slide.enable();
-  } else {
-    slide.disable();
-  }
+  slide.scrollToElement('.pg-2', 500, 0, 0);
   try {
     bgmOpen.value.classList.add('run-bgm');
     bgm.value?.play();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 // 背景音乐
@@ -375,21 +385,9 @@ const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start">
+          <div class="go-start" @click="onchange">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize" @click="onchange">
-            <input type="checkbox" /> 我已阅读并同意<a :href="agreementHref"
-              >用户授权</a
-            >和社区<a
-              href="https://opengauss.org/zh/privacyPolicy/"
-              target="_blank"
-              >隐私声明</a
-            >
-          </label>
-        </div>
-        <div v-if="isAuth" class="slide-top">
-          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -438,16 +436,16 @@ const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
         class="slide-page wrapper-l pg-4"
         :class="currentPage === 3 ? 'current' : ''"
       >
-        <p
+        <template
           v-for="(item, index) in posterContent.page3"
           :key="item.value"
-          :class="`fade-time-${index + 1}`"
         >
-          <span
+          <p
             v-if="item.key && item.key !== '0'"
             v-dompurify-html="item.value"
-          ></span>
-        </p>
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </template>
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
@@ -509,21 +507,9 @@ const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
           <p>我们在星河绚烂的宇宙里，定格最特别的你</p>
         </div>
         <div class="pg1-buttom">
-          <div class="go-start">
+          <div class="go-start" @click="onchange">
             <img src="@/assets/btn.png" />
           </div>
-          <label class="authorize" @click="onchange">
-            <input type="checkbox" /> 我已阅读并同意<a :href="agreementHref"
-              >用户授权</a
-            >和社区<a
-              href="https://opengauss.org/zh/privacyPolicy/"
-              target="_blank"
-              >隐私声明</a
-            >
-          </label>
-        </div>
-        <div v-if="isAuth" class="slide-top">
-          <img :src="arrowIcon" alt="" />
         </div>
       </div>
       <div
@@ -603,14 +589,6 @@ body {
   padding: 0 3px;
 }
 
-.bold {
-  font-weight: 500;
-}
-
-.font-size-tip {
-  font-size: 12px;
-}
-
 #app {
   display: flex;
   align-items: center;
@@ -622,8 +600,8 @@ body {
   }
 }
 .slide-wrapper.pc {
-  width: 390px;
-  height: 844px;
+  width: 375px;
+  height: 812px;
 }
 .bgm-open {
   position: absolute;
@@ -657,7 +635,7 @@ body {
   height: 100%;
   @media screen and (max-width: 768px) {
     width: 100vw;
-    height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
   }
   position: relative;
   overflow: hidden;
@@ -667,6 +645,7 @@ body {
 
   .slide-content {
     width: 100%;
+    height: 100%;
     @media screen and (max-width: 768px) {
       width: 100vw;
     }
@@ -675,10 +654,15 @@ body {
     .slide-page {
       width: 100%;
       height: 100%;
+      padding: 48px 12px;
       @media screen and (max-width: 768px) {
         padding: 72px 12px;
         width: 100vw;
         height: 100vh;
+        max-height: calc(var(--vh, 1vh) * 100);
+      }
+      @media screen and (max-width: 376px) {
+        padding: 48px 12px;
       }
       position: relative;
       overflow: hidden;
@@ -765,7 +749,7 @@ body {
       }
       .img-box {
         position: absolute;
-        top: 13.6rem;
+        top: 12.9rem;
         left: 50%;
         width: 4.92rem;
         height: 4.92rem;
@@ -840,7 +824,7 @@ body {
 
       .img-box {
         position: absolute;
-        top: 7.8rem;
+        top: 7.2rem;
         height: 8.5rem;
         text-align: center;
         left: 0;
@@ -927,13 +911,6 @@ p {
     animation-fill-mode: forwards;
   }
 }
-
-// .current.slide-page {
-//   animation: zoomin 5s linear forwards;
-// }
-// .slide-page {
-//   background-position: 100% center;
-// }
 
 @keyframes fade {
   100% {
