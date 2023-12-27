@@ -24,7 +24,7 @@ const datastat = {
   version: '2',
   comment: '248.5k',
   enterprise: '500',
-  achievement: ['114', '1517'],
+  achievement: ['114', '1,517'],
   groups: ['16', '72'],
 };
 
@@ -573,7 +573,6 @@ const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
 
 <style lang="scss">
 $active: #bd72ff;
-$bgTime: 0;
 body {
   background: #7d32ea url('@/assets/bg.jpg') no-repeat bottom center/cover;
   height: 100%;
@@ -600,8 +599,8 @@ body {
   }
 }
 .slide-wrapper.pc {
-  width: 375px;
-  height: 812px;
+  width: calc(var(--vh, 1vh) * 46.18);
+  height: calc(var(--vh, 1vh) * 100);
 }
 .bgm-open {
   position: absolute;
@@ -654,9 +653,9 @@ body {
     .slide-page {
       width: 100%;
       height: 100%;
-      padding: 48px 12px;
+      padding: 60px 12px;
       @media screen and (max-width: 768px) {
-        padding: 72px 12px;
+        padding: 60px 12px;
         width: 100vw;
         height: 100vh;
         max-height: calc(var(--vh, 1vh) * 100);
@@ -743,38 +742,25 @@ body {
         margin-top: 16px;
       }
       p {
-        position: relative;
-        z-index: 2;
         line-height: 20px;
       }
       .img-box {
-        position: absolute;
-        top: 12.9rem;
-        left: 50%;
-        width: 4.92rem;
-        height: 4.92rem;
-        transform: translate(-50%);
-        @media screen and (max-width: 768px) {
-          top: 12.3rem;
+        width: 100%;
+        img {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 57%;
         }
         .img1 {
-          width: 4.92rem;
-          position: absolute;
-          top: 0;
-          left: 0;
+          width: 49.2%;
         }
         .img2 {
-          width: 4.6rem;
-          position: absolute;
-          top: 0.1rem;
-          left: 0.1rem;
+          width: 46%;
           z-index: 3;
         }
         .img7 {
-          width: 5.4rem;
-          position: absolute;
-          top: 0.1rem;
-          left: -0.2rem;
+          width: 54%;
           z-index: 2;
           animation-name: fade-toggle;
           animation-duration: 2s;
@@ -824,11 +810,11 @@ body {
 
       .img-box {
         position: absolute;
-        top: 7.2rem;
-        height: 8.5rem;
+        top: 32.2%;
         text-align: center;
         left: 0;
         width: 100%;
+        height: 38%;
         img {
           left: 50%;
           transform: translate(-50%);
@@ -839,15 +825,15 @@ body {
           height: 8.2rem;
         }
         .img3 {
-          width: 5.92rem;
+          width: 59.2%;
           top: 0;
         }
         .img4 {
-          width: 6.77rem;
+          width: 67.7%;
           bottom: 0;
         }
         .img5 {
-          width: 3.81rem;
+          width: 38.1%;
           bottom: 0;
         }
         .qrCode {
@@ -876,12 +862,11 @@ body {
 }
 
 // ipad 适配
-@media screen and (min-width: 768px) {
-  html {
+html {
+  @media screen and (min-width: 768px) {
     font-size: 110px !important;
   }
 }
-
 p {
   opacity: 0;
 }
@@ -958,12 +943,12 @@ p {
   width: 100%;
   text-align: center;
   .img6 {
-    width: 5.95rem;
+    width: 59.5%;
     display: block;
     margin: 0 auto 0.3rem;
   }
   .qrCode {
-    width: 3.2rem;
+    width: 32%;
   }
 }
 

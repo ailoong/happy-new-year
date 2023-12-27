@@ -62,8 +62,8 @@ const pageCentent: any = computed(() => {
     zh: {
       page2: [
         `一年一度又到了这个时候，openEuler四岁啦！`,
-        `在这一年社区中发生了很多有意思的事情，openEuler也`,
-        `在惊喜地成长：`,
+        `在这一年社区中发生了很多有意思的事情`,
+        `openEuler也在惊喜地成长：`,
         `社区用户<span class="active">${datastat.user}+</span>`,
         `社区PR数<span class="active">${datastat.pr}+</span>`,
         `社区贡献者<span class="active">${datastat.contributor}+</span>`,
@@ -145,10 +145,6 @@ const pageCentent: any = computed(() => {
         {
           value: `提交了<span class="active">${posterData.value.comment_num}</span>条评论`,
           key: posterData.value.comment_num,
-        },
-        {
-          value: `贡献了<span class="active">${posterData.value.code_lines_add}</span>行代码`,
-          key: posterData.value.code_lines_add,
         },
         {
           value: `参与了<span class="active">${posterData.value.sig_num}</span>个sig组`,
@@ -282,10 +278,6 @@ const pageCentent: any = computed(() => {
           key: posterData.value.comment_num,
         },
         {
-          value: `Contributed <span class="active">${posterData.value?.code_lines_add}</span> lines of code`,
-          key: posterData.value.code_lines_add,
-        },
-        {
           value: `Participated <span class="active">${
             posterData.value?.sig_num
           }</span> SIG${posterData.value?.sig_num !== '1' ? 's' : ''}`,
@@ -354,10 +346,6 @@ const wrapper = ref<HTMLElement | null>(null);
 BScroll.use(Slide);
 const isContributor = ref(true);
 const posterData: any = ref({});
-
-posterData.value.code_lines_add =
-  Number(posterData.value.code_lines_add) +
-  Number(posterData.value.code_lines_delete);
 
 async function getPosterDataFun() {
   await getPosterData(params.value)
@@ -441,7 +429,6 @@ onMounted(async () => {
       bounce: false,
       click: true,
       pullUpLoad: true,
-
       slide: {
         autoplay: false,
         loop: false,
@@ -486,12 +473,8 @@ onUnmounted(() => {
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
 
-  <div :class="[screenWidth > 768 ? 'pc' : 'mobile']">
-    <div
-      ref="wrapper"
-      class="slide-wrapper"
-      :class="lang === 'zh' ? 'zh' : 'en'"
-    >
+  <div :class="screenWidth > 768 ? 'pc' : 'mobile'">
+    <div ref="wrapper" class="slide-wrapper" :class="lang">
       <div v-if="isContributor" class="slide-content contribution">
         <div
           class="slide-page pg-1"
@@ -656,28 +639,6 @@ onUnmounted(() => {
               {{ item }}
             </p>
           </div>
-          <div class="img-box">
-            <img
-              src="@/assets/footprint1.png"
-              class="footprint1 fire-4"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint2.png"
-              class="footprint2 fire-3"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint3.png"
-              class="footprint3 fire-2"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint4.png"
-              class="footprint4 fire-1"
-              alt=""
-            />
-          </div>
         </div>
       </div>
       <!-- 无贡献 -->
@@ -741,28 +702,6 @@ onUnmounted(() => {
               :class="`fade-time-${index}`"
             ></p>
           </div>
-          <div class="img-box">
-            <img
-              src="@/assets/footprint1.png"
-              class="footprint1 fire-4"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint2.png"
-              class="footprint2 fire-3"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint3.png"
-              class="footprint3 fire-2"
-              alt=""
-            />
-            <img
-              src="@/assets/footprint4.png"
-              class="footprint4 fire-1"
-              alt=""
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -771,7 +710,6 @@ onUnmounted(() => {
 
 <style lang="scss">
 $active: #fdb329;
-$lang: v-bind('lang');
 .active {
   display: inline-block;
   opacity: 0;
@@ -875,13 +813,13 @@ body {
     color: #fff;
     .slide-page {
       display: flex;
-      padding: 72px 12px;
+      padding: 60px 12px;
       flex-direction: column;
       align-items: center;
       width: 100%;
       height: 100%;
       @media screen and (max-width: 768px) {
-        padding: 72px 12px;
+        padding: 60px 12px;
         width: 100vw;
         height: 100vh;
         max-height: calc(var(--vh, 1vh) * 100);
@@ -1086,9 +1024,6 @@ body {
         top: 56%;
         left: 0;
         width: 100%;
-        // @media screen and (max-width: 768px) {
-        //   top: 8.98rem;
-        // }
       }
       .img6 {
         position: absolute;
@@ -1124,7 +1059,7 @@ body {
         background: url('@/assets/img8.png') no-repeat center/cover;
         width: 7.28rem;
         height: 9.34rem;
-        padding: 0 0.71rem;
+        padding: 0 0.3rem;
 
         .title {
           padding: 0.8rem 0 0.6rem;
@@ -1143,41 +1078,6 @@ body {
 
     .pg-6 {
       background: url('@/assets/bg6.jpg') no-repeat top center/cover;
-
-      .fade-time-5 {
-        height: 20px;
-      }
-
-      .img-box {
-      }
-      .footprint1 {
-        position: absolute;
-        width: 41%;
-        top: 85.2%;
-        right: -0.3rem;
-        opacity: 0;
-      }
-      .footprint2 {
-        position: absolute;
-        width: 29%;
-        top: 79.5%;
-        left: 24.9%;
-        opacity: 0;
-      }
-      .footprint3 {
-        position: absolute;
-        width: 12%;
-        top: 75.8%;
-        left: 56%;
-        opacity: 0;
-      }
-      .footprint4 {
-        position: absolute;
-        width: 8.7%;
-        top: 73.6%;
-        left: 42%;
-        opacity: 0;
-      }
     }
   }
 }
@@ -1247,9 +1147,6 @@ p,
 html {
   @media screen and (min-width: 768px) {
     font-size: 110px !important;
-  }
-  @media screen and (min-width: 1200px) {
-    font-size: 130px !important;
   }
 }
 
