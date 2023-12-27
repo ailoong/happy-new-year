@@ -32,7 +32,7 @@ const datastat = {
   contributor: '5,012',
   pr: '23.1K',
   issue: '7,932',
-  comment: '1814K',
+  comment: '1821.7K',
   member: '325',
   features: '325',
   version: '3',
@@ -90,22 +90,22 @@ const mindsporeData = computed(() => {
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
       `转眼间昇思大模型平台也一岁半喽！`,
-      `作为首个基于国产AI算力和框架、服务全球开发者的一站式大模型平台`,
+      `作为首个基于国产AI算力和框架<br />服务全球开发者的一站式大模型平台`,
       `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用`,
       `其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
-      `今年新上线的AI实验室，支持在线训练和推理可视化，让开发者们体验全流程开发！`,
-      `让小孢子们体验全流程开发`,
-      `产业专区更是联合知名企业及广大开发者共同打造多领域行业案例，推动各行业与AI技术融通发展`,
-      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型，支持预训练超大模型任务，欢迎在线体验！`,
+      `今年新上线的AI实验室，支持在线训练和推理可视化`,
+      `让开发者们体验全流程开发！`,
+      `产业专区更是联合知名企业及广大开发者共同打造多领域<br />行业案例，推动各行业与AI技术融通发展`,
+      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型<br />支持预训练超大模型任务，欢迎在线体验！`,
     ],
     page4: [
       `这一年`,
-      `MSG · 企业行全新升级，昇思开发者创享日从杭州出发，联合各地创新中心，打造<span class="active">300+</span>企业案例，构建繁荣的人工智能产业生态圈`,
-      `MSG · 高校行开拓创新，通过MSG·暴走校园以及全新的昇思创新训练营为<span class="active">35</span>所高校，超<span class="active">1500</span>名高校开发者带来最热门的大模型赋能课程，并吸引上百名高校开发者参与开源实习，收获满满荣誉及奖励`,
+      `MSG · 企业行全新升级<br />昇思开发者创享日从杭州出发<br />联合各地创新中心，打造<span class="active">300+</span>企业案例<br />构建繁荣的人工智能产业生态圈`,
+      `MSG · 高校行开拓创新<br />通过MSG·暴走校园以及全新的昇思创新训练营为<span class="active">35</span>所高校，超<span class="active">1500</span>名高校开发者带来最热门的大模型赋能课程，并吸引上百名高校开发者参与开源实习，收获满满荣誉及奖励`,
       `这一年`,
-      `昇思大模型平台共开展<span class="active">8</span>场AI赛事，其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
+      `昇思大模型平台共开展<span class="active">8</span>场AI赛事<br />其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
       `这一年`,
-      `我们共与<span class="active">10000+</span>开发者一起，共同开展了超<span class="active">200</span>场有趣硬核的开源活动，交流了<span class="active">500+</span>个技术话题`,
+      `我们共与<span class="active">10000+</span>开发者一起<br />共同开展了超<span class="active">200</span>场有趣硬核的开源活动<br />交流了<span class="active">500+</span>个技术话题`,
     ],
     page5: [
       {
@@ -165,14 +165,14 @@ const mindsporeData = computed(() => {
         key: monthData.value.month,
       },
       {
-        value: `<span class="active">${formatTime(
-          posterData.value.latest_controibute_at
-        )}</span>时`,
-        key: posterData.value.latest_controibute_at,
-      },
-      {
         value: `截至目前已在社区贡献了<span class="active">${posterData.value.total_days}</span>日`,
         key: posterData.value.total_days,
+      },
+      {
+        value: `<span class="active">${formatTime(
+          posterData.value.latest_controibute_at
+        )}</span>`,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `您依然奋斗在昇思社区`,
@@ -184,14 +184,13 @@ const mindsporeData = computed(() => {
       },
     ],
     page6: [
-      `2023年`,
-      `大家的每一次贡献`,
+      `2023年 大家的每一次贡献`,
       `昇思MindSpore都被赋予了更深层的意义`,
       `在新的一年里`,
-      `昇思MindSpore开源社区将`,
-      `积极探索对外开源合作，开展更多更有趣的开源活动、赛事，与开发者们共成长`,
-      `昇思MindSpore也将`,
-      `继续推出更强大的版本、特性，让深度学习技术的创新与应用更简单！`,
+      `昇思MindSpore开源社区将积极探索对外开源合作`,
+      `开展更多更有趣的开源活动、赛事，与开发者们共成长`,
+      `昇思MindSpore也将继续推出更强大的版本、特性`,
+      `让深度学习技术的创新与应用更简单！`,
       `2023年的昇思之旅感恩有您的参与，陪伴和支持`,
       `祝您在2024年龙腾万里，乘势而为！`,
     ],
@@ -212,7 +211,7 @@ const mindsporeData = computed(() => {
       `2023年里昇思MindSpore共`,
       `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
       `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
-      `社区下载量突破<span class="active">${datastat.user}</span>，`,
+      `社区下载量突破<span class="active">${datastat.user}</span>`,
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
       `转眼间昇思大模型平台也一岁半喽！`,
@@ -385,6 +384,7 @@ onUnmounted(() => {
           </div>
         </div>
         <img class="img3" src="@/assets/img3.png" alt="" />
+        <img class="img7" src="@/assets/img7.png" alt="" />
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
@@ -404,12 +404,14 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
-        <p
-          v-for="(item, index) in mindsporeData.page3"
-          :key="item"
-          v-dompurify-html="item"
-          :class="`fade-time-${index + 1}`"
-        ></p>
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in mindsporeData.page3"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="img-box">
           <p class="fade-time-1">
             <img src="@/assets/img4.png" class="img4" />
@@ -487,6 +489,7 @@ onUnmounted(() => {
         </div>
 
         <img class="img3" src="@/assets/img3.png" alt="" />
+        <img class="img7" src="@/assets/img7.png" alt="" />
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
@@ -506,12 +509,14 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
-        <p
-          v-for="(item, index) in mindsporeData.page8"
-          :key="item"
-          v-dompurify-html="item"
-          :class="`fade-time-${index + 1}`"
-        ></p>
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in mindsporeData.page8"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="img-box">
           <p class="fade-time-1">
             <img src="@/assets/img4.png" class="img4" />
@@ -579,8 +584,8 @@ body {
   }
 }
 .slide-wrapper.pc {
-  width: 375px;
-  height: 812px;
+  width: calc(var(--vh, 1vh) * 46.18);
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .bgm-open {
@@ -679,18 +684,18 @@ body {
     }
     .pg-1 {
       .img1 {
-        width: 8rem;
+        width: 80%;
         position: absolute;
-        top: 1.9rem;
+        top: 9%;
         left: 50%;
         transform: translate(-50%);
         z-index: 9;
       }
       .box {
-        width: 6.24rem;
-        height: 4rem;
+        width: 62.4%;
+        height: 18.5%;
         position: absolute;
-        top: 6.36rem;
+        top: 28%;
         left: 50%;
         transform: translateX(-50%);
         background: url('@/assets/img2.png') no-repeat top center/cover;
@@ -698,21 +703,34 @@ body {
         align-items: center;
         justify-content: center;
         z-index: 9;
+        p {
+          @media screen and (min-width: 768px) {
+            font-size: 14px;
+            line-height: 24px;
+          }
+        }
+        @media screen and (max-width: 380px) {
+          height: 22%;
+        }
       }
       .img3 {
-        width: 9.8rem;
+        width: 86.7%;
         position: absolute;
-        top: 11.2rem;
-        left: 1.32rem;
+        top: 42%;
+        left: 13.2%;
         z-index: 3;
-
         animation-name: move1;
         animation-duration: 2s;
         animation-iteration-count: infinite;
         animation-timing-function: ease-in-out;
-        @media screen and (max-width: 768px) {
-          top: 9.5rem;
-        }
+      }
+      .img7 {
+        width: 258.7%;
+        position: absolute;
+        top: 42%;
+        left: 13.2%;
+        z-index: 3;
+        display: none;
       }
     }
 
@@ -727,35 +745,31 @@ body {
       .fade-time-8 {
         margin-top: 16px;
       }
+      .pg-3-main {
+        position: relative;
+        z-index: 8;
+      }
       .img-box {
-        position: absolute;
-        top: 15rem;
-        left: 50%;
-        width: 4.64rem;
-        height: 4.64rem;
-        transform: translate(-50%);
-        @media screen and (max-width: 768px) {
-          top: 15rem;
+        width: 100%;
+        img {
+          position: absolute;
+          top: 67.4%;
         }
         .img4 {
-          width: 3.97rem;
-          position: absolute;
-          top: 0.26rem;
-          left: 0.26rem;
+          width: 40%;
+          left: 28.3%;
         }
         .img5 {
-          width: 7.78rem;
+          width: 77.8%;
           position: absolute;
-          top: 1rem;
-          left: -1.5rem;
           z-index: 3;
+          left: 9.5%;
         }
         .img6 {
-          width: 4.64rem;
-          position: absolute;
-          top: 0;
-          left: 0;
+          width: 46.4%;
           z-index: 2;
+          left: 25.2%;
+          top: 66%;
           animation-name: move;
           animation-duration: 2s;
           animation-iteration-count: infinite;
@@ -779,7 +793,7 @@ body {
       }
     }
     .pg-6 {
-      .fade-time-7 {
+      .fade-time-8 {
         margin-top: 16px;
       }
       .qr-code {
