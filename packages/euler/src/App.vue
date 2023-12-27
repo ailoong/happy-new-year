@@ -7,6 +7,7 @@ import Stars from './Stars.vue';
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
+import MouseWheel from '@better-scroll/mouse-wheel';
 
 import { getPosterData, getUserData } from 'shared/api';
 
@@ -343,7 +344,7 @@ const pageTitle = {
 
 const wrapper = ref<HTMLElement | null>(null);
 
-BScroll.use(Slide);
+BScroll.use(Slide).use(MouseWheel);
 const isContributor = ref(true);
 const posterData: any = ref({});
 
@@ -434,6 +435,7 @@ onMounted(async () => {
         loop: false,
         threshold: 100,
       },
+      mouseWheel: true,
       stopPropagation: true,
     });
     slide.on('slidePageChanged', () => {
