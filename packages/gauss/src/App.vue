@@ -5,6 +5,7 @@ import useWindowResize from 'shared/hooks/useWindowResize';
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
+import MouseWheel from '@better-scroll/mouse-wheel';
 
 import { getPosterData, getUserData } from 'shared/api';
 import arrowIcon from '@/assets/arrow.png';
@@ -30,7 +31,7 @@ const datastat = {
 
 const wrapper = ref<HTMLElement | null>(null);
 
-BScroll.use(Slide);
+BScroll.use(Slide).use(MouseWheel);
 const isContributor = ref(true);
 
 const posterData: any = ref({});
@@ -324,6 +325,7 @@ onMounted(async () => {
         loop: false,
         threshold: 100,
       },
+      mouseWheel: true,
       stopPropagation: true,
     });
 
