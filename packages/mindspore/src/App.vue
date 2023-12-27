@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, watch, computed } from 'vue';
+import { onMounted, ref, onUnmounted, watch, computed } from 'vue';
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
 
 import useWindowResize from 'shared/hooks/useWindowResize';
 import { getPosterData, getMonthcount, getUserData } from 'shared/api';
+import arrowIcon from '@/assets/arrow.png';
 import arrowIcon from '@/assets/arrow.png';
 
 const lang = ref('zh');
@@ -26,8 +28,14 @@ const params = ref({
 });
 
 const posterData: any = ref({});
+const posterData: any = ref({});
 
 const datastat = {
+  user: '654w',
+  contributor: '5,012',
+  pr: '23.1K',
+  issue: '7,932',
+  comment: '1821.7K',
   user: '654w',
   contributor: '5,012',
   pr: '23.1K',
@@ -36,6 +44,17 @@ const datastat = {
   member: '325',
   features: '325',
   version: '3',
+  groups: ['155', '2,800'],
+  xihe: ['28,765', '2,287'],
+};
+const msData = {
+  city: 'xx',
+  msg: '100',
+  enterprise_developers: ['xx', 'xxx'],
+  university_developers: 'xx',
+  activities: 'xxx',
+  internship: 'xxx',
+  universities: ['xx', 'xxx', 'xxx'],
   groups: ['155', '2,800'],
   xihe: ['28,765', '2,287'],
 };
@@ -231,10 +250,188 @@ const mindsporeData = computed(() => {
     ],
   };
 });
+const mindsporeData = computed(() => {
+  return {
+    page1: [
+      `嘿，2023，先别着急走！`,
+      `暂停进度条里的好时光`,
+      `看看那些不平凡的日子里`,
+      `关于你的开源贡献记忆`,
+    ],
+    page2: [
+      `眨眼间，昇思又陪您走过一年`,
+      `何其幸运能在开源世界里遇到众多可爱的开发者`,
+      `一起做喜欢的事`,
+      `2023年，人工智能的发展给世界带来太多惊喜`,
+      `这一年，你我也共同见证昇思MindSpore AI开源框架又迈上新一高阶`,
+      `是开发者们无私的贡献使得昇思框架建设迅猛发展`,
+      `也是开放、共享、协同的开源精神`,
+      `让有趣、热爱开源的开发者汇聚在社区共同探索人工智能的无穷可能`,
+      `接下来和昇思一起打开脑洞`,
+      `出发去看看，属于你和我的MindSpore2023`,
+    ],
+    page3: [
+      `这一年，在您的见证下`,
+      `昇思MindSpore`,
+      `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
+      `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
+      `社区下载量突破<span class="active">${datastat.user}</span>，`,
+      `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
+      `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
+      `转眼间昇思大模型平台也一岁半喽！`,
+      `作为首个基于国产AI算力和框架<br />服务全球开发者的一站式大模型平台`,
+      `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用`,
+      `其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
+      `今年新上线的AI实验室，支持在线训练和推理可视化`,
+      `让开发者们体验全流程开发！`,
+      `产业专区更是联合知名企业及广大开发者共同打造多领域<br />行业案例，推动各行业与AI技术融通发展`,
+      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型<br />支持预训练超大模型任务，欢迎在线体验！`,
+    ],
+    page4: [
+      `这一年`,
+      `MSG · 企业行全新升级<br />昇思开发者创享日从杭州出发<br />联合各地创新中心，打造<span class="active">300+</span>企业案例<br />构建繁荣的人工智能产业生态圈`,
+      `MSG · 高校行开拓创新<br />通过MSG·暴走校园以及全新的昇思创新训练营为<span class="active">35</span>所高校，超<span class="active">1500</span>名高校开发者带来最热门的大模型赋能课程，并吸引上百名高校开发者参与开源实习，收获满满荣誉及奖励`,
+      `这一年`,
+      `昇思大模型平台共开展<span class="active">8</span>场AI赛事<br />其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
+      `这一年`,
+      `我们共与<span class="active">10000+</span>开发者一起<br />共同开展了超<span class="active">200</span>场有趣硬核的开源活动<br />交流了<span class="active">500+</span>个技术话题`,
+    ],
+    page5: [
+      {
+        value: `Hi~，<span class="active">@${params.value.user}</span>`,
+        key: true,
+      },
+      {
+        value: `2023年就要过去了`,
+        key: true,
+      },
+      {
+        value: `还记得吗？`,
+        key: true,
+      },
+      {
+        value: `<span class="active">${changeTime(
+          posterData.value.first_time_of_enter
+        )}</span>这一天`,
+        key: posterData.value.first_time_of_enter,
+      },
+      {
+        value: `是你第一次在昇思MindSpore Gitee仓做贡献`,
+        key: posterData.value.first_time_of_enter,
+      },
+      {
+        value: `转眼间你已经在这里度过了<span class="active">${dayTime(
+          posterData.value.first_time_of_enter
+        )}</span>天`,
+        key: posterData.value.first_time_of_enter,
+      },
+      {
+        value: `今年您一共`,
+        key: true,
+      },
+      {
+        value: `点亮了<span class="active">${posterData.value.fork_num}</span>个仓库`,
+        key: posterData.value.fork_num,
+      },
+      {
+        value: `提出了 <span class="active">${posterData.value.issue_num}</span>个issue`,
+        key: posterData.value.issue_num,
+      },
+      {
+        value: `提出了 <span class="active">${posterData.value.pr_num}</span>个pr`,
+        key: posterData.value.pr_num,
+      },
+      {
+        value: `今年您与 <span class="active">${posterData.value.user_login_with_most_contact}</span>互动最频繁`,
+        key: posterData.value.user_login_with_most_contact,
+      },
+      {
+        value: `<span class="active">${posterData.value.first_user_of_be_comment}</span>为您解决了今年第一个issue`,
+        key: posterData.value.first_user_of_be_comment,
+      },
+      {
+        value: `今年您在<span class="active">${monthData.value.month}</span>月您的贡献高达<span class="active">${monthData.value.count}</span>次`,
+        key: monthData.value.month,
+      },
+      {
+        value: `截至目前已在社区贡献了<span class="active">${posterData.value.total_days}</span>日`,
+        key: posterData.value.total_days,
+      },
+      {
+        value: `<span class="active">${formatTime(
+          posterData.value.latest_controibute_at
+        )}</span>`,
+        key: posterData.value.latest_controibute_at,
+      },
+      {
+        value: `您依然奋斗在昇思社区`,
+        key: true,
+      },
+      {
+        value: `期待2024您在社区的首次活跃`,
+        key: true,
+      },
+    ],
+    page6: [
+      `2023年 大家的每一次贡献`,
+      `昇思MindSpore都被赋予了更深层的意义`,
+      `在新的一年里`,
+      `昇思MindSpore开源社区将积极探索对外开源合作`,
+      `开展更多更有趣的开源活动、赛事，与开发者们共成长`,
+      `昇思MindSpore也将继续推出更强大的版本、特性`,
+      `让深度学习技术的创新与应用更简单！`,
+      `2023年的昇思之旅感恩有您的参与，陪伴和支持`,
+      `祝您在2024年龙腾万里，乘势而为！`,
+    ],
+    // 无贡献
+    page7: [
+      `满脑创意无处落地？`,
+      `满身技术无人看到？`,
+      `昇思MindSpore开源社区邀您加入2024开源贡献之旅`,
+      `寻找开源贡献路上的伙伴`,
+      `Hi~新朋友，相信你也是一位深度学习爱好者`,
+      `虽然你我相识不久，但一定因为有着共同理想才能在这里相遇`,
+      `请点击这份惊喜`,
+      `让我们重新认识一下吧`,
+    ],
+    page8: [
+      `2020年3月28日，昇思MindSpore正式开源`,
+      `短短三年的时光里我们已经结识了一群好朋友`,
+      `2023年里昇思MindSpore共`,
+      `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
+      `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
+      `社区下载量突破<span class="active">${datastat.user}</span>`,
+      `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
+      `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
+      `转眼间昇思大模型平台也一岁半喽！`,
+      `作为首个基于国产AI算力和框架、服务全球开发者的一站式大模型平台`,
+      `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用，其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
+      `今年新上线的AI实验室，支持在线训练和推理可视化`,
+      `让开发者们体验全流程开发`,
+      `产业专区更是联合知名企业及广大开发者共同打造多领域行业案例，推动各行业与AI技术融通发展`,
+      `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型，支持预训练超大模型任务，欢迎在线体验！`,
+    ],
+    page9: [
+      `龙腾盛世，瑞气盈门`,
+      `期待2024与你会有新故事`,
+      `昇思MindSpore愿你`,
+      `万事兴“龙”，欣欣向“龙”`,
+      `新年快乐！`,
+    ],
+  };
+});
 
 const wrapper = ref<HTMLElement | null>(null);
 
 BScroll.use(Slide);
+
+function dayTime(time: string) {
+  if (time) {
+    const today = new Date().getTime();
+    const endTime = new Date(time).getTime();
+    return Math.floor((today - endTime) / 1000 / 24 / 60 / 60);
+  }
+}
 
 function dayTime(time: string) {
   if (time) {
@@ -297,9 +494,33 @@ const setVhHeight = () => {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
+    return `${y}年${getZero(m)}月${getZero(d)}日`;
+  }
+}
+
+function formatTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const h = EndTime.getHours();
+    const m = EndTime.getMinutes();
+    const all = `${getZero(h)}:${getZero(m)} ${h < 12 ? 'AM' : ''}`;
+    return changeTime(time) + ' ' + all;
+  }
+}
+
+const setVhHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
+  await getUserDataFun();
+  await getPosterDataFun();
+  await getMonthountFun();
+
+  setVhHeight();
+  window.addEventListener('resize', setVhHeight);
   await getUserDataFun();
   await getPosterDataFun();
   await getMonthountFun();
@@ -385,7 +606,9 @@ onUnmounted(() => {
         </div>
         <img class="img3" src="@/assets/img3.png" alt="" />
         <img class="img7" src="@/assets/img7.png" alt="" />
+        <img class="img7" src="@/assets/img7.png" alt="" />
         <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
           <img :src="arrowIcon" alt="" />
         </div>
       </div>
@@ -401,9 +624,20 @@ onUnmounted(() => {
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in mindsporeData.page3"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="pg-3-main">
           <p
             v-for="(item, index) in mindsporeData.page3"
@@ -426,9 +660,14 @@ onUnmounted(() => {
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+        <p class="fade-time-0">作为昇思的一份子</p>
+        <p class="fade-time-1">今年您见证了昇思MindSpore首届人工智能峰会</p>
         <p class="fade-time-0">作为昇思的一份子</p>
         <p class="fade-time-1">今年您见证了昇思MindSpore首届人工智能峰会</p>
         <p
@@ -436,7 +675,14 @@ onUnmounted(() => {
           :key="item"
           v-dompurify-html="item"
           :class="`fade-time-${index + 2}`"
+          :class="`fade-time-${index + 2}`"
         ></p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 2}`">
+          2023每一位新开发者的加入，都是对社区的又一次充能
+        </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
         <p :class="`fade-time-${mindsporeData.page4.length + 2}`">
           2023每一位新开发者的加入，都是对社区的又一次充能
         </p>
@@ -459,6 +705,15 @@ onUnmounted(() => {
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
+        >
+          <span
+            v-if="item.key && item.key !== '0'"
+            v-dompurify-html="item.value"
+          ></span>
+        </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-6" :class="currentPage === 5 ? 'current' : ''">
@@ -466,6 +721,7 @@ onUnmounted(() => {
           v-for="(item, index) in mindsporeData.page6"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
           :class="`fade-time-${index + 1}`"
         ></p>
         <img src="@/assets/qr-code.png" class="qr-code" />
@@ -490,7 +746,9 @@ onUnmounted(() => {
 
         <img class="img3" src="@/assets/img3.png" alt="" />
         <img class="img7" src="@/assets/img7.png" alt="" />
+        <img class="img7" src="@/assets/img7.png" alt="" />
         <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
           <img :src="arrowIcon" alt="" />
         </div>
       </div>
@@ -506,9 +764,20 @@ onUnmounted(() => {
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-3" :class="currentPage === 2 ? 'current' : ''">
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in mindsporeData.page8"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="pg-3-main">
           <p
             v-for="(item, index) in mindsporeData.page8"
@@ -531,16 +800,30 @@ onUnmounted(() => {
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
         </div>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
+        <p class="fade-time-0">今年我们举办了昇思MindSpore首届人工智能峰会</p>
         <p class="fade-time-0">今年我们举办了昇思MindSpore首届人工智能峰会</p>
         <p
           v-for="(item, index) in mindsporeData.page4"
           :key="item"
           v-dompurify-html="item"
           :class="`fade-time-${index + 1}`"
+          :class="`fade-time-${index + 1}`"
         ></p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 1}`">
+          2024年希望凝聚更多开发者力量共建社区
+        </p>
+        <p :class="`fade-time-${mindsporeData.page4.length + 2}`">
+          期待未来可以与你共同成长
+        </p>
+        <div class="slide-top">
+          <img :src="arrowIcon" alt="" />
+        </div>
         <p :class="`fade-time-${mindsporeData.page4.length + 1}`">
           2024年希望凝聚更多开发者力量共建社区
         </p>
@@ -557,6 +840,7 @@ onUnmounted(() => {
           v-for="(item, index) in mindsporeData.page9"
           :key="item"
           v-dompurify-html="item"
+          :class="`fade-time-${index + 1}`"
           :class="`fade-time-${index + 1}`"
         ></p>
         <img src="@/assets/qr-code.png" class="qr-code" />
@@ -584,6 +868,8 @@ body {
   }
 }
 .slide-wrapper.pc {
+  width: calc(var(--vh, 1vh) * 46.18);
+  height: calc(var(--vh, 1vh) * 100);
   width: calc(var(--vh, 1vh) * 46.18);
   height: calc(var(--vh, 1vh) * 100);
 }
@@ -631,11 +917,13 @@ body {
   @media screen and (max-width: 768px) {
     width: 100vw;
     max-height: calc(var(--vh, 1vh) * 100);
+    max-height: calc(var(--vh, 1vh) * 100);
   }
   position: relative;
   overflow: hidden;
   .slide-content {
     width: 100%;
+    height: 100%;
     height: 100%;
     @media screen and (max-width: 768px) {
       width: 100vw;
@@ -644,9 +932,15 @@ body {
       width: 100%;
       height: 100%;
       padding: 48px 12px;
+      padding: 48px 12px;
       @media screen and (max-width: 768px) {
         width: 100vw;
         height: 100vh;
+        padding: 72px 12px;
+        max-height: calc(var(--vh, 1vh) * 100);
+      }
+      @media screen and (max-width: 376px) {
+        padding: 48px 12px;
         padding: 72px 12px;
         max-height: calc(var(--vh, 1vh) * 100);
       }
@@ -676,6 +970,26 @@ body {
           animation-timing-function: ease-in-out;
         }
       }
+      .slide-top {
+        position: absolute;
+        bottom: 0.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        animation-name: slide-up;
+        animation-duration: 1.5s;
+        animation-delay: 2s;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        img {
+          width: 1rem;
+          animation-name: move;
+          animation-delay: 3.5s;
+          animation-duration: 1.5s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+      }
     }
     @for $i from 1 through 6 {
       .pg-#{ $i} {
@@ -685,7 +999,9 @@ body {
     .pg-1 {
       .img1 {
         width: 80%;
+        width: 80%;
         position: absolute;
+        top: 9%;
         top: 9%;
         left: 50%;
         transform: translate(-50%);
@@ -694,8 +1010,10 @@ body {
       .box {
         width: 62.4%;
         height: 18.5%;
+        width: 62.4%;
+        height: 18.5%;
         position: absolute;
-        top: 28%;
+        top: 30%;
         left: 50%;
         transform: translateX(-50%);
         background: url('@/assets/img2.png') no-repeat top center/cover;
@@ -712,11 +1030,20 @@ body {
         @media screen and (max-width: 380px) {
           height: 22%;
         }
+        p {
+          @media screen and (min-width: 768px) {
+            font-size: 14px;
+            line-height: 24px;
+          }
+        }
+        @media screen and (max-width: 380px) {
+          height: 22%;
+        }
       }
       .img3 {
-        width: 86.7%;
+        width: 98%;
         position: absolute;
-        top: 42%;
+        top: 43%;
         left: 13.2%;
         z-index: 3;
         animation-name: move1;
@@ -725,12 +1052,11 @@ body {
         animation-timing-function: ease-in-out;
       }
       .img7 {
-        width: 258.7%;
+        width: 100%;
         position: absolute;
-        top: 42%;
-        left: 13.2%;
+        top: 38%;
+        left: 0%;
         z-index: 3;
-        display: none;
       }
     }
 
@@ -743,7 +1069,12 @@ body {
 
     .pg-3 {
       .fade-time-8 {
+      .fade-time-8 {
         margin-top: 16px;
+      }
+      .pg-3-main {
+        position: relative;
+        z-index: 8;
       }
       .pg-3-main {
         position: relative;
@@ -754,20 +1085,31 @@ body {
         img {
           position: absolute;
           top: 67.4%;
+        width: 100%;
+        img {
+          position: absolute;
+          top: 67.4%;
         }
         .img4 {
+          width: 40%;
+          left: 28.3%;
           width: 40%;
           left: 28.3%;
         }
         .img5 {
           width: 77.8%;
+          width: 77.8%;
           position: absolute;
           z-index: 3;
+          left: 9.5%;
           left: 9.5%;
         }
         .img6 {
           width: 46.4%;
+          width: 46.4%;
           z-index: 2;
+          left: 25.2%;
+          top: 66%;
           left: 25.2%;
           top: 66%;
           animation-name: move;
@@ -782,7 +1124,11 @@ body {
       padding-top: 1.2rem !important;
       .fade-time-3,
       .fade-time-6,
+      padding-top: 1.2rem !important;
+      .fade-time-3,
+      .fade-time-6,
       .fade-time-8 {
+        margin-top: 8px;
         margin-top: 8px;
       }
     }
@@ -793,6 +1139,7 @@ body {
       }
     }
     .pg-6 {
+      .fade-time-8 {
       .fade-time-8 {
         margin-top: 16px;
       }
