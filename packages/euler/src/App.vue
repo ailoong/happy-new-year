@@ -89,19 +89,19 @@ const pageCentent: any = computed(() => {
         {
           value: ` <span class="active">${changeTime(
             posterData.value.first_time_of_enter
-          )}，</span> <br>你第一次来到openEuler社区； `,
+          )}</span> <br>你第一次来到openEuler社区`,
           key: posterData.value.first_time_of_enter,
         },
         {
           value: `<span class="active">${changeTime(
             posterData.value.first_time_of_comment
-          )}，</span> <br>今年你第一次在社区中评论了 <span class="active">${
+          )}</span> <br>今年你第一次在社区中评论了 <span class="active">${
             posterData.value.first_user_of_comment
-          }</span>；  `,
+          }</span>  `,
           key: posterData.value.first_time_of_comment,
         },
         {
-          value: `初来乍到， <span class="active">${posterData.value.first_user_of_be_comment}</span> 第一个解决了你的问题；`,
+          value: `初来乍到， <span class="active">${posterData.value.first_user_of_be_comment}</span> 第一个解决了你的问题`,
           key: posterData.value.first_user_of_be_comment,
         },
         {
@@ -109,7 +109,7 @@ const pageCentent: any = computed(() => {
           key: posterData.value.user_login_with_most_contact,
         },
         {
-          value: '时光悄然流逝，',
+          value: '时光悄然流逝',
           key: true,
         },
         {
@@ -119,7 +119,7 @@ const pageCentent: any = computed(() => {
       ],
       page5: [
         {
-          value: `回首2023， `,
+          value: `回首2023 `,
           key: true,
         },
         {
@@ -151,12 +151,24 @@ const pageCentent: any = computed(() => {
           key: posterData.value.code_lines_add,
         },
         {
-          value: `加入了<span class="active">${posterData.value.sig_num}</span>个sig组`,
+          value: `参与了<span class="active">${posterData.value.sig_num}</span>个sig组`,
           key: posterData.value.sig_num,
         },
         {
           value: `点亮了<span class="active">${posterData.value.star_num}</span>个仓库`,
           key: posterData.value.star_num,
+        },
+        {
+          value: `在<span class='active'>${changeTime(
+            posterData.value.latest_controibute_at
+          )}</span>，你工作到<span class='active'>${formatTime(
+            posterData.value.latest_controibute_at
+          )}</span>`,
+          key: posterData.value.latest_controibute_at,
+        },
+        {
+          value: `整个世界都休息了，你和openEuler还在继续`,
+          key: posterData.value.latest_controibute_at,
         },
       ],
       page6: [
@@ -274,7 +286,7 @@ const pageCentent: any = computed(() => {
           key: posterData.value.code_lines_add,
         },
         {
-          value: `Joined <span class="active">${
+          value: `Participated <span class="active">${
             posterData.value?.sig_num
           }</span> SIG${posterData.value?.sig_num !== '1' ? 's' : ''}`,
           key: posterData.value.sig_num,
@@ -282,6 +294,22 @@ const pageCentent: any = computed(() => {
         {
           value: `Star <span class="active">${posterData.value?.star_num}</span> repositories`,
           key: posterData.value.star_num,
+        },
+        {
+          value: `On<span class='active'>${changeTime(
+            posterData.value.latest_controibute_at
+          )}</span>, you worked till<span class='active'>${formatTime(
+            posterData.value.latest_controibute_at
+          )}</span>`,
+          key: posterData.value.latest_controibute_at,
+        },
+        {
+          value: `and the rest of the world fell asleep quietly`,
+          key: posterData.value.latest_controibute_at,
+        },
+        {
+          value: `But openEuler was there for you`,
+          key: posterData.value.latest_controibute_at,
         },
       ],
       page6: [
@@ -369,6 +397,16 @@ function changeTime(time: string) {
     return all;
   }
 }
+function formatTime(time: string) {
+  if (time) {
+    const EndTime = new Date(time);
+    const h = EndTime.getHours();
+    const m = EndTime.getMinutes();
+    const all = `${getZero(h)}:${getZero(m)} ${h < 12 ? 'AM' : ''}`;
+    return all;
+  }
+}
+
 function getRank(per: string | number) {
   const percentage = per === '1' ? 100 : Number(per) * 100;
   return percentage;
@@ -378,14 +416,21 @@ function getYear(time: string) {
     const today = new Date().getTime();
     const endTime = new Date(time).getTime();
     const year = Math.ceil((today - endTime) / 1000 / 24 / 60 / 60 / 365);
-    return year > 3 ? 3 : year;
+    return year > 4 ? 4 : year;
   }
 }
+
+const setVhHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
 
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
   await getPosterDataFun();
+  setVhHeight();
+  window.addEventListener('resize', setVhHeight);
 
   currentPage.value = 0;
   if (wrapper.value) {
@@ -436,15 +481,12 @@ onUnmounted(() => {
     preload="auto"
     loop
   ></audio>
+
   <div ref="bgmOpen" class="bgm-open">
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
-  <div
-    :class="[
-      lang === 'zh' ? 'pc-zh' : 'pc-en',
-      screenWidth > 768 ? 'pc' : 'mobile',
-    ]"
-  >
+
+  <div :class="[screenWidth > 768 ? 'pc' : 'mobile']">
     <div
       ref="wrapper"
       class="slide-wrapper"
@@ -753,8 +795,11 @@ body {
   }
 }
 .pc {
-  width: 390px;
-  height: 844px;
+  width: calc(var(--vh, 1vh) * 46.18);
+  height: calc(var(--vh, 1vh) * 100);
+  .loader {
+    display: none;
+  }
 }
 .bgm-open {
   position: absolute;
@@ -783,13 +828,13 @@ body {
   height: 100%;
   @media screen and (max-width: 768px) {
     width: 100vw;
-    height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
   }
   position: relative;
   overflow: hidden;
   &.en {
     .title-img {
-      width: 8.37rem !important;
+      width: 83.7% !important;
       margin-bottom: 0.75rem !important;
     }
     .main-text {
@@ -800,7 +845,7 @@ body {
     }
     .pg-6 {
       .fade-time-2,
-      :last-child {
+      p:last-child {
         margin-top: 16px;
       }
     }
@@ -816,20 +861,21 @@ body {
   &.zh {
     .pg-6 {
       .fade-time-2,
-      :last-child {
+      p:last-child {
         margin-top: 16px;
       }
     }
   }
   .slide-content {
     width: 100%;
+    height: 100%;
     @media screen and (max-width: 768px) {
       width: 100vw;
     }
     color: #fff;
     .slide-page {
       display: flex;
-      padding: 3rem 12px;
+      padding: 72px 12px;
       flex-direction: column;
       align-items: center;
       width: 100%;
@@ -838,6 +884,10 @@ body {
         padding: 72px 12px;
         width: 100vw;
         height: 100vh;
+        max-height: calc(var(--vh, 1vh) * 100);
+      }
+      @media screen and (max-width: 376px) {
+        padding: 48px 12px;
       }
       overflow: hidden;
       text-align: center;
@@ -887,20 +937,17 @@ body {
           font-size: 16px;
         }
         .title-img {
-          width: 6.87rem;
+          width: 68.7%;
           margin-bottom: 1rem;
         }
       }
       .pg1-bottom {
-        position: absolute;
-        bottom: 0;
         width: 100%;
-        left: 0;
         .children {
-          width: 8.16rem;
+          width: 81.6%;
           position: absolute;
           left: 10%;
-          bottom: 2.87rem;
+          top: 43.5%;
           z-index: 2;
           animation-name: card;
           animation-duration: 2s;
@@ -908,14 +955,11 @@ body {
           animation-timing-function: ease-in-out;
         }
         .clock-img {
-          width: 12.8rem;
+          width: 128%;
           position: absolute;
           bottom: 0;
-          left: -0.5rem;
-          transform: translateY(7.8rem);
-          @media screen and (max-width: 768px) {
-            left: -1.4rem;
-          }
+          left: -14%;
+          transform: translateY(58%);
         }
       }
     }
@@ -946,7 +990,7 @@ body {
           line-height: 24px;
         }
         .img5 {
-          width: 2.2rem;
+          width: 22.4%;
           animation-name: card;
           animation-duration: 2s;
           animation-iteration-count: infinite;
@@ -971,29 +1015,29 @@ body {
           z-index: 2;
         }
         .img1 {
-          width: 27.8rem;
+          width: 278%;
           z-index: 3;
         }
         .img1-1 {
-          width: 19.9rem;
-          bottom: -9.5rem;
-          right: -8rem;
+          width: 199%;
+          top: 48%;
+          right: -79%;
           z-index: 3;
         }
         .img2 {
-          top: 4rem;
+          top: 19%;
           left: -0.4rem;
-          width: 2rem;
+          width: 20%;
         }
         .img3 {
-          top: 8rem;
+          top: 36.6%;
           right: -1.1rem;
-          width: 3rem;
+          width: 30%;
         }
         .img4 {
-          top: 10rem;
+          top: 46%;
           left: -1.35rem;
-          width: 3.5rem;
+          width: 35%;
         }
       }
     }
@@ -1015,7 +1059,11 @@ body {
       .bottom-scan {
         line-height: 24px;
         font-size: 12px;
-        margin-top: 5rem;
+        position: absolute;
+        top: 43.6%;
+        width: 100%;
+        left: 0;
+        text-align: center;
         .qr-box {
           position: relative;
           display: inline-block;
@@ -1035,17 +1083,18 @@ body {
 
       .img-box {
         position: absolute;
-        top: 10.5rem;
+        top: 56%;
         left: 0;
-        @media screen and (max-width: 768px) {
-          top: 8.98rem;
-        }
+        width: 100%;
+        // @media screen and (max-width: 768px) {
+        //   top: 8.98rem;
+        // }
       }
       .img6 {
         position: absolute;
-        width: 9.8rem;
-        top: 3.2rem;
-        left: 0.5rem;
+        width: 98%;
+        top: 1.32%;
+        left: 0.16%;
         opacity: 0;
         @media screen and (max-width: 768px) {
           left: 0.2rem;
@@ -1053,9 +1102,9 @@ body {
       }
       .img7 {
         position: absolute;
-        width: 6.6rem;
-        top: 2.6rem;
-        left: 2.1rem;
+        width: 66%;
+        top: -1rem;
+        left: 16.8%;
         opacity: 0;
         @media screen and (max-width: 768px) {
           left: 1.8rem;
@@ -1100,40 +1149,33 @@ body {
       }
 
       .img-box {
-        position: absolute;
-        top: 9.3rem;
-        left: 0;
-        width: 100%;
-        @media screen and (max-width: 768px) {
-          top: 8rem;
-        }
       }
       .footprint1 {
         position: absolute;
-        width: 4.1rem;
-        top: 11rem;
+        width: 41%;
+        top: 85.2%;
         right: -0.3rem;
         opacity: 0;
       }
       .footprint2 {
         position: absolute;
-        width: 2.9rem;
-        top: 9.2rem;
-        left: 2.9rem;
+        width: 29%;
+        top: 79.5%;
+        left: 24.9%;
         opacity: 0;
       }
       .footprint3 {
         position: absolute;
-        width: 1.2rem;
-        top: 8.4rem;
-        left: 5.6rem;
+        width: 12%;
+        top: 75.8%;
+        left: 56%;
         opacity: 0;
       }
       .footprint4 {
         position: absolute;
-        width: 0.84rem;
-        top: 8.1rem;
-        left: 4.2rem;
+        width: 8.7%;
+        top: 73.6%;
+        left: 42%;
         opacity: 0;
       }
     }
@@ -1205,6 +1247,9 @@ p,
 html {
   @media screen and (min-width: 768px) {
     font-size: 110px !important;
+  }
+  @media screen and (min-width: 1200px) {
+    font-size: 130px !important;
   }
 }
 
@@ -1280,17 +1325,17 @@ html {
     opacity: 0;
   }
   100% {
-    right: -9.3rem;
+    right: -94%;
     transform: rotateZ(-0deg);
     opacity: 1;
   }
 }
 @keyframes erath-y {
   0% {
-    bottom: 10rem;
+    top: 0;
   }
   100% {
-    bottom: -12.8rem;
+    top: 30%;
   }
 }
 
@@ -1334,8 +1379,8 @@ html {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 16.5rem;
-  left: 4.52rem;
+  top: 15.8rem;
+  left: 4.3rem;
   transform: rotateX(40deg);
   @media screen and (max-width: 768px) {
     width: 1.6rem;

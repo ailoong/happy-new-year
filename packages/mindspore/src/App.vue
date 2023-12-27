@@ -294,11 +294,19 @@ function formatTime(time: string) {
   }
 }
 
+const setVhHeight = () => {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+
 onMounted(async () => {
   // 必须先确定是否为贡献者
   await getUserDataFun();
   await getPosterDataFun();
   await getMonthountFun();
+
+  setVhHeight();
+  window.addEventListener('resize', setVhHeight);
 
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
@@ -376,7 +384,6 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
-
         <img class="img3" src="@/assets/img3.png" alt="" />
         <div class="slide-top">
           <img :src="arrowIcon" alt="" />
@@ -572,8 +579,8 @@ body {
   }
 }
 .slide-wrapper.pc {
-  width: 390px;
-  height: 844px;
+  width: 375px;
+  height: 812px;
 }
 
 .bgm-open {
@@ -618,22 +625,28 @@ body {
   height: 100%;
   @media screen and (max-width: 768px) {
     width: 100vw;
-    height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
   }
   position: relative;
   overflow: hidden;
   .slide-content {
     width: 100%;
+    height: 100%;
     @media screen and (max-width: 768px) {
       width: 100vw;
     }
     .slide-page {
       width: 100%;
       height: 100%;
-      padding: 72px 0.8rem;
+      padding: 48px 12px;
       @media screen and (max-width: 768px) {
         width: 100vw;
         height: 100vh;
+        padding: 72px 12px;
+        max-height: calc(var(--vh, 1vh) * 100);
+      }
+      @media screen and (max-width: 376px) {
+        padding: 48px 12px;
       }
       overflow: hidden;
       position: relative;
