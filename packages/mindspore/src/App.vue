@@ -24,7 +24,7 @@ watch(
 
 const params = ref({
   community: 'mindspore',
-  user: 'ailoooong',
+  user: '',
   year: '2023',
 });
 
