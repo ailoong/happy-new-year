@@ -27,7 +27,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'ailoooong',
+  user: '',
   year: '2023',
 });
 
@@ -35,7 +35,7 @@ const datastat = {
   user: '213w',
   contributor: '17k',
   pr: '148.9K',
-  osv: '20',
+  osv: '22',
   member: '1.4K',
   sig_groups: '100',
   groups: ['150', '1900'],

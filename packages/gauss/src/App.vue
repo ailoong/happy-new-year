@@ -12,17 +12,17 @@ import arrowIcon from '@/assets/arrow.png';
 const screenWidth = useWindowResize();
 const params = ref({
   community: 'opengauss',
-  user: 'ailoooong',
+  user: '',
   year: '2023',
 });
 const datastat = {
-  user: '232w',
+  user: '235w',
   contributor: '6000+',
-  pr: '14.9K',
-  issue: '15.2K',
+  pr: '15.3K',
+  issue: '15.6K',
   member: '563K',
   version: '2',
-  comment: '248.5k',
+  comment: '256.2K',
   enterprise: '500',
   achievement: ['114', '1,517'],
   groups: ['16', '72'],
@@ -676,6 +676,20 @@ body {
       text-align: center;
       font-size: 12px;
       line-height: 20px;
+    }
+    &.no-contribution {
+      .pg-6 {
+        .img4 {
+          top: 38%;
+        }
+        .img3 {
+          top: 18% !important;
+        }
+        .qrCode {
+          bottom: auto;
+          top: 42%;
+        }
+      }
     }
 
     @for $i from 1 through 6 {
