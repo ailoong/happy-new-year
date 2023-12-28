@@ -35,19 +35,10 @@ const datastat = {
   issue: '7,932',
   comment: '1821.7K',
   member: '325',
-  features: '325',
-  version: '3',
+  features: '328',
+  version: '10',
   groups: ['155', '2,800'],
   xihe: ['28,765', '2,287'],
-};
-const msData = {
-  city: 'xx',
-  msg: '100',
-  enterprise_developers: ['xx', 'xxx'],
-  university_developers: 'xx',
-  activities: 'xxx',
-  internship: 'xxx',
-  universities: ['xx', 'xxx', 'xxx'],
 };
 
 const monthData: any = ref({});
@@ -68,7 +59,7 @@ const mindsporeData = computed(() => {
       `嘿，2023，先别着急走！`,
       `暂停进度条里的好时光`,
       `看看那些不平凡的日子里`,
-      `关于你的开源贡献记忆`,
+      `关于你的昇思MindSpore开源贡献记忆`,
     ],
     page2: [
       `眨眼间，昇思又陪您走过一年`,
@@ -87,11 +78,11 @@ const mindsporeData = computed(() => {
       `昇思MindSpore`,
       `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
       `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
-      `社区下载量突破<span class="active">${datastat.user}</span>，`,
+      `社区下载量突破<span class="active">${datastat.user}</span>`,
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
       `转眼间昇思大模型平台也一岁半喽！`,
-      `作为首个基于国产AI算力和框架<br />服务全球开发者的一站式大模型平台`,
+      `作为首个基于自主创新的AI算力和框架<br />服务全球开发者的一站式大模型平台`,
       `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用`,
       `其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
       `今年新上线的AI实验室，支持在线训练和推理可视化`,
@@ -216,7 +207,7 @@ const mindsporeData = computed(() => {
       `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
       `转眼间昇思大模型平台也一岁半喽！`,
-      `作为首个基于国产AI算力和框架、服务全球开发者的一站式大模型平台`,
+      `作为首个基于自主创新的AI算力和框架、服务全球开发者的一站式大模型平台`,
       `我们已有<span class="active">${datastat.xihe[0]}</span>名用户注册使用，其中<span class="active">${datastat.xihe[1]}</span>人为核心贡献者`,
       `今年新上线的AI实验室，支持在线训练和推理可视化`,
       `让开发者们体验全流程开发`,
@@ -356,7 +347,7 @@ onUnmounted(() => {
   <audio
     id="bgm"
     ref="bgm"
-    src="/bgm/MindSpore_BGM_2021.mp3"
+    src="/bgm/MindSpore_BGM.mp3"
     autoplay
     preload="auto"
     loop
@@ -432,7 +423,9 @@ onUnmounted(() => {
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
         <p class="fade-time-0">作为昇思的一份子</p>
-        <p class="fade-time-1">今年您见证了昇思MindSpore首届人工智能峰会</p>
+        <p class="fade-time-1" style="margin-bottom: 12px">
+          今年您见证了昇思MindSpore首届产业峰会<br />人工智能框架生态峰会2023
+        </p>
         <p
           v-for="(item, index) in mindsporeData.page4"
           :key="item"
@@ -536,7 +529,9 @@ onUnmounted(() => {
       </div>
 
       <div class="slide-page pg-4" :class="currentPage === 3 ? 'current' : ''">
-        <p class="fade-time-0">今年我们举办了昇思MindSpore首届人工智能峰会</p>
+        <p class="fade-time-0" style="margin-bottom: 12px">
+          今年我们举办了昇思MindSpore首届产业峰会<br />人工智能框架生态峰会2023
+        </p>
         <p
           v-for="(item, index) in mindsporeData.page4"
           :key="item"

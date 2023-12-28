@@ -111,7 +111,8 @@ const posterContent = computed(() => {
     ],
     page2: [
       `因为有<span class="active">${datastat.contributor}</span>个并肩同行的小伙伴一起战斗`,
-      `openGauss如期在2023年发布<span class="active">${datastat.version}</span>个版本`,
+      `openGauss如期在2023年发布<span class="active">${datastat.version}</span>个版本，累计迭代了`,
+      `1.0.0LTS 长周期版本、1.1.0Preview、2.0.0LTS、2.1.0Preview、3.0.0Release、3.1.0Preview、5.0.0LTS、5.1.0Preview版本`,
       `合并请求PR<span class="active">${datastat.pr}</span>`,
       `累计产生Issue<span class="active">${datastat.issue}</span>`,
       `评审<span class="active">${datastat.comment}</span>Comment`,
@@ -135,10 +136,6 @@ const posterContent = computed(() => {
       {
         value: `你在2023这一年的时光里`,
         key: true,
-      },
-      {
-        value: `贡献了<span class='active'>${posterData.value.code_lines_add}</span>行代码`,
-        key: posterData.value.code_lines_add,
       },
       {
         value: `提交了<span class='active'>${posterData.value.pr_num}</span>个PR`,
@@ -179,7 +176,7 @@ const posterContent = computed(() => {
     ],
     page4: [
       {
-        value: `这一年，你与<span class='active'>${posterData.value.user_login_with_most_contact}</span>人建立了联系`,
+        value: `这一年，你与<span class='active'>${posterData.value.user_login_with_most_contact}</span>建立了联系`,
         key: posterData.value.user_login_with_most_contact,
       },
       {
@@ -245,9 +242,9 @@ function getRank(per: string) {
     const percentage = Number(per);
     if (percentage <= 100) {
       rank = 0;
-    } else if (percentage > 100 && percentage < 200) {
+    } else if (percentage > 100 && percentage < 350) {
       rank = 1;
-    } else if (percentage > 200 && percentage < 400) {
+    } else if (percentage > 350 && percentage < 550) {
       rank = 2;
     } else {
       rank = 3;
@@ -360,11 +357,11 @@ onUnmounted(() => {
   }
 });
 
-const wjxHref = 'https://www.wjx.top/vm/ecgh5fs.aspx#';
+const wjxHref = 'https://www.wjx.top/vm/wF5vCjX.aspx#';
 </script>
 
 <template>
-  <audio id="bgm" ref="bgm" src="/bgm/BGM_2021.mp3" preload="auto" loop></audio>
+  <audio id="bgm" ref="bgm" src="/bgm/BGM.mp3" preload="auto" loop></audio>
   <div ref="bgmOpen" class="bgm-open">
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
