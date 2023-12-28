@@ -677,6 +677,20 @@ body {
       font-size: 12px;
       line-height: 20px;
     }
+    &.no-contribution {
+      .pg-6 {
+        .img4 {
+          top: 38%;
+        }
+        .img3 {
+          top: 18% !important;
+        }
+        .qrCode {
+          bottom: auto;
+          top: 42%;
+        }
+      }
+    }
 
     @for $i from 1 through 6 {
       .pg-#{ $i} {
