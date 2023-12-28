@@ -164,7 +164,7 @@ const posterContent = computed(() => {
         key: posterData.value.watch_num,
       },
       {
-        value: `你对某行代码的批注或贡献，对某个问题的提出或解决，`,
+        value: `你对某行代码的批注或贡献，对某个问题的提出或解决`,
         key: true,
       },
       {
@@ -212,7 +212,7 @@ const posterContent = computed(() => {
         key: true,
       },
       {
-        value: `这些值得铭记的瞬间，`,
+        value: `这些值得铭记的瞬间`,
         key: true,
       },
       {
@@ -732,11 +732,10 @@ body {
     .pg-3 {
       position: relative;
       .fade-time-10 {
-        margin-top: 12px;
+        margin-top: 8px;
       }
       .pg-3-main {
         p {
-          line-height: 18px;
           position: relative;
           z-index: 3;
         }
@@ -748,7 +747,7 @@ body {
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
-          top: 57%;
+          top: 58.3%;
           @media screen and (max-width: 380px) {
             top: 68%;
           }

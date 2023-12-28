@@ -124,7 +124,7 @@ const pageCentent: any = computed(() => {
           key: true,
         },
         {
-          value: ` 迭代了两个创新版本：${datastat.versions[0]}`,
+          value: `发布了两个创新版本：${datastat.versions[0]}`,
           key: true,
         },
         {
