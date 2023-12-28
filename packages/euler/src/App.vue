@@ -7,7 +7,6 @@ import Stars from './Stars.vue';
 import BScroll from '@better-scroll/core';
 import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
-import MouseWheel from '@better-scroll/mouse-wheel';
 
 import { getPosterData, getUserData } from 'shared/api';
 
@@ -341,7 +340,7 @@ const pageTitle = {
 
 const wrapper = ref<HTMLElement | null>(null);
 
-BScroll.use(Slide).use(MouseWheel);
+BScroll.use(Slide);
 const isContributor = ref(true);
 const posterData: any = ref({});
 

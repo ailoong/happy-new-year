@@ -9,7 +9,6 @@
   "dependencies": {
     "@better-scroll/core": "^2.5.0",
     "@better-scroll/slide": "^2.5.0",
-    "@better-scroll/mouse-wheel": "^2.5.1",
     "shared": "workspace:^"
   }
 }
