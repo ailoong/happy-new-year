@@ -109,7 +109,7 @@ const posterContent = computed(() => {
       },
     ],
     page2: [
-      `因为有<span class="active">${datastat.contributor}</span>个并肩同行的小伙伴一起战斗`,
+      `因为有<span class="active">${datastat.contributor}</span>并肩同行的小伙伴一起战斗`,
       `openGauss如期在2023年发布<span class="active">${datastat.version}</span>个版本，累计迭代了`,
       `1.0.0LTS 长周期版本、1.1.0Preview、2.0.0LTS、2.1.0Preview、3.0.0Release、3.1.0Preview、5.0.0LTS、5.1.0Preview版本`,
       `合并请求PR<span class="active">${datastat.pr}</span>`,
@@ -119,8 +119,7 @@ const posterContent = computed(() => {
       '并在数十个关基行业应用',
       `吸引了超过<span class="active">${datastat.enterprise}</span>家企业加入社区`,
       `openGauss在国内`,
-      `<span class="active">${datastat.groups[0]}</span>个城市建立了用户组`,
-      `走进<span class="active">${datastat.groups[1]}</span>所高校`,
+      `<span class="active">${datastat.groups[0]}</span>个城市建立了用户组，走进<span class="active">${datastat.groups[1]}</span>所高校`,
       'openGauss 这是我们一起创造的精彩',
       '感谢你在过去一年的时光里',
       '与openGauss保持同频、分享热爱',
@@ -409,12 +408,14 @@ const wjxHref = 'https://www.wjx.top/vm/wF5vCjX.aspx#';
         class="slide-page wrapper-l pg-3"
         :class="currentPage === 2 ? 'current' : ''"
       >
-        <p
-          v-for="(item, index) in posterContent.page2"
-          :key="item"
-          v-dompurify-html="item"
-          :class="`fade-time-${index + 1}`"
-        ></p>
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in posterContent.page2"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="img-box">
           <p class="fade-time-1">
             <img src="@/assets/img1.png" class="img1" />
@@ -470,25 +471,32 @@ const wjxHref = 'https://www.wjx.top/vm/wF5vCjX.aspx#';
         class="slide-page wrapper-l pg-6"
         :class="currentPage === 5 ? 'current' : ''"
       >
-        <p class="title fade-time-1">其实关于你的点滴「openGauss」全都记得</p>
-        <p class="title fade-time-2">请点击生成你的2023年度标签</p>
-        <div class="img-box">
-          <div
-            v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
-            class="info"
-            :class="getRank(posterData.count_rank) === 0 ? 'one' : ''"
-          ></div>
-          <!-- <img src="@/assets/img3.png" class="img3" /> -->
-          <img src="@/assets/img4.png" class="img4" />
-          <p v-if="getRank(posterData.count_rank) === 0" class="fade-time-7">
-            <a :href="wjxHref" target="_blank"
-              ><img src="@/assets/img5.png" class="img5"
-            /></a>
-          </p>
+        <div class="pg-6-top">
+          <p class="title fade-time-1">其实关于你的点滴「openGauss」全都记得</p>
+          <p class="title fade-time-2">请点击生成你的2023年度标签</p>
         </div>
-        <div class="logo-box">
-          <img src="@/assets/img6.png" class="img6" alt="" />
-          <img src="@/assets/qrCode.png" class="qrCode" alt="" />
+        <div class="pg-6-main">
+          <div class="img-box">
+            <div class="level-content">
+              <div
+                v-dompurify-html="rankMap[getRank(posterData.count_rank)]"
+                class="info"
+                :class="getRank(posterData.count_rank) === 0 ? 'one' : ''"
+              ></div>
+              <img src="@/assets/img4.png" class="img4" />
+            </div>
+            <div v-if="getRank(posterData.count_rank) === 0" class="gift">
+              <p class="fade-time-7">
+                <a :href="wjxHref" target="_blank"
+                  ><img src="@/assets/img5.png" class="img5"
+                /></a>
+              </p>
+            </div>
+          </div>
+          <div class="logo-box">
+            <img src="@/assets/img6.png" class="img6" alt="" />
+            <img src="@/assets/qrCode.png" class="qrCode" alt="" />
+          </div>
         </div>
       </div>
     </div>
@@ -531,12 +539,14 @@ const wjxHref = 'https://www.wjx.top/vm/wF5vCjX.aspx#';
         class="slide-page wrapper-l pg-3"
         :class="currentPage === 2 ? 'current' : ''"
       >
-        <p
-          v-for="(item, index) in posterContent.page2"
-          :key="item"
-          v-dompurify-html="item"
-          :class="`fade-time-${index + 1}`"
-        ></p>
+        <div class="pg-3-main">
+          <p
+            v-for="(item, index) in posterContent.page2"
+            :key="item"
+            v-dompurify-html="item"
+            :class="`fade-time-${index + 1}`"
+          ></p>
+        </div>
         <div class="img-box">
           <p class="fade-time-1">
             <img src="@/assets/img1.png" class="img1" />
@@ -582,8 +592,8 @@ body {
   display: inline-block;
   opacity: 0;
   color: $active;
-  font-size: 16px;
-  padding: 0 3px;
+  padding: 0 2px;
+  font-weight: bold;
 }
 
 #app {
@@ -651,22 +661,21 @@ body {
     .slide-page {
       width: 100%;
       height: 100%;
-      padding: 60px 12px;
+      padding: 48px 12px;
       @media screen and (max-width: 768px) {
-        padding: 60px 12px;
         width: 100vw;
         height: 100vh;
         max-height: calc(var(--vh, 1vh) * 100);
       }
-      @media screen and (max-width: 376px) {
-        padding: 48px 12px;
+      @media screen and (max-width: 380px) {
+        padding: 32px 12px;
       }
       position: relative;
       overflow: hidden;
       background-size: cover;
       text-align: center;
       font-size: 12px;
-      line-height: 22px;
+      line-height: 20px;
     }
 
     @for $i from 1 through 6 {
@@ -711,37 +720,28 @@ body {
             width: 100%;
           }
         }
-        .authorize {
-          font-size: 12px;
-          display: flex;
-          align-items: center;
-
-          input {
-            width: 0.42rem;
-            height: 0.42rem;
-            margin-right: 0.04rem;
-          }
-          a {
-            color: $active;
-          }
-        }
       }
     }
 
     .pg-2 {
       .fade-time-3 {
-        margin-top: 16px;
+        margin-top: 12px;
       }
     }
 
     .pg-3 {
       position: relative;
-      .fade-time-9 {
-        margin-top: 16px;
+      .fade-time-10 {
+        margin-top: 12px;
       }
-      p {
-        line-height: 20px;
+      .pg-3-main {
+        p {
+          line-height: 18px;
+          position: relative;
+          z-index: 3;
+        }
       }
+
       .img-box {
         width: 100%;
         img {
@@ -749,6 +749,9 @@ body {
           left: 50%;
           transform: translateX(-50%);
           top: 57%;
+          @media screen and (max-width: 380px) {
+            top: 68%;
+          }
         }
         .img1 {
           width: 49.2%;
@@ -770,7 +773,7 @@ body {
 
     .pg-4 {
       .fade-time-3 {
-        margin-top: 16px;
+        margin-top: 12px;
       }
     }
 
@@ -779,7 +782,7 @@ body {
       flex-direction: column;
 
       .fade-time-4 {
-        margin-top: 16px;
+        margin-top: 12px;
       }
     }
     .slide-top {
@@ -805,30 +808,44 @@ body {
     }
     .pg-6 {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      background-position: bottom;
+      .pg-6-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        flex: 1;
+      }
 
       .img-box {
-        position: absolute;
-        top: 32.2%;
-        text-align: center;
-        left: 0;
+        position: relative;
         width: 100%;
-        height: 38%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1rem;
         img {
           left: 50%;
           transform: translate(-50%);
           position: absolute;
         }
-        @media screen and (max-width: 768px) {
-          top: 7rem;
-          height: 8.2rem;
+        @media screen and (max-width: 380px) {
+          justify-content: flex-start;
         }
         .img3 {
           width: 59.2%;
           top: 0;
         }
         .img4 {
-          width: 67.7%;
-          bottom: 0;
+          width: 80%;
+          bottom: 0.5rem;
         }
         .img5 {
           width: 38.1%;
@@ -935,15 +952,12 @@ p {
 }
 
 .logo-box {
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
   width: 100%;
   text-align: center;
   .img6 {
     width: 59.5%;
     display: block;
-    margin: 0 auto 0.3rem;
+    margin: 0 auto 12px;
   }
   .qrCode {
     width: 32%;

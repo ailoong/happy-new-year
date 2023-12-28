@@ -32,7 +32,7 @@ const posterData: any = ref({});
 
 const datastat = {
   user: '654w',
-  contributor: '5,012',
+  contributor: '5000',
   pr: '23.1K',
   issue: '7,932',
   comment: '1821.7K',
@@ -76,12 +76,11 @@ const mindsporeData = computed(() => {
       `出发去看看，属于你和我的MindSpore2023`,
     ],
     page3: [
-      `这一年，在您的见证下`,
-      `昇思MindSpore`,
+      `这一年，在您的见证下，昇思MindSpore`,
       `发布了<span class="active">${datastat.version}</span>个新版本，推出了<span class="active">${datastat.features}</span>个实用的特性`,
       `收到了<span class="active">${datastat.issue}</span>个issue和<span class="active">${datastat.pr}</span>个pr`,
       `社区下载量突破<span class="active">${datastat.user}</span>`,
-      `超过<span class="active">${datastat.contributor}</span>开发者在社区做出贡献`,
+      `超过<span class="active">${datastat.contributor}+</span>开发者在社区做出贡献`,
       `遍及全球<span class="active">${datastat.groups[0]}</span>个国家，<span class="active">${datastat.groups[1]}</span>个城市`,
       `转眼间昇思大模型平台也一岁半喽！`,
       `作为首个基于自主创新的AI算力和框架<br />服务全球开发者的一站式大模型平台`,
@@ -93,13 +92,13 @@ const mindsporeData = computed(() => {
       `最热门的大模型模块，已上线<span class="active">9</span>个业界知名大模型<br />支持预训练超大模型任务，欢迎在线体验！`,
     ],
     page4: [
-      `这一年`,
-      `MSG · 企业行全新升级<br />昇思开发者创享日从杭州出发<br />联合各地创新中心，打造<span class="active">300+</span>企业案例<br />构建繁荣的人工智能产业生态圈`,
+      `这一年，MSG · 企业行全新升级`,
+      `昇思开发者创享日从杭州出发，联合各地创新中心，打造<span class="active">300+</span>企业案例，构建繁荣的人工智能产业生态圈`,
       `MSG · 高校行开拓创新<br />通过MSG·暴走校园以及全新的昇思创新训练营为<span class="active">35</span>所高校，超<span class="active">1500</span>名高校开发者带来最热门的大模型赋能课程，并吸引上百名高校开发者参与开源实习，收获满满荣誉及奖励`,
-      `这一年`,
-      `昇思大模型平台共开展<span class="active">8</span>场AI赛事<br />其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
-      `这一年`,
-      `我们共与<span class="active">10000+</span>开发者一起<br />共同开展了超<span class="active">200</span>场有趣硬核的开源活动<br />交流了<span class="active">500+</span>个技术话题`,
+      `这一年，昇思大模型平台共开展<span class="active">8</span>场AI赛事`,
+      `其中科幻与创想主题AI创作大赛吸引来自全国<span class="active">260+</span>支队伍参赛，并在2023世界成都科幻大会中为<span class="active">12</span>支获奖队伍颁奖，获奖作品更是获得海外媒体报道`,
+      `这一年，我们共与<span class="active">10000+</span>开发者一起`,
+      `共同开展了超<span class="active">200</span>场有趣硬核的开源活动<br />交流了<span class="active">500+</span>个技术话题`,
     ],
     page5: [
       {
@@ -107,11 +106,7 @@ const mindsporeData = computed(() => {
         key: true,
       },
       {
-        value: `2023年就要过去了`,
-        key: true,
-      },
-      {
-        value: `还记得吗？`,
+        value: `2023年就要过去了，还记得吗？`,
         key: true,
       },
       {
@@ -135,16 +130,16 @@ const mindsporeData = computed(() => {
         key: true,
       },
       {
-        value: `点亮了<span class="active">${posterData.value.fork_num}</span>个仓库`,
-        key: posterData.value.fork_num,
+        value: `提出了 <span class="active">${posterData.value.pr_num}</span>个pr`,
+        key: posterData.value.pr_num,
       },
       {
         value: `提出了 <span class="active">${posterData.value.issue_num}</span>个issue`,
         key: posterData.value.issue_num,
       },
       {
-        value: `提出了 <span class="active">${posterData.value.pr_num}</span>个pr`,
-        key: posterData.value.pr_num,
+        value: `点亮了<span class="active">${posterData.value.fork_num}</span>个仓库`,
+        key: posterData.value.fork_num,
       },
       {
         value: `今年您与 <span class="active">${posterData.value.user_login_with_most_contact}</span>互动最频繁`,
@@ -170,7 +165,7 @@ const mindsporeData = computed(() => {
       },
       {
         value: `您依然奋斗在昇思社区`,
-        key: true,
+        key: posterData.value.latest_controibute_at,
       },
       {
         value: `期待2024您在社区的首次活跃`,
@@ -644,11 +639,10 @@ body {
       @media screen and (max-width: 768px) {
         width: 100vw;
         height: 100vh;
-        padding: 72px 12px;
         max-height: calc(var(--vh, 1vh) * 100);
       }
-      @media screen and (max-width: 376px) {
-        padding: 48px 12px;
+      @media screen and (max-width: 380px) {
+        padding: 32px 12px;
       }
       overflow: hidden;
       position: relative;
@@ -700,12 +694,7 @@ body {
         align-items: center;
         justify-content: center;
         z-index: 9;
-        p {
-          @media screen and (min-width: 768px) {
-            font-size: 14px;
-            line-height: 24px;
-          }
-        }
+
         @media screen and (max-width: 380px) {
           height: 22%;
         }
@@ -731,15 +720,14 @@ body {
     }
 
     .pg-2 {
-      .fade-time-4,
-      .fade-time-8 {
-        margin-top: 16px;
+      .fade-time-4 {
+        margin-top: 12px;
       }
     }
 
     .pg-3 {
-      .fade-time-8 {
-        margin-top: 16px;
+      .fade-time-7 {
+        margin-top: 12px;
       }
       .pg-3-main {
         position: relative;
@@ -750,6 +738,9 @@ body {
         img {
           position: absolute;
           top: 67.4%;
+          @media screen and (max-width: 380px) {
+            top: 72%;
+          }
         }
         .img4 {
           width: 40%;
@@ -766,6 +757,9 @@ body {
           z-index: 2;
           left: 25.2%;
           top: 66%;
+          @media screen and (max-width: 380px) {
+            top: 71%;
+          }
           animation-name: move;
           animation-duration: 2s;
           animation-iteration-count: infinite;
@@ -775,22 +769,20 @@ body {
     }
 
     .pg-4 {
-      padding-top: 1.2rem !important;
-      .fade-time-3,
-      .fade-time-6,
-      .fade-time-8 {
+      .fade-time-5,
+      .fade-time-7 {
         margin-top: 8px;
       }
     }
 
     .pg-5 {
-      .fade-time-4 {
-        margin-top: 16px;
+      .fade-time-3 {
+        margin-top: 12px;
       }
     }
     .pg-6 {
       .fade-time-8 {
-        margin-top: 16px;
+        margin-top: 12px;
       }
       .qr-code {
         width: 2.89rem;

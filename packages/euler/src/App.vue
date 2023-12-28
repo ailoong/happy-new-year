@@ -39,7 +39,7 @@ const datastat = {
   member: '1.4K',
   sig_groups: '100',
   groups: ['150', '1900'],
-  versions: '23.03、22.03 LTS SP2、23.09、20.03 LTS SP4、22.03 LTS SP3',
+  versions: ['23.03、23.09', '22.03 LTS SP2、20.03 LTS SP4、22.03 LTS SP3'],
 };
 
 async function getUserDataFun() {
@@ -120,15 +120,19 @@ const pageCentent: any = computed(() => {
       ],
       page5: [
         {
-          value: `回首2023 迭代了`,
+          value: `回首2023，openEuler社区快速成长`,
           key: true,
         },
         {
-          value: `${datastat.versions}五个版本 `,
+          value: ` 迭代了两个创新版本：${datastat.versions[0]}`,
           key: true,
         },
         {
-          value: `openEuler社区快速成长，而你在这一年中`,
+          value: `三个长周期SP版本：<br />${datastat.versions[1]} `,
+          key: true,
+        },
+        {
+          value: `而你在这一年中`,
           key: true,
         },
         {
@@ -248,14 +252,12 @@ const pageCentent: any = computed(() => {
           value: `Thanks to your support`,
           key: true,
         },
+
         {
-          value: `openEuler released the version of <br />${datastat.versions} on 2023`,
+          value: `This year openEuler released the version of <br />${datastat.versions[0]} <br />${datastat.versions[1]} `,
           key: true,
         },
-        {
-          value: `This year`,
-          key: true,
-        },
+
         {
           value: `you submitted <span class="active">${
             posterData.value?.pr_num
@@ -713,6 +715,8 @@ $active: #fdb329;
   display: inline-block;
   opacity: 0;
   color: $active;
+  padding: 0 2px;
+  font-weight: 700;
 }
 body {
   background: #002fa7 url('@/assets/bg.jpg') no-repeat top center/cover;
@@ -812,19 +816,15 @@ body {
     color: #fff;
     .slide-page {
       display: flex;
-      padding: 60px 12px;
+      padding: 48px 12px;
       flex-direction: column;
       align-items: center;
       width: 100%;
       height: 100%;
       @media screen and (max-width: 768px) {
-        padding: 60px 12px;
         width: 100vw;
         height: 100vh;
         max-height: calc(var(--vh, 1vh) * 100);
-      }
-      @media screen and (max-width: 376px) {
-        padding: 48px 12px;
       }
       overflow: hidden;
       text-align: center;
@@ -884,7 +884,7 @@ body {
           width: 81.6%;
           position: absolute;
           left: 10%;
-          top: 43.5%;
+          bottom: 13.25%;
           z-index: 2;
           animation-name: card;
           animation-duration: 2s;
@@ -915,11 +915,6 @@ body {
         padding: 0 12px;
         color: #000;
         z-index: 10;
-        .active {
-          font-weight: 700;
-          color: $active;
-          margin: 0 3px;
-        }
         .user {
           color: $active;
           font-size: 16px;
@@ -1048,12 +1043,6 @@ body {
     .pg-5 {
       background: url('@/assets/bg5.jpg') no-repeat top center/cover;
 
-      .active {
-        padding: 0 2px;
-        font-size: 14px;
-        font-weight: 700;
-        color: $active;
-      }
       .img-box {
         background: url('@/assets/img8.png') no-repeat center/cover;
         width: 7.28rem;
