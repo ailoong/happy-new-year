@@ -33,13 +33,14 @@ const params = ref({
 });
 
 const datastat = {
-  user: '212w',
-  contributor: '168k',
-  pr: '146.1K',
-  osv: '22',
-  member: '1.3K',
+  user: '213w',
+  contributor: '17k',
+  pr: '148.9K',
+  osv: '20',
+  member: '1.4K',
   sig_groups: '100',
   groups: ['150', '1900'],
+  versions: '23.03、22.03 LTS SP2、23.09、20.03 LTS SP4、22.03 LTS SP3',
 };
 
 async function getUserDataFun() {
@@ -120,19 +121,15 @@ const pageCentent: any = computed(() => {
       ],
       page5: [
         {
-          value: `回首2023 `,
+          value: `回首2023 迭代了`,
           key: true,
         },
         {
-          value: `迭代了22.03 LTS SP2和23.09两个版本 `,
+          value: `${datastat.versions}五个版本 `,
           key: true,
         },
         {
-          value: `openEuler社区快速成长`,
-          key: true,
-        },
-        {
-          value: `而你在这一年中`,
+          value: `openEuler社区快速成长，而你在这一年中`,
           key: true,
         },
         {
@@ -249,11 +246,11 @@ const pageCentent: any = computed(() => {
       ],
       page5: [
         {
-          value: `Thanks to your support `,
+          value: `Thanks to your support`,
           key: true,
         },
         {
-          value: `openEuler released the version of 22.03 LTS SP2 and 23.09 on 2023`,
+          value: `openEuler released the version of <br />${datastat.versions} on 2023`,
           key: true,
         },
         {
@@ -437,6 +434,7 @@ onMounted(async () => {
       },
       mouseWheel: true,
       stopPropagation: true,
+      resizePolling: 60,
     });
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
@@ -466,7 +464,7 @@ onUnmounted(() => {
   <audio
     id="bgm"
     ref="bgm"
-    src="/bgm/openEuler_BGM_2021.mp3"
+    src="/bgm/openEuler_BGM.mp3"
     preload="auto"
     loop
   ></audio>
