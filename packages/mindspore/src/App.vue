@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted, watch, computed } from 'vue';
+
 import BScroll from '@better-scroll/core';
-import { BScrollInstance } from '@better-scroll/core';
 import Slide from '@better-scroll/slide';
-import MouseWheel from '@better-scroll/mouse-wheel';
+import { BScrollInstance } from '@better-scroll/core';
 
 import useWindowResize from 'shared/hooks/useWindowResize';
 import { getPosterData, getMonthcount, getUserData } from 'shared/api';
 import arrowIcon from '@/assets/arrow.png';
+
+BScroll.use(Slide);
 
 const lang = ref('zh');
 const screenWidth = useWindowResize();
@@ -225,8 +227,6 @@ const mindsporeData = computed(() => {
 });
 
 const wrapper = ref<HTMLElement | null>(null);
-
-BScroll.use(Slide).use(MouseWheel);
 
 function dayTime(time: string) {
   if (time) {
