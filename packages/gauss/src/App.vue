@@ -25,7 +25,7 @@ const datastat = {
   comment: '256.2K',
   enterprise: '500',
   achievement: ['114', '1,517'],
-  groups: ['16', '72'],
+  groups: ['16', '200+'],
 };
 
 const wrapper = ref<HTMLElement | null>(null);
@@ -119,7 +119,7 @@ const posterContent = computed(() => {
       '并在数十个关基行业应用',
       `吸引了超过<span class="active">${datastat.enterprise}</span>家企业加入社区`,
       `openGauss在国内`,
-      `<span class="active">${datastat.groups[0]}</span>个城市建立了用户组，走进<span class="active">${datastat.groups[1]}</span>所高校`,
+      `<span class="active">${datastat.groups[0]}</span>个城市建立了用户组，走进<span class="active">${datastat.groups[1]}</span>高校`,
       'openGauss 这是我们一起创造的精彩',
       '感谢你在过去一年的时光里',
       '与openGauss保持同频、分享热爱',
@@ -306,7 +306,6 @@ onMounted(async () => {
 
   setVhHeight();
   window.addEventListener('resize', setVhHeight);
-
   if (wrapper.value) {
     slide = new BScroll(wrapper.value as HTMLElement, {
       scrollX: false,
@@ -320,10 +319,8 @@ onMounted(async () => {
         loop: false,
         threshold: 100,
       },
-      mouseWheel: true,
       stopPropagation: true,
     });
-
     slide.on('slidePageChanged', () => {
       currentPage.value = slide.getCurrentPage().pageY;
     });
@@ -640,6 +637,7 @@ body {
 .slide-wrapper {
   width: 100%;
   height: 100%;
+  touch-action: pan-y;
   @media screen and (max-width: 768px) {
     width: 100vw;
     max-height: calc(var(--vh, 1vh) * 100);

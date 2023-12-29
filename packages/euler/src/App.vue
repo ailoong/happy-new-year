@@ -474,7 +474,7 @@ onUnmounted(() => {
     <img class="closebgm" src="@/assets/close.svg" alt="" />
   </div>
 
-  <div :class="screenWidth > 768 ? 'pc' : 'mobile'">
+  <div :class="screenWidth > 768 ? 'pc' : 'mobile'" class="layout">
     <div ref="wrapper" class="slide-wrapper" :class="lang">
       <div v-if="isContributor" class="slide-content contribution">
         <div
@@ -734,6 +734,9 @@ body {
     width: 100vw;
     height: 100vh;
   }
+}
+.layout{
+  touch-action: pan-y;
 }
 .pc {
   width: calc(var(--vh, 1vh) * 46.18);
