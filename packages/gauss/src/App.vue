@@ -12,7 +12,7 @@ import arrowIcon from '@/assets/arrow.png';
 const screenWidth = useWindowResize();
 const params = ref({
   community: 'opengauss',
-  user: 'ailoooong',
+  user: '',
   year: '2023',
 });
 const datastat = {
