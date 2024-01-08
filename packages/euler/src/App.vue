@@ -27,7 +27,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: '',
+  user: 'ailoooong',
   year: '2023',
 });
 
@@ -446,13 +446,13 @@ onMounted(async () => {
   });
   bgmOpen.value?.addEventListener('touchstart', function () {
     bgm.value?.paused ? bgm.value?.play() : bgm.value?.pause();
-    bgmOpen.value.classList.add('run-bgm');
+    bgmOpen.value?.classList.add('run-bgm');
   });
 });
 
 // 背景音乐
-const bgm: any = ref('bgm');
-const bgmOpen: any = ref('bgmOpen');
+const bgm = ref<HTMLAudioElement | null>(null);
+const bgmOpen = ref<HTMLDivElement | null>(null);
 
 onUnmounted(() => {
   if (slide) {
@@ -735,7 +735,7 @@ body {
     height: 100vh;
   }
 }
-.layout{
+.layout {
   touch-action: pan-y;
 }
 .pc {
