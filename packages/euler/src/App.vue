@@ -25,9 +25,10 @@ watch(
   },
   { immediate: true }
 );
+
+const userName = ref('');
 const params = ref({
   community: 'openeuler',
-  user: '',
   year: '2023',
 });
 
@@ -45,7 +46,7 @@ const datastat = {
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
-      params.value.user = res.user;
+      userName.value = res.user;
     }
   });
 }
@@ -81,7 +82,7 @@ const pageCentent: any = computed(() => {
       page4: [
         {
           value: `Hi @${
-            params.value.user
+            userName.value
           }，我们在一起<span class="active">${getYear(
             posterData.value?.first_time_of_enter
           )}年</span>啦！ `,
@@ -502,7 +503,7 @@ onUnmounted(() => {
           <div class="pg-2-main">
             <img src="@/assets/img5.png" class="img5" alt="" />
             <div class="user">
-              <p class="blod active">Dear {{ params.user }}</p>
+              <p class="blod active">Dear {{ userName }}</p>
             </div>
             <div class="main-text">
               <p
@@ -666,7 +667,7 @@ onUnmounted(() => {
           <div class="pg-2-main">
             <img src="@/assets/img5.png" class="img5" alt="" />
             <div class="user">
-              <p class="blod active">Dear {{ params.user }}</p>
+              <p class="blod active">Dear {{ userName }}</p>
             </div>
             <div class="main-text">
               <p
