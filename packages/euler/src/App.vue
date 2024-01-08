@@ -27,7 +27,7 @@ watch(
 );
 const params = ref({
   community: 'openeuler',
-  user: 'ailoooong',
+  user: '',
   year: '2023',
 });
 
