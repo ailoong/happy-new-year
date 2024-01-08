@@ -9,9 +9,7 @@ RUN npm install pnpm -g
 RUN pnpm install
 RUN pnpm build:gauss
 
-
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
-
 
 FROM openeuler/openeuler:22.03-lts-sp1
 ENV PATH /usr/share/nginx/sbin:$PATH
@@ -92,7 +90,6 @@ RUN chmod 500 /etc/nginx/monitor.sh \
     && chmod 500 /etc/nginx/entrypoint.sh \
     && chown nginx:nginx /etc/nginx/monitor.sh \
     && chown nginx:nginx /etc/nginx/entrypoint.sh
-
 
 EXPOSE 8080
 

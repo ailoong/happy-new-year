@@ -9,9 +9,7 @@ RUN npm install pnpm -g
 RUN pnpm install
 RUN pnpm build:mindspore
 
-
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
-
 
 FROM openeuler/openeuler:22.03-lts-sp1
 ENV PATH /usr/share/nginx/sbin:$PATH
@@ -32,14 +30,12 @@ COPY --from=NginxBuilder /etc/nginx/geoip  /etc/nginx/geoip
 COPY --from=NginxBuilder /etc/nginx/mime.types  /etc/nginx/mime.types
 COPY --from=Builder /home/happy-new-year/web/dist/mindspore /usr/share/nginx/www/
 
-
 RUN sed -i "s|repo.openeuler.org|mirrors.pku.edu.cn/openeuler|g" /etc/yum.repos.d/openEuler.repo \
     && yum update -y \
     && yum install -y findutils passwd shadow \
     && find /usr/share/nginx/www -type d -print0| xargs -0 chmod 500 \
     && find /usr/share/nginx/www -type f -print0| xargs -0 chmod 400
 COPY ./deploy/mindspore/nginx.conf /etc/nginx/nginx.conf
-
 
 RUN touch /var/run/nginx.pid \
     && groupadd -g 1000 nginx \
@@ -92,7 +88,6 @@ RUN chmod 500 /etc/nginx/monitor.sh \
     && chmod 500 /etc/nginx/entrypoint.sh \
     && chown nginx:nginx /etc/nginx/monitor.sh \
     && chown nginx:nginx /etc/nginx/entrypoint.sh
-
 
 EXPOSE 8080
 
