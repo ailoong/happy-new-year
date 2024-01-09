@@ -10,11 +10,7 @@ import { getPosterData, getUserData } from 'shared/api';
 import arrowIcon from '@/assets/arrow.png';
 
 const screenWidth = useWindowResize();
-const params = ref({
-  community: 'opengauss',
-  user: '',
-  year: '2023',
-});
+const userName = ref('');
 const datastat = {
   user: '235w',
   contributor: '6000+',
@@ -92,12 +88,12 @@ const posterContent = computed(() => {
         key: posterData.value.first_time_of_enter,
       },
       {
-        value: `<span class='active'>${params.value.user}</span>`,
-        key: params.value.user,
+        value: `<span class='active'>${userName.value}</span>`,
+        key: userName.value,
       },
       {
         value: `感谢你创造了我们的故事`,
-        key: params.value.user,
+        key: userName.value,
       },
       {
         value: `在openGauss的开源世界里`,
@@ -267,7 +263,7 @@ const rankMap: any = computed(() => {
   ];
 });
 async function getPosterDataFun() {
-  await getPosterData(params.value)
+  await getPosterData()
     .then((res) => {
       if (res?.code === 200 && res.data.length) {
         isContributor.value = true;
@@ -288,7 +284,7 @@ const currentPage = ref(-1);
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
-      params.value.user = res.user;
+      userName.value = res.user;
     }
   });
 }

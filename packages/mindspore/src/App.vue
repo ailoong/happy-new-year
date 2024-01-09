@@ -22,6 +22,7 @@ watch(
   { immediate: true }
 );
 
+const userName = ref('');
 const params = ref({
   community: 'mindspore',
   user: '',
@@ -48,7 +49,8 @@ const monthData: any = ref({});
 async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
-      params.value.user = res.user;
+      userName.value = res.user;
+      params.value = res.user;
     }
   });
 }
@@ -102,7 +104,7 @@ const mindsporeData = computed(() => {
     ],
     page5: [
       {
-        value: `Hi~，<span class="active">@${params.value.user}</span>`,
+        value: `Hi~，<span class="active">@${userName.value}</span>`,
         key: true,
       },
       {
@@ -232,7 +234,7 @@ function dayTime(time: string) {
 }
 
 async function getPosterDataFun() {
-  await getPosterData(params.value)
+  await getPosterData()
     .then((res) => {
       if (res.code === 200 && res.data.length) {
         isContributor.value = true;
