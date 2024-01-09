@@ -2,7 +2,7 @@ import { request } from '../axios';
 import type { AxiosResponse } from '../axios';
 
 export function getPosterData() {
-  const url = '/query/newYear/report/test';
+  const url = '/query/newYear/report';
   return request
     .get(url)
     .then((res: AxiosResponse) => res.data)

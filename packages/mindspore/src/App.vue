@@ -23,11 +23,6 @@ watch(
 );
 
 const userName = ref('');
-const params = ref({
-  community: 'mindspore',
-  user: '',
-  year: '2023',
-});
 
 const posterData: any = ref({});
 

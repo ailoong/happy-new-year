@@ -27,10 +27,6 @@ watch(
 );
 
 const userName = ref('');
-const params = ref({
-  community: 'openeuler',
-  year: '2023',
-});
 
 const datastat = {
   user: '213w',
