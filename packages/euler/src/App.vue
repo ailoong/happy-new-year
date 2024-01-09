@@ -348,7 +348,7 @@ const isContributor = ref(true);
 const posterData: any = ref({});
 
 async function getPosterDataFun() {
-  await getPosterData(params.value)
+  await getPosterData()
     .then((res) => {
       if (res?.code === 200 && res.data.length) {
         isContributor.value = true;

@@ -1,12 +1,10 @@
 import { request } from '../axios';
 import type { AxiosResponse } from '../axios';
 
-export function getPosterData(params: any) {
-  const url = '/query/newYear/report';
+export function getPosterData() {
+  const url = '/query/newYear/report/test';
   return request
-    .get(url, {
-      params,
-    })
+    .get(url)
     .then((res: AxiosResponse) => res.data)
     .catch((e: any) => {
       throw new Error(e);
