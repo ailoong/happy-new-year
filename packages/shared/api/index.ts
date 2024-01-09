@@ -20,12 +20,10 @@ export function getUserData() {
     });
 }
 
-export function getMonthcount(params: any) {
+export function getMonthcount() {
   const url = '/query/newYear/monthcount';
   return request
-    .get(url, {
-      params,
-    })
+    .get(url)
     .then((res: AxiosResponse) => res.data)
     .catch((e: any) => {
       throw new Error(e);

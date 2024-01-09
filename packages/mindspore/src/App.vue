@@ -50,7 +50,6 @@ async function getUserDataFun() {
   await getUserData().then((res) => {
     if (res.user) {
       userName.value = res.user;
-      params.value = res.user;
     }
   });
 }
@@ -249,7 +248,7 @@ async function getPosterDataFun() {
 }
 
 async function getMonthountFun() {
-  await getMonthcount(params.value).then((res) => {
+  await getMonthcount().then((res) => {
     if (res.code === 200 && res.data) {
       monthData.value = res.data;
     }
